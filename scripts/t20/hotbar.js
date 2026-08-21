@@ -21,10 +21,33 @@ import {
   sortItems,
   useDocument
 } from "./adapter.js";
-import { APPEARANCE_DEFAULTS, THEME_PRESETS, hexToRgba, resolveAppearance } from "./themes.js";
+import {
+  APPEARANCE_DEFAULTS,
+  PORTRAIT_DEFAULTS,
+  THEME_PRESETS,
+  hexToRgba,
+  normalizePortraitTransform,
+  normalizePortraitTransforms,
+  resolveAppearance
+} from "./themes.js";
 
 const FLAG_LAYOUT = "layout";
 const SLOT_COUNT = 18;
+const CLIENT_SETTING_KEYS = Object.freeze([
+  "scale",
+  "opacity",
+  "verticalPosition",
+  "portraitSource",
+  "hideCoreHotbar",
+  "theme",
+  "primaryColor",
+  "secondaryColor",
+  "panelColor",
+  "textColor",
+  "glowStrength",
+  "ornamentStrength",
+  "showLabels"
+]);
 const RESOURCE_PATHS = Object.freeze({
   pv: "system.attributes.pv.value",
   pm: "system.attributes.pm.value"
@@ -35,6 +58,7 @@ export class T20Hotbar {
     this.actor = null;
     this.token = null;
     this.customEntries = [];
+    this.portraitTransforms = normalizePortraitTransforms();
     this.filter = "action";
     this.page = 0;
     this.abilitiesOpen = false;
@@ -131,15 +155,20 @@ export class T20Hotbar {
       .map((entry) => typeof entry === "string" ? { uuid: entry } : entry)
       .filter((entry) => entry?.uuid)
       .map((entry) => ({ uuid: entry.uuid, documentName: entry.documentName ?? null }));
+    this.portraitTransforms = normalizePortraitTransforms(layout.portraits);
   }
 
   async _saveLayout() {
     if (!this.actor || !this.canEdit) return;
     try {
-      await this.actor.setFlag(MODULE_ID, FLAG_LAYOUT, { version: 2, custom: this.customEntries });
+      await this.actor.setFlag(MODULE_ID, FLAG_LAYOUT, {
+        version: 3,
+        custom: this.customEntries,
+        portraits: this.portraitTransforms
+      });
     } catch (error) {
-      console.warn(`${MODULE_ID} | Não foi possível salvar os atalhos personalizados`, error);
-      ui.notifications.error("Não foi possível salvar os atalhos personalizados.");
+      console.warn(`${MODULE_ID} | Não foi possível salvar o layout da HUD`, error);
+      ui.notifications.error("Não foi possível salvar o layout da HUD.");
     }
   }
 
@@ -254,6 +283,12 @@ export class T20Hotbar {
     if (action === "close-settings") return this._closeSettings(true);
     if (action === "save-settings") return this._saveSettings();
     if (action === "reset-settings") return this._resetSettings();
+    if (action === "reset-portrait") {
+      const source = this.settingsDraft?.portraitSource ?? "actor";
+      this.settingsDraft.portraitTransforms[source] = { ...PORTRAIT_DEFAULTS };
+      this.render();
+      return;
+    }
     if (action === "select-theme") {
       this.settingsDraft.theme = target.dataset.theme;
       this.applyClientSettings(this.settingsDraft);
@@ -444,6 +479,26 @@ export class T20Hotbar {
     }, 0);
   }
 
+  _activePortraitTransform(draft = this.settingsDraft) {
+    const source = draft?.portraitSource ?? this._setting("portraitSource") ?? "actor";
+    const transforms = draft?.portraitTransforms ?? this.portraitTransforms;
+    return normalizePortraitTransform(transforms?.[source]);
+  }
+
+  _portraitStyle(transform = this._activePortraitTransform()) {
+    const normalized = normalizePortraitTransform(transform);
+    return `--portrait-zoom:${normalized.zoom};--portrait-x:${normalized.x}%;--portrait-y:${normalized.y}%`;
+  }
+
+  _applyPortraitPreview(transform) {
+    const normalized = normalizePortraitTransform(transform);
+    for (const image of this.root.querySelectorAll(".bg3t20-portrait img, .bg3t20-portrait-editor-preview img")) {
+      image.style.setProperty("--portrait-zoom", String(normalized.zoom));
+      image.style.setProperty("--portrait-x", `${normalized.x}%`);
+      image.style.setProperty("--portrait-y", `${normalized.y}%`);
+    }
+  }
+
   _openSettings() {
     this.settingsDraft = {
       scale: this._setting("scale"),
@@ -451,6 +506,7 @@ export class T20Hotbar {
       verticalPosition: this._setting("verticalPosition"),
       portraitSource: this._setting("portraitSource"),
       hideCoreHotbar: this._setting("hideCoreHotbar"),
+      portraitTransforms: normalizePortraitTransforms(this.portraitTransforms),
       ...this._appearanceValues()
     };
     this.settingsOpen = true;
@@ -470,7 +526,24 @@ export class T20Hotbar {
     const key = input.dataset.setting;
     let value = input.type === "checkbox" ? input.checked : input.value;
     if (input.type === "range") value = Number(value);
+
+    if (["portraitZoom", "portraitX", "portraitY"].includes(key)) {
+      const source = this.settingsDraft.portraitSource ?? "actor";
+      const property = { portraitZoom: "zoom", portraitX: "x", portraitY: "y" }[key];
+      this.settingsDraft.portraitTransforms[source][property] = value;
+      const transform = normalizePortraitTransform(this.settingsDraft.portraitTransforms[source]);
+      this.settingsDraft.portraitTransforms[source] = transform;
+      const output = this.root.querySelector(`[data-output="${key}"]`);
+      if (output) output.textContent = property === "zoom" ? `${Math.round(transform.zoom * 100)}%` : `${Math.round(transform[property])}%`;
+      this._applyPortraitPreview(transform);
+      return;
+    }
+
     this.settingsDraft[key] = value;
+    if (key === "portraitSource") {
+      this.render();
+      return;
+    }
     if (["primaryColor", "secondaryColor", "panelColor", "textColor"].includes(key)) {
       this.settingsDraft.theme = "custom";
       this.root.querySelectorAll("[data-theme]").forEach((button) => button.classList.toggle("is-active", button.dataset.theme === "custom"));
@@ -482,10 +555,15 @@ export class T20Hotbar {
 
   async _saveSettings() {
     if (!this.settingsDraft) return;
-    const draft = { ...this.settingsDraft };
+    const draft = {
+      ...this.settingsDraft,
+      portraitTransforms: normalizePortraitTransforms(this.settingsDraft.portraitTransforms)
+    };
+    this.portraitTransforms = draft.portraitTransforms;
     this.settingsOpen = false;
     this.settingsDraft = null;
-    for (const [key, value] of Object.entries(draft)) await game.settings.set(MODULE_ID, key, value);
+    for (const key of CLIENT_SETTING_KEYS) await game.settings.set(MODULE_ID, key, draft[key]);
+    await this._saveLayout();
     this.applyClientSettings();
     this.render();
     ui.notifications.info("A aparência da HUD foi salva.");
@@ -498,6 +576,7 @@ export class T20Hotbar {
       verticalPosition: "bottom",
       portraitSource: "actor",
       hideCoreHotbar: false,
+      portraitTransforms: normalizePortraitTransforms(),
       ...APPEARANCE_DEFAULTS
     };
     this.applyClientSettings(this.settingsDraft);
@@ -556,7 +635,7 @@ export class T20Hotbar {
     }).join("");
     return `<div class="bg3t20-portrait-wrap">
       <button type="button" class="bg3t20-portrait" data-action="open-actor" title="Abrir ficha de ${escapeHtml(this.actor.name)}">
-        <img src="${escapeHtml(this._portraitImage())}" alt="${escapeHtml(this.actor.name)}"><span class="bg3t20-level">Nível ${stats.level}</span>
+        <img src="${escapeHtml(this._portraitImage())}" alt="${escapeHtml(this.actor.name)}" style="${this._portraitStyle()}"><span class="bg3t20-level">Nível ${stats.level}</span>
       </button>
       <div class="bg3t20-actor-name">${escapeHtml(this.actor.name)}</div>
       ${this._renderResource("pv", stats.pv)}
@@ -650,8 +729,12 @@ export class T20Hotbar {
     if (!this.settingsOpen || !this.settingsDraft) return "";
     const draft = this.settingsDraft;
     const appearance = resolveAppearance(draft);
+    const portrait = this._activePortraitTransform(draft);
+    const portraitSourceLabel = draft.portraitSource === "token" ? "Imagem do token" : "Imagem da ficha";
+    const portraitDisabled = this.canEdit ? "" : "disabled";
     const themes = Object.entries(THEME_PRESETS).map(([key, theme]) => `<button type="button" data-action="select-theme" data-theme="${key}" class="bg3t20-theme ${draft.theme === key ? "is-active" : ""}" style="--theme-primary:${theme.primary};--theme-secondary:${theme.secondary};--theme-panel:${theme.panel}"><span></span><strong>${theme.label}</strong></button>`).join("");
     const range = (key, label, min, max, step, value) => `<label class="bg3t20-setting range"><span>${label}<output data-output="${key}">${Math.round(Number(value) * 100)}%</output></span><input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-setting="${key}"></label>`;
+    const portraitRange = (key, label, min, max, step, value, display) => `<label class="bg3t20-setting range"><span>${label}<output data-output="${key}">${display}</output></span><input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-setting="${key}" ${portraitDisabled}></label>`;
     const color = (key, label, value) => `<label class="bg3t20-setting color"><span>${label}</span><input type="color" value="${escapeHtml(value)}" data-setting="${key}"></label>`;
     return `<div class="bg3t20-settings-backdrop"><section class="bg3t20-settings-panel">
       <header><div><span>Personalização</span><h2>Forja da HUD</h2><p>Molde a interface ao estilo da sua mesa.</p></div><button type="button" data-action="close-settings" title="Fechar sem salvar"><i class="fa-solid fa-xmark"></i></button></header>
@@ -664,6 +747,20 @@ export class T20Hotbar {
           <label class="bg3t20-setting select"><span>Retrato</span><select data-setting="portraitSource"><option value="actor" ${draft.portraitSource === "actor" ? "selected" : ""}>Imagem da ficha</option><option value="token" ${draft.portraitSource === "token" ? "selected" : ""}>Imagem do token</option></select></label>
           <label class="bg3t20-setting toggle"><input type="checkbox" data-setting="showLabels" ${draft.showLabels ? "checked" : ""}><span>Exibir nomes nos atalhos</span></label>
           <label class="bg3t20-setting toggle"><input type="checkbox" data-setting="hideCoreHotbar" ${draft.hideCoreHotbar ? "checked" : ""}><span>Ocultar hotbar padrão</span></label>
+        </fieldset>
+        <fieldset class="bg3t20-portrait-editor"><legend>Enquadramento do retrato</legend>
+          <div class="bg3t20-portrait-editor-layout">
+            <div class="bg3t20-portrait-editor-preview"><img src="${escapeHtml(this._portraitImage())}" alt="Prévia de ${escapeHtml(this.actor.name)}" style="${this._portraitStyle(portrait)}"><span>${escapeHtml(portraitSourceLabel)}</span></div>
+            <div class="bg3t20-portrait-editor-controls">
+              <div class="bg3t20-portrait-editor-ranges">
+                ${portraitRange("portraitZoom", "Zoom", 1, 3, 0.05, portrait.zoom, `${Math.round(portrait.zoom * 100)}%`)}
+                ${portraitRange("portraitX", "Horizontal", 0, 100, 1, portrait.x, `${Math.round(portrait.x)}%`)}
+                ${portraitRange("portraitY", "Vertical", 0, 100, 1, portrait.y, `${Math.round(portrait.y)}%`)}
+              </div>
+              <p>${this.canEdit ? "O enquadramento fica salvo neste personagem e é exibido para todos." : "Somente o dono do personagem ou o mestre pode salvar este enquadramento."}</p>
+              <button type="button" data-action="reset-portrait" ${portraitDisabled}><i class="fa-solid fa-crosshairs"></i> Centralizar imagem</button>
+            </div>
+          </div>
         </fieldset>
       </div>
       <footer><button type="button" data-action="reset-settings"><i class="fa-solid fa-rotate-left"></i> Restaurar padrão</button><button type="button" data-action="save-settings" class="is-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar ajustes</button></footer>

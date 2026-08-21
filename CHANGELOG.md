@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1] — 2026-08-21
+
+- Adiciona uma ferramenta visual para enquadrar o retrato diretamente nos ajustes da HUD.
+- Permite controlar zoom, posição horizontal e posição vertical com prévia em tempo real.
+- Salva enquadramentos independentes para a imagem da ficha e a imagem do token em cada personagem.
+- Compartilha o enquadramento salvo com todos que visualizam a HUD daquele personagem.
+
 ## [0.2.0] — 2026-08-21
 
 - Substitui o filtro geral pelas categorias Itens e Personalizado.

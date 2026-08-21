@@ -49,6 +49,32 @@ export const APPEARANCE_DEFAULTS = Object.freeze({
 
 export const APPEARANCE_KEYS = Object.freeze(Object.keys(APPEARANCE_DEFAULTS));
 
+export const PORTRAIT_DEFAULTS = Object.freeze({
+  zoom: 1,
+  x: 50,
+  y: 50
+});
+
+export function normalizePortraitTransform(value = {}) {
+  const clamp = (number, min, max, fallback) => {
+    if (number === null || number === undefined || number === "") return fallback;
+    const parsed = Number(number);
+    return Number.isFinite(parsed) ? Math.min(max, Math.max(min, parsed)) : fallback;
+  };
+  return {
+    zoom: clamp(value.zoom, 1, 3, PORTRAIT_DEFAULTS.zoom),
+    x: clamp(value.x, 0, 100, PORTRAIT_DEFAULTS.x),
+    y: clamp(value.y, 0, 100, PORTRAIT_DEFAULTS.y)
+  };
+}
+
+export function normalizePortraitTransforms(value = {}) {
+  return {
+    actor: normalizePortraitTransform(value.actor),
+    token: normalizePortraitTransform(value.token)
+  };
+}
+
 export function normalizeHex(value, fallback) {
   const text = String(value ?? "").trim();
   return /^#[0-9a-f]{6}$/i.test(text) ? text.toLowerCase() : fallback;

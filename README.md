@@ -30,6 +30,8 @@ Depois, ative o módulo no mundo que utiliza Tormenta20 1.5.015.
 - Encerrar turno, descanso e ajustes em controles laterais redesenhados.
 - Painel de personalização próprio com temas Tormenta, Divino, Arcano e Sombrio, além de cores livres, brilho e ornamentos.
 - Opções de escala, opacidade, posição, origem do retrato, nomes nos atalhos e ocultação da hotbar padrão.
+- Editor visual do retrato com zoom e posição horizontal e vertical, prévia em tempo real e ajustes separados para a imagem da ficha e do token.
+- Enquadramento salvo por personagem e compartilhado com todos que visualizam sua HUD.
 - Atalho **H** para mostrar ou ocultar a interface.
 
 ## Controles
@@ -41,6 +43,7 @@ Depois, ative o módulo no mundo que utiliza Tormenta20 1.5.015.
 - **Shift + botão direito no Personalizado**: remover apenas o atalho, sem apagar o item ou macro.
 - **Clique no valor de PV ou PM**: editar usando valor exato, `+N` ou `-N`; Enter confirma e Esc cancela.
 - **Clique no retrato**: abrir a ficha do ator.
+- **Ajustes → Enquadramento do retrato**: reposicionar e ampliar a imagem; **Centralizar imagem** restaura o enquadramento padrão da origem selecionada.
 - **Clique no d20**: abrir atributos e perícias.
 
 ## Compatibilidade
