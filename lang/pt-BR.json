@@ -1,12 +1,13 @@
 {
   "BG3T20.Name": "BG3 Inspired Hotbar — Tormenta20",
   "BG3T20.Ready": "Hotbar pronta para Tormenta20",
-  "BG3T20.Action.All": "Todos",
   "BG3T20.Action.Normal": "Ação",
   "BG3T20.Action.Move": "Movimento",
   "BG3T20.Action.Full": "Completa",
   "BG3T20.Action.Reaction": "Reação",
   "BG3T20.Action.Free": "Livre",
   "BG3T20.Filter.Spells": "Magias",
-  "BG3T20.Filter.Powers": "Poderes"
+  "BG3T20.Filter.Powers": "Poderes",
+  "BG3T20.Filter.Items": "Itens",
+  "BG3T20.Filter.Custom": "Personalizado"
 }

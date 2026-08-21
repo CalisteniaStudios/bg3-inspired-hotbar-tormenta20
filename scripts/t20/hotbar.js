@@ -4,7 +4,6 @@ import {
   escapeHtml,
   getActionData,
   getActorStats,
-  getDefaultActorOrder,
   getItemDescription,
   getManaCost,
   getQuantity,
@@ -12,9 +11,8 @@ import {
   getTypeLabel,
   isEquipped,
   itemMatchesFilter,
-  normalizeOrder,
+  parseResourceInput,
   plainText,
-  resolveActorDocument,
   resourcePercent,
   restActor,
   rollAbility,
@@ -23,18 +21,26 @@ import {
   sortItems,
   useDocument
 } from "./adapter.js";
+import { APPEARANCE_DEFAULTS, THEME_PRESETS, hexToRgba, resolveAppearance } from "./themes.js";
 
 const FLAG_LAYOUT = "layout";
 const SLOT_COUNT = 18;
+const RESOURCE_PATHS = Object.freeze({
+  pv: "system.attributes.pv.value",
+  pm: "system.attributes.pm.value"
+});
 
 export class T20Hotbar {
   constructor() {
     this.actor = null;
     this.token = null;
-    this.order = [];
-    this.filter = "all";
+    this.customEntries = [];
+    this.filter = "action";
     this.page = 0;
     this.abilitiesOpen = false;
+    this.settingsOpen = false;
+    this.settingsDraft = null;
+    this.editingResource = null;
     this.tooltipTimer = null;
     this.tooltipUuid = null;
     this.root = document.createElement("section");
@@ -57,17 +63,44 @@ export class T20Hotbar {
     return Boolean(this.actor?.isOwner || game.user?.isGM);
   }
 
-  applyClientSettings() {
-    const scale = Number(game.settings.get(MODULE_ID, "scale") || 1);
-    const opacity = Number(game.settings.get(MODULE_ID, "opacity") || 1);
-    const position = game.settings.get(MODULE_ID, "verticalPosition") || "bottom";
-    this.root.style.setProperty("--bg3t20-scale", String(scale));
-    this.root.style.setProperty("--bg3t20-opacity", String(opacity));
-    this.root.dataset.position = position;
-    document.body.classList.toggle(
-      "bg3t20-hide-core-hotbar",
-      Boolean(this.enabled && game.settings.get(MODULE_ID, "hideCoreHotbar"))
-    );
+  _setting(key) {
+    return game.settings.get(MODULE_ID, key);
+  }
+
+  _appearanceValues() {
+    return {
+      theme: this._setting("theme"),
+      primaryColor: this._setting("primaryColor"),
+      secondaryColor: this._setting("secondaryColor"),
+      panelColor: this._setting("panelColor"),
+      textColor: this._setting("textColor"),
+      glowStrength: this._setting("glowStrength"),
+      ornamentStrength: this._setting("ornamentStrength"),
+      showLabels: this._setting("showLabels")
+    };
+  }
+
+  applyClientSettings(values = null) {
+    const source = values ?? {
+      scale: this._setting("scale"),
+      opacity: this._setting("opacity"),
+      verticalPosition: this._setting("verticalPosition"),
+      hideCoreHotbar: this._setting("hideCoreHotbar"),
+      ...this._appearanceValues()
+    };
+    const appearance = resolveAppearance(source);
+    this.root.style.setProperty("--bg3t20-scale", String(Number(source.scale ?? 1)));
+    this.root.style.setProperty("--bg3t20-opacity", String(Number(source.opacity ?? 0.96)));
+    this.root.style.setProperty("--bg3t20-primary", appearance.primaryColor);
+    this.root.style.setProperty("--bg3t20-secondary", appearance.secondaryColor);
+    this.root.style.setProperty("--bg3t20-panel-color", appearance.panelColor);
+    this.root.style.setProperty("--bg3t20-text-color", appearance.textColor);
+    this.root.style.setProperty("--bg3t20-glow", hexToRgba(appearance.primaryColor, appearance.glowStrength));
+    this.root.style.setProperty("--bg3t20-ornament-opacity", String(appearance.ornamentStrength));
+    this.root.dataset.position = source.verticalPosition ?? "bottom";
+    this.root.dataset.theme = appearance.theme;
+    this.root.dataset.labels = appearance.showLabels ? "show" : "hide";
+    document.body.classList.toggle("bg3t20-hide-core-hotbar", Boolean(this.enabled && source.hideCoreHotbar));
   }
 
   async setToken(token) {
@@ -78,51 +111,68 @@ export class T20Hotbar {
     }
     this.actor = nextActor;
     this.token = token ?? null;
-    this.filter = "all";
+    this.filter = "action";
     this.page = 0;
     this.abilitiesOpen = false;
+    this.settingsOpen = false;
+    this.editingResource = null;
     await this._loadLayout();
     this.render();
   }
 
   async refreshSelection() {
-    const controlled = canvas?.tokens?.controlled ?? [];
-    const token = controlled[0] ?? null;
-    await this.setToken(token);
+    await this.setToken((canvas?.tokens?.controlled ?? [])[0] ?? null);
   }
 
   async _loadLayout() {
-    if (!this.actor) {
-      this.order = [];
-      return;
-    }
-    const layout = this.actor.getFlag(MODULE_ID, FLAG_LAYOUT) ?? {};
-    this.order = normalizeOrder(this.actor, layout.order ?? []);
+    const layout = this.actor?.getFlag(MODULE_ID, FLAG_LAYOUT) ?? {};
+    const source = Array.isArray(layout.custom) ? layout.custom : [];
+    this.customEntries = source
+      .map((entry) => typeof entry === "string" ? { uuid: entry } : entry)
+      .filter((entry) => entry?.uuid)
+      .map((entry) => ({ uuid: entry.uuid, documentName: entry.documentName ?? null }));
   }
 
   async _saveLayout() {
     if (!this.actor || !this.canEdit) return;
     try {
-      await this.actor.setFlag(MODULE_ID, FLAG_LAYOUT, { order: this.order });
+      await this.actor.setFlag(MODULE_ID, FLAG_LAYOUT, { version: 2, custom: this.customEntries });
     } catch (error) {
-      console.warn(`${MODULE_ID} | Não foi possível salvar a ordem da hotbar`, error);
+      console.warn(`${MODULE_ID} | Não foi possível salvar os atalhos personalizados`, error);
+      ui.notifications.error("Não foi possível salvar os atalhos personalizados.");
     }
   }
 
-  _documents() {
-    return this.order
-      .map((uuid) => resolveActorDocument(this.actor, uuid))
-      .filter(Boolean);
+  _automaticDocuments() {
+    return sortItems((this.actor?.items ?? []).filter((item) => itemMatchesFilter(item, this.filter)));
   }
 
-  _filteredDocuments() {
-    return this._documents().filter((document) => itemMatchesFilter(document, this.filter));
+  _resolveEntry(entry) {
+    if (!entry?.uuid) return null;
+    const embedded = this.actor?.items?.find?.((item) => item.uuid === entry.uuid);
+    if (embedded) return embedded;
+    try {
+      return globalThis.fromUuidSync?.(entry.uuid) ?? game.macros?.find?.((macro) => macro.uuid === entry.uuid) ?? null;
+    } catch (_error) {
+      return null;
+    }
   }
 
-  _pageDocuments() {
-    const filtered = this._filteredDocuments();
+  _filteredEntries() {
+    if (this.filter === "custom") {
+      return this.customEntries.map((entry) => ({ entry, document: this._resolveEntry(entry) }));
+    }
+    return this._automaticDocuments().map((document) => ({ entry: null, document }));
+  }
+
+  _pageEntries() {
     const start = this.page * SLOT_COUNT;
-    return filtered.slice(start, start + SLOT_COUNT);
+    return this._filteredEntries().slice(start, start + SLOT_COUNT);
+  }
+
+  _pageCount() {
+    const count = this._filteredEntries().length + (this.filter === "custom" && this.canEdit ? 1 : 0);
+    return Math.max(1, Math.ceil(count / SLOT_COUNT));
   }
 
   _bindEvents() {
@@ -135,95 +185,80 @@ export class T20Hotbar {
     this.root.addEventListener("drop", (event) => this._onDrop(event));
     this.root.addEventListener("mouseover", (event) => this._onMouseOver(event));
     this.root.addEventListener("mouseout", (event) => this._onMouseOut(event));
+    this.root.addEventListener("input", (event) => this._onSettingsInput(event));
+    this.root.addEventListener("change", (event) => this._onSettingsInput(event));
+    this.root.addEventListener("keydown", (event) => this._onKeyDown(event));
+    this.root.addEventListener("focusout", (event) => this._onFocusOut(event));
   }
 
   async _onClick(event) {
-    const action = event.target.closest?.("[data-action]")?.dataset.action;
-    if (action) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    if (event.target.closest("[data-setting]")) return;
+    const target = event.target.closest?.("[data-action]");
+    const action = target?.dataset.action;
+    if (!action) return;
+    event.preventDefault();
+    event.stopPropagation();
 
     if (action === "use-item") {
-      const document = resolveActorDocument(this.actor, event.target.closest("[data-uuid]")?.dataset.uuid);
+      const document = this._resolveEntry({ uuid: target.dataset.uuid });
       try {
-        await useDocument(document, event);
+        await useDocument(document, event, { actor: this.actor, token: this.token });
       } catch (error) {
-        console.error(`${MODULE_ID} | Erro ao usar item`, error);
-        ui.notifications.error(`Não foi possível usar ${document?.name ?? "o item"}.`);
+        console.error(`${MODULE_ID} | Erro ao usar atalho`, error);
+        ui.notifications.error(`Não foi possível usar ${document?.name ?? "o atalho"}.`);
       }
       return;
     }
-    if (action === "open-actor") {
-      this.actor?.sheet?.render?.(true);
-      return;
-    }
+    if (action === "open-actor") return this.actor?.sheet?.render?.(true);
     if (action === "toggle-abilities") {
       this.abilitiesOpen = !this.abilitiesOpen;
       this.render();
       return;
     }
     if (action === "filter") {
-      this.filter = event.target.closest("[data-filter]").dataset.filter;
+      this.filter = target.dataset.filter;
       this.page = 0;
       this.render();
       return;
     }
-    if (action === "page-prev") {
-      this.page = Math.max(0, this.page - 1);
+    if (action === "page-prev" || action === "page-next") {
+      const delta = action === "page-prev" ? -1 : 1;
+      this.page = Math.min(this._pageCount() - 1, Math.max(0, this.page + delta));
       this.render();
       return;
     }
-    if (action === "page-next") {
-      const pages = Math.max(1, Math.ceil(this._filteredDocuments().length / SLOT_COUNT));
-      this.page = Math.min(pages - 1, this.page + 1);
-      this.render();
-      return;
-    }
-    if (action === "roll-ability") {
-      await rollAbility(this.actor, event.target.closest("[data-key]").dataset.key, event);
-      return;
-    }
-    if (action === "roll-skill") {
-      await rollSkill(this.actor, event.target.closest("[data-key]").dataset.key, event);
-      return;
-    }
+    if (action === "roll-ability") return rollAbility(this.actor, target.dataset.key, event);
+    if (action === "roll-skill") return rollSkill(this.actor, target.dataset.key, event);
     if (action === "end-turn") {
       if (game.combat?.started && game.combat?.combatant?.actor?.id === this.actor?.id) await game.combat.nextTurn();
       return;
     }
-    if (action === "rest") {
-      this._openRestDialog();
-      return;
-    }
-    if (action === "death-save") {
-      await rollSkill(this.actor, "fort", event);
-      return;
-    }
-    if (action === "set-death-save") {
-      const value = Number(event.target.closest("[data-value]").dataset.value);
-      if (this.canEdit) await this.actor.update({ "system.resources.deathsave.value": value });
+    if (action === "rest") return this._openRestDialog();
+    if (action === "death-save") return rollSkill(this.actor, "fort", event);
+    if (action === "set-death-save" && this.canEdit) {
+      await this.actor.update({ "system.resources.deathsave.value": Number(target.dataset.value) });
       return;
     }
     if (action === "toggle-effect") {
-      const effect = this.actor?.effects?.get?.(event.target.closest("[data-effect-id]").dataset.effectId);
+      const effect = this.actor?.effects?.get?.(target.dataset.effectId);
       if (effect && this.canEdit) await effect.update({ disabled: !effect.disabled });
       return;
     }
-    if (action === "autofill") {
-      this.order = getDefaultActorOrder(this.actor);
-      await this._saveLayout();
-      this.page = 0;
+    if (action === "edit-resource" && this.canEdit) {
+      this.editingResource = target.dataset.resource;
       this.render();
-      ui.notifications.info("Hotbar preenchida com os itens da ficha.");
+      requestAnimationFrame(() => this.root.querySelector(`[data-resource-input="${this.editingResource}"]`)?.select());
       return;
     }
-    if (action === "open-settings") {
-      game.settings.sheet?.render?.(true, { tab: MODULE_ID });
+    if (action === "open-settings") return this._openSettings();
+    if (action === "close-settings") return this._closeSettings(true);
+    if (action === "save-settings") return this._saveSettings();
+    if (action === "reset-settings") return this._resetSettings();
+    if (action === "select-theme") {
+      this.settingsDraft.theme = target.dataset.theme;
+      this.applyClientSettings(this.settingsDraft);
+      this.render();
       return;
-    }
-    if (action === "toggle-hud") {
-      await game.settings.set(MODULE_ID, "enabled", false);
     }
   }
 
@@ -231,66 +266,98 @@ export class T20Hotbar {
     const itemElement = event.target.closest?.("[data-uuid]");
     if (!itemElement) return;
     event.preventDefault();
-    const document = resolveActorDocument(this.actor, itemElement.dataset.uuid);
-    document?.sheet?.render?.(true);
+    if (this.filter === "custom" && this.canEdit && event.shiftKey) {
+      this._removeCustom(itemElement.dataset.uuid);
+      return;
+    }
+    this._resolveEntry({ uuid: itemElement.dataset.uuid })?.sheet?.render?.(true);
   }
 
   _onDragStart(event) {
     const itemElement = event.target.closest?.("[data-uuid]");
-    if (!itemElement || !this.canEdit) {
-      event.preventDefault();
-      return;
-    }
-    event.dataTransfer.setData("text/plain", JSON.stringify({ type: "BG3T20Hotbar", uuid: itemElement.dataset.uuid }));
-    event.dataTransfer.effectAllowed = "move";
+    if (!itemElement || !this.canEdit) return;
+    const document = this._resolveEntry({ uuid: itemElement.dataset.uuid });
+    if (!document) return;
+    const payload = document.toDragData?.() ?? {
+      type: document.documentName,
+      uuid: document.uuid
+    };
+    event.dataTransfer.setData("text/plain", JSON.stringify(payload));
+    event.dataTransfer.effectAllowed = this.filter === "custom" ? "move" : "copy";
     itemElement.classList.add("is-dragging");
   }
 
   _onDragOver(event) {
     const slot = event.target.closest?.(".bg3t20-slot");
-    if (!slot || !this.canEdit) return;
+    if (!slot || !this.canEdit || this.filter !== "custom") return;
     event.preventDefault();
     slot.classList.add("is-drop-target");
-    event.dataTransfer.dropEffect = "move";
+    event.dataTransfer.dropEffect = "copy";
+  }
+
+  _dragData(event) {
+    try {
+      return TextEditor?.getDragEventData?.(event) ?? JSON.parse(event.dataTransfer.getData("text/plain") || "{}");
+    } catch (_error) {
+      try {
+        return JSON.parse(event.dataTransfer.getData("text/plain") || "{}");
+      } catch (_nestedError) {
+        return {};
+      }
+    }
+  }
+
+  async _resolveDroppedDocument(data) {
+    let document = null;
+    if (data.uuid) {
+      try {
+        document = await fromUuid(data.uuid);
+      } catch (_error) {
+        document = null;
+      }
+    }
+    if (!document && data.type === "Macro" && data.id) document = game.macros?.get?.(data.id);
+    if (!document && data.type === "Item" && data.id) document = this.actor?.items?.get?.(data.id);
+    if (!document || !["Item", "Macro"].includes(document.documentName)) return null;
+
+    if (document.documentName === "Item" && document.parent?.id !== this.actor?.id) {
+      const [created] = await this.actor.createEmbeddedDocuments("Item", [document.toObject()]);
+      return created ?? null;
+    }
+    return document;
   }
 
   async _onDrop(event) {
     const slot = event.target.closest?.(".bg3t20-slot");
-    if (!slot || !this.canEdit) return;
+    if (!slot || !this.canEdit || this.filter !== "custom") return;
     event.preventDefault();
     slot.classList.remove("is-drop-target");
-
-    let data = {};
-    try {
-      data = JSON.parse(event.dataTransfer.getData("text/plain") || "{}");
-    } catch (_error) {
-      data = globalThis.TextEditor?.getDragEventData?.(event) ?? {};
+    const document = await this._resolveDroppedDocument(this._dragData(event));
+    if (!document?.uuid) {
+      ui.notifications.warn("Arraste um item, poder, magia ou macro para esta área.");
+      return;
     }
-    if (!data.uuid) data = globalThis.TextEditor?.getDragEventData?.(event) ?? data;
 
-    let document = resolveActorDocument(this.actor, data.uuid);
-    if (!document && data.type === "Item" && data.uuid) {
-      try {
-        const source = await fromUuid(data.uuid);
-        if (source?.documentName === "Item" && source.parent?.id !== this.actor.id) {
-          const [created] = await this.actor.createEmbeddedDocuments("Item", [source.toObject()]);
-          document = created;
-        } else document = source;
-      } catch (error) {
-        console.warn(`${MODULE_ID} | Item arrastado não pôde ser resolvido`, error);
-      }
-    }
-    if (!document?.uuid) return;
-
-    const filtered = this._filteredDocuments();
-    const targetIndexOnPage = Number(slot.dataset.slotIndex);
-    const targetDocument = filtered[(this.page * SLOT_COUNT) + targetIndexOnPage];
-    const sourceIndex = this.order.indexOf(document.uuid);
-    if (sourceIndex >= 0) this.order.splice(sourceIndex, 1);
-    const targetIndex = targetDocument ? this.order.indexOf(targetDocument.uuid) : this.order.length;
-    this.order.splice(Math.max(0, targetIndex), 0, document.uuid);
+    const targetIndex = (this.page * SLOT_COUNT) + Number(slot.dataset.slotIndex);
+    const currentIndex = this.customEntries.findIndex((entry) => entry.uuid === document.uuid);
+    if (currentIndex >= 0) this.customEntries.splice(currentIndex, 1);
+    const adjustedIndex = currentIndex >= 0 && currentIndex < targetIndex ? targetIndex - 1 : targetIndex;
+    this.customEntries.splice(Math.min(adjustedIndex, this.customEntries.length), 0, {
+      uuid: document.uuid,
+      documentName: document.documentName
+    });
     await this._saveLayout();
     this.render();
+  }
+
+  async _removeCustom(uuid) {
+    const index = this.customEntries.findIndex((entry) => entry.uuid === uuid);
+    if (index < 0) return;
+    this.customEntries.splice(index, 1);
+    await this._saveLayout();
+    this.page = Math.min(this.page, this._pageCount() - 1);
+    this.render();
+    ui.notifications.info("Atalho removido da área personalizada.");
   }
 
   _onMouseOver(event) {
@@ -308,7 +375,7 @@ export class T20Hotbar {
   }
 
   _showTooltip(itemElement) {
-    const document = resolveActorDocument(this.actor, itemElement.dataset.uuid);
+    const document = this._resolveEntry({ uuid: itemElement.dataset.uuid });
     if (!document) return;
     const action = getActionData(document);
     const mana = getManaCost(document);
@@ -326,20 +393,115 @@ export class T20Hotbar {
         ${quantity !== null ? `<span><i class="fa-solid fa-box"></i>${quantity}</span>` : ""}
       </div>
       ${description ? `<p>${escapeHtml(description)}</p>` : ""}
-      <footer>Clique para usar • Shift+clique para uso rápido • Botão direito para abrir</footer>`;
+      <footer>Clique para usar • Shift+clique: uso rápido • Botão direito: abrir • Shift+botão direito no Personalizado: remover</footer>`;
     const rect = itemElement.getBoundingClientRect();
     tooltip.classList.add("is-visible");
     const tooltipRect = tooltip.getBoundingClientRect();
-    const left = Math.min(window.innerWidth - tooltipRect.width - 12, Math.max(12, rect.left + rect.width / 2 - tooltipRect.width / 2));
-    const top = Math.max(12, rect.top - tooltipRect.height - 12);
-    tooltip.style.left = `${left}px`;
-    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${Math.min(window.innerWidth - tooltipRect.width - 12, Math.max(12, rect.left + rect.width / 2 - tooltipRect.width / 2))}px`;
+    tooltip.style.top = `${Math.max(12, rect.top - tooltipRect.height - 12)}px`;
     this.tooltipUuid = document.uuid;
   }
 
   _hideTooltip() {
     this.root.querySelector(".bg3t20-tooltip")?.classList.remove("is-visible");
     this.tooltipUuid = null;
+  }
+
+  async _commitResource(input) {
+    if (!this.editingResource || !this.canEdit) return;
+    const resource = this.editingResource;
+    this.editingResource = null;
+    const current = getActorStats(this.actor)[resource]?.value ?? 0;
+    const parsed = parseResourceInput(input?.value, current);
+    if (parsed === null) {
+      ui.notifications.warn("Digite um valor, +10 ou -5.");
+      this.render();
+      return;
+    }
+    await this.actor.update({ [RESOURCE_PATHS[resource]]: Math.max(0, parsed) });
+    this.render();
+  }
+
+  _onKeyDown(event) {
+    const input = event.target.closest?.("[data-resource-input]");
+    if (!input) return;
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this._commitResource(input);
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      this.editingResource = null;
+      this.render();
+    }
+  }
+
+  _onFocusOut(event) {
+    const input = event.target.closest?.("[data-resource-input]");
+    if (!input) return;
+    setTimeout(() => {
+      if (this.editingResource === input.dataset.resourceInput && document.activeElement !== input) this._commitResource(input);
+    }, 0);
+  }
+
+  _openSettings() {
+    this.settingsDraft = {
+      scale: this._setting("scale"),
+      opacity: this._setting("opacity"),
+      verticalPosition: this._setting("verticalPosition"),
+      portraitSource: this._setting("portraitSource"),
+      hideCoreHotbar: this._setting("hideCoreHotbar"),
+      ...this._appearanceValues()
+    };
+    this.settingsOpen = true;
+    this.render();
+  }
+
+  _closeSettings(revert = false) {
+    if (revert) this.applyClientSettings();
+    this.settingsOpen = false;
+    this.settingsDraft = null;
+    this.render();
+  }
+
+  _onSettingsInput(event) {
+    const input = event.target.closest?.("[data-setting]");
+    if (!input || !this.settingsDraft) return;
+    const key = input.dataset.setting;
+    let value = input.type === "checkbox" ? input.checked : input.value;
+    if (input.type === "range") value = Number(value);
+    this.settingsDraft[key] = value;
+    if (["primaryColor", "secondaryColor", "panelColor", "textColor"].includes(key)) {
+      this.settingsDraft.theme = "custom";
+      this.root.querySelectorAll("[data-theme]").forEach((button) => button.classList.toggle("is-active", button.dataset.theme === "custom"));
+    }
+    const output = this.root.querySelector(`[data-output="${key}"]`);
+    if (output) output.textContent = input.type === "range" ? `${Math.round(Number(value) * 100)}%` : String(value);
+    this.applyClientSettings(this.settingsDraft);
+  }
+
+  async _saveSettings() {
+    if (!this.settingsDraft) return;
+    const draft = { ...this.settingsDraft };
+    this.settingsOpen = false;
+    this.settingsDraft = null;
+    for (const [key, value] of Object.entries(draft)) await game.settings.set(MODULE_ID, key, value);
+    this.applyClientSettings();
+    this.render();
+    ui.notifications.info("A aparência da HUD foi salva.");
+  }
+
+  _resetSettings() {
+    this.settingsDraft = {
+      scale: 1,
+      opacity: 0.96,
+      verticalPosition: "bottom",
+      portraitSource: "actor",
+      hideCoreHotbar: false,
+      ...APPEARANCE_DEFAULTS
+    };
+    this.applyClientSettings(this.settingsDraft);
+    this.render();
   }
 
   _openRestDialog() {
@@ -354,7 +516,7 @@ export class T20Hotbar {
     };
     new Dialog({
       title: `Descanso — ${this.actor.name}`,
-      content: `<p>Escolha a condição de descanso. A recuperação é calculada pela própria ficha do Tormenta20.</p>`,
+      content: "<p>Escolha a condição do descanso. A própria ficha de Tormenta20 calcula a recuperação.</p>",
       buttons: {
         poor: { icon: '<i class="fa-solid fa-cloud-rain"></i>', label: "Ruim (½×)", callback: () => rest(0.5) },
         normal: { icon: '<i class="fa-solid fa-campground"></i>', label: "Normal (1×)", callback: () => rest(1) },
@@ -366,131 +528,146 @@ export class T20Hotbar {
   }
 
   _portraitImage() {
-    const preferToken = game.settings.get(MODULE_ID, "portraitSource") === "token";
+    const source = this.settingsDraft?.portraitSource ?? this._setting("portraitSource");
+    const preferToken = source === "token";
     return preferToken ? (this.token?.document?.texture?.src ?? this.actor?.img) : (this.actor?.img ?? this.token?.document?.texture?.src);
   }
 
+  _renderResource(type, resource) {
+    const temp = resource.temp ? ` +${resource.temp}` : "";
+    if (this.editingResource === type) {
+      return `<div class="bg3t20-resource ${type} is-editing">
+        <span style="width:${resourcePercent(resource)}%"></span>
+        <input type="text" inputmode="numeric" value="${resource.value}" data-resource-input="${type}" aria-label="Editar ${type.toUpperCase()}" title="Valor exato, +10 ou -5">
+        <em>/ ${resource.max}</em>
+      </div>`;
+    }
+    const editable = this.canEdit ? "is-editable" : "";
+    return `<button type="button" class="bg3t20-resource ${type} ${editable}" data-action="edit-resource" data-resource="${type}" title="${this.canEdit ? "Clique para editar. Use um valor exato, +10 ou -5." : type.toUpperCase()}">
+      <span style="width:${resourcePercent(resource)}%"></span><strong>${resource.value}${temp} / ${resource.max}</strong>
+    </button>`;
+  }
+
   _renderPortrait(stats) {
-    const pvPercent = resourcePercent(stats.pv);
-    const pmPercent = resourcePercent(stats.pm);
     const deathVisible = stats.pv.value <= 0 && this.actor?.type === "character";
     const deathDots = Array.from({ length: stats.deathSave.max }, (_, index) => {
       const value = index + 1;
       return `<button type="button" data-action="set-death-save" data-value="${value}" class="${value <= stats.deathSave.value ? "is-marked" : ""}" aria-label="Marcar ${value} teste(s) contra a morte"></button>`;
     }).join("");
-    return `
-      <div class="bg3t20-portrait-wrap">
-        <button type="button" class="bg3t20-portrait" data-action="open-actor" title="Abrir ficha de ${escapeHtml(this.actor.name)}">
-          <img src="${escapeHtml(this._portraitImage())}" alt="${escapeHtml(this.actor.name)}">
-          <span class="bg3t20-level">Nível ${stats.level}</span>
-        </button>
-        <div class="bg3t20-actor-name">${escapeHtml(this.actor.name)}</div>
-        <div class="bg3t20-resource pv" title="Pontos de Vida">
-          <span style="width:${pvPercent}%"></span><strong>${stats.pv.value}${stats.pv.temp ? ` +${stats.pv.temp}` : ""} / ${stats.pv.max}</strong>
-        </div>
-        <div class="bg3t20-resource pm" title="Pontos de Mana">
-          <span style="width:${pmPercent}%"></span><strong>${stats.pm.value}${stats.pm.temp ? ` +${stats.pm.temp}` : ""} / ${stats.pm.max}</strong>
-        </div>
-        <div class="bg3t20-defenses">
-          <span title="Defesa"><i class="fa-solid fa-shield"></i>${stats.defense}</span>
-          <button type="button" data-action="toggle-abilities" class="${this.abilitiesOpen ? "is-active" : ""}" title="Atributos e perícias"><i class="fa-solid fa-dice-d20"></i></button>
-        </div>
-        ${deathVisible ? `<div class="bg3t20-death"><button type="button" data-action="death-save" title="Rolar Fortitude"><i class="fa-solid fa-skull"></i></button><div>${deathDots}</div></div>` : ""}
-      </div>`;
+    return `<div class="bg3t20-portrait-wrap">
+      <button type="button" class="bg3t20-portrait" data-action="open-actor" title="Abrir ficha de ${escapeHtml(this.actor.name)}">
+        <img src="${escapeHtml(this._portraitImage())}" alt="${escapeHtml(this.actor.name)}"><span class="bg3t20-level">Nível ${stats.level}</span>
+      </button>
+      <div class="bg3t20-actor-name">${escapeHtml(this.actor.name)}</div>
+      ${this._renderResource("pv", stats.pv)}
+      ${this._renderResource("pm", stats.pm)}
+      <div class="bg3t20-defenses">
+        <span title="Defesa"><i class="fa-solid fa-shield"></i>${stats.defense}</span>
+        <button type="button" data-action="toggle-abilities" class="${this.abilitiesOpen ? "is-active" : ""}" title="Atributos e perícias"><i class="fa-solid fa-dice-d20"></i></button>
+      </div>
+      ${deathVisible ? `<div class="bg3t20-death"><button type="button" data-action="death-save" title="Rolar Fortitude"><i class="fa-solid fa-skull"></i></button><div>${deathDots}</div></div>` : ""}
+    </div>`;
   }
 
   _renderWeapons() {
     const weapons = sortItems((this.actor?.items ?? []).filter((item) => item.type === "arma"));
     const selected = [...weapons.filter(isEquipped), ...weapons.filter((item) => !isEquipped(item))].slice(0, 3);
-    return `<div class="bg3t20-weapons" aria-label="Armas rápidas">
-      ${Array.from({ length: 3 }, (_, index) => this._renderMiniItem(selected[index], index)).join("")}
-    </div>`;
+    return `<div class="bg3t20-weapons" aria-label="Armas rápidas">${Array.from({ length: 3 }, (_, index) => this._renderMiniItem(selected[index], index)).join("")}</div>`;
   }
 
   _renderMiniItem(item, index) {
     if (!item) return `<div class="bg3t20-mini-slot is-empty"><span>${index + 1}</span></div>`;
-    const equipped = isEquipped(item);
-    return `<button type="button" class="bg3t20-mini-slot ${equipped ? "is-equipped" : ""}" data-action="use-item" data-uuid="${escapeHtml(item.uuid)}" draggable="${this.canEdit}">
-      <img src="${escapeHtml(item.img)}" alt="${escapeHtml(item.name)}"><span>${index + 1}</span>${equipped ? '<i class="fa-solid fa-hand-fist"></i>' : ""}
+    return `<button type="button" class="bg3t20-mini-slot ${isEquipped(item) ? "is-equipped" : ""}" data-action="use-item" data-uuid="${escapeHtml(item.uuid)}" draggable="${this.canEdit}">
+      <img src="${escapeHtml(item.img)}" alt="${escapeHtml(item.name)}"><span>${index + 1}</span>${isEquipped(item) ? '<i class="fa-solid fa-hand-fist"></i>' : ""}
     </button>`;
   }
 
   _renderFilters() {
-    return `<nav class="bg3t20-filters" aria-label="Filtros da hotbar">
-      ${FILTERS.map((filter) => `<button type="button" data-action="filter" data-filter="${filter.id}" class="${this.filter === filter.id ? "is-active" : ""}" title="${escapeHtml(filter.label)}"><i class="${filter.icon}"></i><span>${escapeHtml(filter.label)}</span></button>`).join("")}
-    </nav>`;
+    return `<nav class="bg3t20-filters" aria-label="Filtros da hotbar">${FILTERS.map((filter) => `<button type="button" data-action="filter" data-filter="${filter.id}" class="${this.filter === filter.id ? "is-active" : ""}" title="${escapeHtml(filter.label)}"><i class="${filter.icon}"></i><span>${escapeHtml(filter.label)}</span></button>`).join("")}</nav>`;
   }
 
   _renderGrid() {
-    const documents = this._pageDocuments();
-    return `<div class="bg3t20-grid">
-      ${Array.from({ length: SLOT_COUNT }, (_, index) => this._renderSlot(documents[index], index)).join("")}
-    </div>`;
+    const entries = this._pageEntries();
+    return `<div class="bg3t20-grid">${Array.from({ length: SLOT_COUNT }, (_, index) => this._renderSlot(entries[index], index)).join("")}</div>`;
   }
 
-  _renderSlot(document, index) {
-    if (!document) return `<div class="bg3t20-slot is-empty" data-slot-index="${index}"><span>${index + 1}</span></div>`;
+  _renderSlot(wrapper, index) {
+    const absoluteIndex = (this.page * SLOT_COUNT) + index;
+    if (!wrapper) {
+      const invitation = this.filter === "custom" && this.canEdit && absoluteIndex === this.customEntries.length;
+      return `<div class="bg3t20-slot is-empty ${invitation ? "is-invitation" : ""}" data-slot-index="${index}"><span>${index + 1}</span>${invitation ? '<i class="fa-solid fa-arrow-down"></i><em>Arraste aqui</em>' : ""}</div>`;
+    }
+    const document = wrapper.document;
+    if (!document) {
+      return `<button type="button" class="bg3t20-slot is-missing" data-slot-index="${index}" data-uuid="${escapeHtml(wrapper.entry.uuid)}" title="Atalho indisponível. Clique direito para remover."><i class="fa-solid fa-link-slash"></i><em>Indisponível</em></button>`;
+    }
     const action = getActionData(document);
     const mana = getManaCost(document);
     const quantity = getQuantity(document);
     const circle = getSpellCircle(document);
     return `<button type="button" class="bg3t20-slot has-item" style="--action-color:${action.color}" data-action="use-item" data-slot-index="${index}" data-uuid="${escapeHtml(document.uuid)}" draggable="${this.canEdit}">
-      <img src="${escapeHtml(document.img)}" alt="${escapeHtml(document.name)}">
-      <span class="bg3t20-slot-number">${index + 1}</span>
-      <span class="bg3t20-item-name">${escapeHtml(document.name)}</span>
-      ${mana ? `<span class="bg3t20-badge mana">${mana}</span>` : ""}
-      ${circle !== null ? `<span class="bg3t20-badge circle">${circle}</span>` : ""}
-      ${quantity !== null && (document.type === "consumivel" || quantity !== 1) ? `<span class="bg3t20-badge quantity">${quantity}</span>` : ""}
+      <img src="${escapeHtml(document.img)}" alt="${escapeHtml(document.name)}"><span class="bg3t20-slot-number">${index + 1}</span><span class="bg3t20-item-name">${escapeHtml(document.name)}</span>
+      ${mana ? `<span class="bg3t20-badge mana">${mana}</span>` : ""}${circle !== null ? `<span class="bg3t20-badge circle">${circle}</span>` : ""}${quantity !== null && (document.type === "consumivel" || quantity !== 1) ? `<span class="bg3t20-badge quantity">${quantity}</span>` : ""}
     </button>`;
   }
 
   _renderPageControls() {
-    const count = this._filteredDocuments().length;
-    const pages = Math.max(1, Math.ceil(count / SLOT_COUNT));
+    const pages = this._pageCount();
     if (pages <= 1) return "";
     return `<div class="bg3t20-pages"><button type="button" data-action="page-prev" ${this.page === 0 ? "disabled" : ""}><i class="fa-solid fa-chevron-left"></i></button><span>${this.page + 1} / ${pages}</span><button type="button" data-action="page-next" ${this.page >= pages - 1 ? "disabled" : ""}><i class="fa-solid fa-chevron-right"></i></button></div>`;
   }
 
   _renderEffects() {
     const effects = Array.from(this.actor?.effects ?? []).slice(0, 8);
-    if (!effects.length) return `<div class="bg3t20-effects is-empty"><span>Sem efeitos ativos</span></div>`;
+    if (!effects.length) return '<div class="bg3t20-effects is-empty"><span>Sem efeitos ativos</span></div>';
     return `<div class="bg3t20-effects">${effects.map((effect) => `<button type="button" data-action="toggle-effect" data-effect-id="${effect.id}" class="${effect.disabled ? "is-disabled" : ""}" title="${escapeHtml(effect.name)}"><img src="${escapeHtml(effect.img)}" alt=""></button>`).join("")}</div>`;
   }
 
   _renderActions() {
     const isTurn = Boolean(game.combat?.started && game.combat?.combatant?.actor?.id === this.actor?.id);
     return `<div class="bg3t20-side-actions">
-      <button type="button" data-action="end-turn" class="bg3t20-end-turn ${isTurn ? "is-current" : ""}" ${isTurn ? "" : "disabled"}><i class="fa-solid fa-forward-step"></i><span>Encerrar<br>turno</span></button>
-      <button type="button" data-action="rest"><i class="fa-solid fa-campground"></i><span>Descansar</span></button>
-      ${this.canEdit ? '<button type="button" data-action="autofill"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Preencher</span></button>' : ""}
-      <button type="button" data-action="open-settings"><i class="fa-solid fa-gear"></i><span>Ajustes</span></button>
+      <button type="button" data-action="end-turn" class="bg3t20-end-turn ${isTurn ? "is-current" : ""}" ${isTurn ? "" : "disabled"}><i class="fa-solid fa-forward-step"></i><span>Encerrar turno</span></button>
+      <button type="button" data-action="rest" class="bg3t20-rest"><i class="fa-solid fa-campground"></i><span>Descansar</span></button>
+      <button type="button" data-action="open-settings" class="bg3t20-settings-button"><i class="fa-solid fa-gear"></i><span>Ajustes</span></button>
     </div>`;
   }
 
   _renderAbilities() {
     if (!this.abilitiesOpen) return "";
-    const abilities = CONFIG.T20?.atributos ?? {
-      for: "Força", des: "Destreza", con: "Constituição", int: "Inteligência", sab: "Sabedoria", car: "Carisma"
-    };
+    const abilities = CONFIG.T20?.atributos ?? { for: "Força", des: "Destreza", con: "Constituição", int: "Inteligência", sab: "Sabedoria", car: "Carisma" };
     const skills = CONFIG.T20?.pericias ?? {};
-    const abilityButtons = Object.entries(abilities).map(([key, label]) => {
-      const localized = game.i18n.localize(label);
-      const value = this.actor?.system?.atributos?.[key]?.value ?? 0;
-      return `<button type="button" data-action="roll-ability" data-key="${key}"><i class="fa-solid fa-dice-d20"></i><span>${escapeHtml(localized)}</span><strong>${signed(value)}</strong></button>`;
-    }).join("");
+    const abilityButtons = Object.entries(abilities).map(([key, label]) => `<button type="button" data-action="roll-ability" data-key="${key}"><i class="fa-solid fa-dice-d20"></i><span>${escapeHtml(game.i18n.localize(label))}</span><strong>${signed(this.actor?.system?.atributos?.[key]?.value ?? 0)}</strong></button>`).join("");
     const skillButtons = Object.entries(skills).map(([key, config]) => {
       const actorSkill = this.actor?.system?.pericias?.[key];
       if (!actorSkill) return "";
-      const label = game.i18n.localize(config.label ?? actorSkill.label ?? key);
-      const value = actorSkill.value ?? 0;
       const trained = Boolean(actorSkill.treinado ?? actorSkill.trained ?? actorSkill.grau);
-      return `<button type="button" data-action="roll-skill" data-key="${key}" class="${trained ? "is-trained" : ""}"><span>${escapeHtml(label)}</span><strong>${signed(value)}</strong></button>`;
+      return `<button type="button" data-action="roll-skill" data-key="${key}" class="${trained ? "is-trained" : ""}"><span>${escapeHtml(game.i18n.localize(config.label ?? actorSkill.label ?? key))}</span><strong>${signed(actorSkill.value ?? 0)}</strong></button>`;
     }).join("");
-    return `<aside class="bg3t20-roll-panel">
-      <header><h3>Testes</h3><button type="button" data-action="toggle-abilities"><i class="fa-solid fa-xmark"></i></button></header>
-      <div class="bg3t20-ability-list">${abilityButtons}</div>
-      <h4>Perícias</h4><div class="bg3t20-skill-list">${skillButtons}</div>
-    </aside>`;
+    return `<aside class="bg3t20-roll-panel"><header><h3>Testes</h3><button type="button" data-action="toggle-abilities"><i class="fa-solid fa-xmark"></i></button></header><div class="bg3t20-ability-list">${abilityButtons}</div><h4>Perícias</h4><div class="bg3t20-skill-list">${skillButtons}</div></aside>`;
+  }
+
+  _renderSettingsPanel() {
+    if (!this.settingsOpen || !this.settingsDraft) return "";
+    const draft = this.settingsDraft;
+    const appearance = resolveAppearance(draft);
+    const themes = Object.entries(THEME_PRESETS).map(([key, theme]) => `<button type="button" data-action="select-theme" data-theme="${key}" class="bg3t20-theme ${draft.theme === key ? "is-active" : ""}" style="--theme-primary:${theme.primary};--theme-secondary:${theme.secondary};--theme-panel:${theme.panel}"><span></span><strong>${theme.label}</strong></button>`).join("");
+    const range = (key, label, min, max, step, value) => `<label class="bg3t20-setting range"><span>${label}<output data-output="${key}">${Math.round(Number(value) * 100)}%</output></span><input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-setting="${key}"></label>`;
+    const color = (key, label, value) => `<label class="bg3t20-setting color"><span>${label}</span><input type="color" value="${escapeHtml(value)}" data-setting="${key}"></label>`;
+    return `<div class="bg3t20-settings-backdrop"><section class="bg3t20-settings-panel">
+      <header><div><span>Personalização</span><h2>Forja da HUD</h2><p>Molde a interface ao estilo da sua mesa.</p></div><button type="button" data-action="close-settings" title="Fechar sem salvar"><i class="fa-solid fa-xmark"></i></button></header>
+      <div class="bg3t20-settings-content">
+        <fieldset><legend>Temas</legend><div class="bg3t20-theme-list">${themes}</div></fieldset>
+        <fieldset><legend>Cores personalizadas</legend><div class="bg3t20-color-list">${color("primaryColor", "Destaque", appearance.primaryColor)}${color("secondaryColor", "Contraste", appearance.secondaryColor)}${color("panelColor", "Painel", appearance.panelColor)}${color("textColor", "Texto", appearance.textColor)}</div></fieldset>
+        <fieldset class="bg3t20-setting-columns"><legend>Presença visual</legend>${range("scale", "Escala", 0.65, 1.35, 0.05, draft.scale)}${range("opacity", "Opacidade", 0.45, 1, 0.05, draft.opacity)}${range("glowStrength", "Brilho", 0, 1, 0.05, draft.glowStrength)}${range("ornamentStrength", "Ornamentos", 0, 1, 0.05, draft.ornamentStrength)}</fieldset>
+        <fieldset class="bg3t20-setting-columns"><legend>Comportamento</legend>
+          <label class="bg3t20-setting select"><span>Posição</span><select data-setting="verticalPosition"><option value="bottom" ${draft.verticalPosition === "bottom" ? "selected" : ""}>Na base da tela</option><option value="raised" ${draft.verticalPosition === "raised" ? "selected" : ""}>Elevada</option></select></label>
+          <label class="bg3t20-setting select"><span>Retrato</span><select data-setting="portraitSource"><option value="actor" ${draft.portraitSource === "actor" ? "selected" : ""}>Imagem da ficha</option><option value="token" ${draft.portraitSource === "token" ? "selected" : ""}>Imagem do token</option></select></label>
+          <label class="bg3t20-setting toggle"><input type="checkbox" data-setting="showLabels" ${draft.showLabels ? "checked" : ""}><span>Exibir nomes nos atalhos</span></label>
+          <label class="bg3t20-setting toggle"><input type="checkbox" data-setting="hideCoreHotbar" ${draft.hideCoreHotbar ? "checked" : ""}><span>Ocultar hotbar padrão</span></label>
+        </fieldset>
+      </div>
+      <footer><button type="button" data-action="reset-settings"><i class="fa-solid fa-rotate-left"></i> Restaurar padrão</button><button type="button" data-action="save-settings" class="is-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar ajustes</button></footer>
+    </section></div>`;
   }
 
   render() {
@@ -499,22 +676,12 @@ export class T20Hotbar {
       this.root.innerHTML = '<div class="bg3t20-tooltip"></div>';
       return;
     }
-    this.order = normalizeOrder(this.actor, this.order);
     const stats = getActorStats(this.actor);
-    this.root.innerHTML = `
-      <div class="bg3t20-shell">
-        ${this._renderPortrait(stats)}
-        <main class="bg3t20-main">
-          ${this._renderWeapons()}
-          ${this._renderFilters()}
-          ${this._renderGrid()}
-          ${this._renderPageControls()}
-          ${this._renderEffects()}
-        </main>
-        ${this._renderActions()}
-        ${this._renderAbilities()}
-      </div>
-      <div class="bg3t20-tooltip"></div>`;
+    this.root.innerHTML = `<div class="bg3t20-shell">
+      ${this._renderPortrait(stats)}
+      <main class="bg3t20-main">${this._renderWeapons()}${this._renderFilters()}${this._renderGrid()}${this._renderPageControls()}${this._renderEffects()}</main>
+      ${this._renderActions()}${this._renderAbilities()}
+    </div><div class="bg3t20-tooltip"></div>${this._renderSettingsPanel()}`;
   }
 
   async toggle(force) {

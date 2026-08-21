@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0] — 2026-08-21
+
+- Substitui o filtro geral pelas categorias Itens e Personalizado.
+- Corrige a classificação de equipamentos, que não são mais tratados como ações de movimento quando não possuem execução configurada.
+- Adiciona atalhos personalizados por ator com suporte a itens, armas, poderes, magias e macros arrastados diretamente para a HUD.
+- Permite reorganizar atalhos personalizados e removê-los com Shift + botão direito sem apagar o documento original.
+- Adiciona edição direta de PV e PM por valor exato ou ajuste relativo, sem botões extras de incremento.
+- Remove o comando Preencher e transforma Ajustes em um painel próprio da HUD.
+- Adiciona temas Tormenta, Divino, Arcano e Sombrio, cores personalizadas, brilho, ornamentos, escala, opacidade, posição, retrato e opções de exibição.
+- Reformula o acabamento visual com molduras, contraste e controles laterais inspirados em fantasia medieval.
+- Corrige o espaçamento do painel de atributos para impedir que os valores invadam a lista de perícias.
+- Mantém todos os controles e grades contidos em resoluções menores, sem rolagem horizontal.
+
 ## 0.1.1 — 2026-08-20
 
 - Corrige os espaços da hotbar para permanecerem perfeitamente quadrados mesmo quando o Foundry define uma altura global para botões.

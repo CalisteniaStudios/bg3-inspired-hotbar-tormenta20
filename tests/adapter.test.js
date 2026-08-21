@@ -9,9 +9,11 @@ import {
   getSpellCircle,
   itemMatchesFilter,
   normalizeOrder,
+  parseResourceInput,
   resourcePercent,
   signed,
-  sortItems
+  sortItems,
+  useDocument
 } from "../scripts/t20/adapter.js";
 
 function item(uuid, name, type, system = {}) {
@@ -22,6 +24,8 @@ test("lê a ativação nativa do Tormenta20 e aplica padrões seguros", () => {
   assert.equal(getActionKey(item("1", "Ataque", "arma")), "action");
   assert.equal(getActionKey(item("2", "Passo", "poder", { ativacao: { execucao: "move" } })), "move");
   assert.equal(getActionKey(item("3", "Aura", "poder", { ativacao: { execucao: "passive" } })), "passive");
+  assert.equal(getActionKey(item("4", "Manto", "equipamento")), "passive");
+  assert.equal(getActionKey(item("5", "Passo", "poder", { ativacao: { execucao: "Movimento" } })), "move");
 });
 
 test("lê custo de PM, quantidade e círculo", () => {
@@ -33,10 +37,12 @@ test("lê custo de PM, quantidade e círculo", () => {
 
 test("filtra itens por ação e tipo", () => {
   const spell = item("1", "Luz", "magia", { ativacao: { execucao: "action" } });
-  assert.equal(itemMatchesFilter(spell, "all"), true);
   assert.equal(itemMatchesFilter(spell, "magia"), true);
   assert.equal(itemMatchesFilter(spell, "action"), true);
+  assert.equal(itemMatchesFilter(spell, "items"), false);
+  assert.equal(itemMatchesFilter(spell, "custom"), false);
   assert.equal(itemMatchesFilter(spell, "reaction"), false);
+  assert.equal(itemMatchesFilter(item("2", "Armadura", "equipamento"), "items"), true);
 });
 
 test("normaliza ordem preservando escolhas e acrescentando itens novos", () => {
@@ -80,4 +86,24 @@ test("lê recursos da ficha e limita percentuais", () => {
   assert.equal(resourcePercent(stats.pm), 100);
   assert.equal(signed(-2), "-2");
   assert.equal(signed(4), "+4");
+});
+
+test("aceita valor exato ou ajuste relativo de PV e PM", () => {
+  assert.equal(parseResourceInput("35", 20), 35);
+  assert.equal(parseResourceInput("+10", 20), 30);
+  assert.equal(parseResourceInput("-5", 20), 15);
+  assert.equal(parseResourceInput(" 12,5 ", 0), 12.5);
+  assert.equal(parseResourceInput("cinco", 20), null);
+});
+
+test("executa macros com o ator e token selecionados", async () => {
+  let context = null;
+  const macro = {
+    documentName: "Macro",
+    execute: async (value) => { context = value; }
+  };
+  const actor = { id: "ator" };
+  const token = { document: { id: "token" } };
+  assert.equal(await useDocument(macro, {}, { actor, token }), true);
+  assert.deepEqual(context, { actor, token: token.document });
 });

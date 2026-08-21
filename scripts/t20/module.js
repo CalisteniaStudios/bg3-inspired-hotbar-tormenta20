@@ -1,12 +1,13 @@
 import { MODULE_ID } from "./adapter.js";
 import { T20Hotbar } from "./hotbar.js";
+import { APPEARANCE_DEFAULTS, THEME_PRESETS } from "./themes.js";
 
 function registerSettings() {
   game.settings.register(MODULE_ID, "enabled", {
     name: "Exibir a hotbar inspirada em BG3",
     hint: "Mostra a interface quando um token controlado é selecionado.",
     scope: "client",
-    config: true,
+    config: false,
     type: Boolean,
     default: true,
     onChange: () => {
@@ -18,7 +19,7 @@ function registerSettings() {
     name: "Escala da interface",
     hint: "Ajusta o tamanho de toda a hotbar.",
     scope: "client",
-    config: true,
+    config: false,
     type: Number,
     range: { min: 0.65, max: 1.35, step: 0.05 },
     default: 1,
@@ -28,7 +29,7 @@ function registerSettings() {
     name: "Opacidade da interface",
     hint: "Ajusta a transparência da hotbar sem alterar seus ícones.",
     scope: "client",
-    config: true,
+    config: false,
     type: Number,
     range: { min: 0.45, max: 1, step: 0.05 },
     default: 0.96,
@@ -38,7 +39,7 @@ function registerSettings() {
     name: "Posição vertical",
     hint: "Escolha se a hotbar fica encostada na base ou um pouco acima dela.",
     scope: "client",
-    config: true,
+    config: false,
     type: String,
     choices: { bottom: "Na base da tela", raised: "Elevada" },
     default: "bottom",
@@ -48,7 +49,7 @@ function registerSettings() {
     name: "Imagem do retrato",
     hint: "Define se o retrato usa a imagem da ficha ou a textura do token.",
     scope: "client",
-    config: true,
+    config: false,
     type: String,
     choices: { actor: "Imagem da ficha", token: "Imagem do token" },
     default: "actor",
@@ -58,9 +59,64 @@ function registerSettings() {
     name: "Ocultar hotbar padrão do Foundry",
     hint: "Esconde a barra de macros nativa enquanto este módulo estiver ativo.",
     scope: "client",
-    config: true,
+    config: false,
     type: Boolean,
     default: false,
+    onChange: () => ui.BG3T20?.applyClientSettings()
+  });
+
+  game.settings.register(MODULE_ID, "theme", {
+    name: "Tema da HUD",
+    scope: "client",
+    config: false,
+    type: String,
+    choices: Object.fromEntries(Object.entries(THEME_PRESETS).map(([key, value]) => [key, value.label])),
+    default: APPEARANCE_DEFAULTS.theme,
+    onChange: () => ui.BG3T20?.applyClientSettings()
+  });
+
+  for (const [key, name] of [
+    ["primaryColor", "Cor principal"],
+    ["secondaryColor", "Cor secundária"],
+    ["panelColor", "Cor do painel"],
+    ["textColor", "Cor do texto"]
+  ]) {
+    game.settings.register(MODULE_ID, key, {
+      name,
+      scope: "client",
+      config: false,
+      type: String,
+      default: APPEARANCE_DEFAULTS[key],
+      onChange: () => ui.BG3T20?.applyClientSettings()
+    });
+  }
+
+  game.settings.register(MODULE_ID, "glowStrength", {
+    name: "Intensidade do brilho",
+    scope: "client",
+    config: false,
+    type: Number,
+    range: { min: 0, max: 1, step: 0.05 },
+    default: APPEARANCE_DEFAULTS.glowStrength,
+    onChange: () => ui.BG3T20?.applyClientSettings()
+  });
+
+  game.settings.register(MODULE_ID, "ornamentStrength", {
+    name: "Intensidade dos ornamentos",
+    scope: "client",
+    config: false,
+    type: Number,
+    range: { min: 0, max: 1, step: 0.05 },
+    default: APPEARANCE_DEFAULTS.ornamentStrength,
+    onChange: () => ui.BG3T20?.applyClientSettings()
+  });
+
+  game.settings.register(MODULE_ID, "showLabels", {
+    name: "Exibir nomes nos atalhos",
+    scope: "client",
+    config: false,
+    type: Boolean,
+    default: APPEARANCE_DEFAULTS.showLabels,
     onChange: () => ui.BG3T20?.applyClientSettings()
   });
 }

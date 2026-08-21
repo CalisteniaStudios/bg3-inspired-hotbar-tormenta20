@@ -22,16 +22,49 @@ export const ACTIONS = Object.freeze({
   day: { label: "Dia", icon: "fa-solid fa-sun", color: "#8a8f9d" }
 });
 
+const ACTION_ALIASES = Object.freeze({
+  action: "action",
+  acao: "action",
+  ação: "action",
+  padrao: "action",
+  padrão: "action",
+  move: "move",
+  movement: "move",
+  movimento: "move",
+  full: "full",
+  complete: "full",
+  completa: "full",
+  reaction: "reaction",
+  reacao: "reaction",
+  reação: "reaction",
+  free: "free",
+  livre: "free",
+  passive: "passive",
+  passiva: "passive",
+  passivo: "passive",
+  special: "special",
+  especial: "special",
+  minute: "minute",
+  minuto: "minute",
+  hour: "hour",
+  hora: "hour",
+  day: "day",
+  dia: "day"
+});
+
 export const FILTERS = Object.freeze([
-  { id: "all", label: "Todos", icon: "fa-solid fa-border-all" },
   { id: "action", label: "Ação", icon: ACTIONS.action.icon },
   { id: "move", label: "Movimento", icon: ACTIONS.move.icon },
   { id: "full", label: "Completa", icon: ACTIONS.full.icon },
   { id: "reaction", label: "Reação", icon: ACTIONS.reaction.icon },
   { id: "free", label: "Livre", icon: ACTIONS.free.icon },
   { id: "magia", label: "Magias", icon: "fa-solid fa-wand-sparkles" },
-  { id: "poder", label: "Poderes", icon: "fa-solid fa-fire-flame-curved" }
+  { id: "poder", label: "Poderes", icon: "fa-solid fa-fire-flame-curved" },
+  { id: "items", label: "Itens", icon: "fa-solid fa-backpack" },
+  { id: "custom", label: "Personalizado", icon: "fa-solid fa-sparkles" }
 ]);
+
+const ITEM_FILTER_TYPES = new Set(["arma", "consumivel", "equipamento", "tesouro"]);
 
 const TYPE_ORDER = Object.freeze({
   arma: 0,
@@ -57,11 +90,10 @@ export function signed(value) {
 }
 
 export function getActionKey(item) {
-  const configured = item?.system?.ativacao?.execucao;
-  if (configured) return configured;
+  const configured = String(item?.system?.ativacao?.execucao ?? "").trim().toLocaleLowerCase("pt-BR");
+  if (configured) return ACTION_ALIASES[configured] ?? configured;
   if (item?.type === "arma") return "action";
   if (["magia", "consumivel"].includes(item?.type)) return "action";
-  if (item?.type === "equipamento") return "move";
   return "passive";
 }
 
@@ -95,13 +127,13 @@ export function isEquipped(item) {
 export function isUsableItem(item, { includePassive = true } = {}) {
   if (!item || !T20_ITEM_TYPES.includes(item.type)) return false;
   if (!includePassive && getActionKey(item) === "passive") return false;
-  if (item.type === "tesouro" && !item.system?.ativacao?.execucao) return false;
   return true;
 }
 
 export function itemMatchesFilter(item, filter) {
-  if (!item || filter === "all") return Boolean(item);
+  if (!item || filter === "custom") return false;
   if (["magia", "poder"].includes(filter)) return item.type === filter;
+  if (filter === "items") return ITEM_FILTER_TYPES.has(item.type);
   return getActionKey(item) === filter;
 }
 
@@ -155,6 +187,7 @@ export function getItemDescription(item) {
 }
 
 export function getTypeLabel(item) {
+  if (item?.documentName === "Macro") return "Macro";
   const labels = {
     arma: "Arma",
     magia: "Magia",
@@ -195,10 +228,22 @@ export function resolveActorDocument(actor, uuid) {
   }
 }
 
-export async function useDocument(document, event = {}) {
+export function parseResourceInput(input, currentValue = 0) {
+  const text = String(input ?? "").trim().replace(",", ".");
+  if (!text) return null;
+  const current = numberValue(currentValue);
+  if (/^[+-]\d+(?:\.\d+)?$/.test(text)) return current + Number(text);
+  if (/^-?\d+(?:\.\d+)?$/.test(text)) return Number(text);
+  return null;
+}
+
+export async function useDocument(document, event = {}, context = {}) {
   if (!document) return false;
   if (document.documentName === "Macro" || typeof document.execute === "function") {
-    await document.execute?.({ actor: document.actor, token: document.actor?.token });
+    await document.execute?.({
+      actor: context.actor ?? document.actor ?? null,
+      token: context.token?.document ?? context.token ?? context.actor?.token ?? document.actor?.token ?? null
+    });
     return true;
   }
   if (typeof document.roll === "function") {
