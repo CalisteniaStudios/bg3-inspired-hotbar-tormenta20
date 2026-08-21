@@ -34,12 +34,13 @@
 #bg3t20-hud .bg3t20-shell {
   position: relative;
   display: grid;
-  grid-template-columns: 170px minmax(570px, 760px) 112px;
+  grid-template-columns: 170px minmax(620px, 760px) 122px;
   gap: 10px;
   align-items: end;
-  width: min(1080px, calc(100vw - 300px));
-  min-width: 860px;
-  padding: 12px;
+  box-sizing: border-box;
+  width: min(1120px, calc(100vw - 220px));
+  min-width: 900px;
+  padding: 12px 14px 16px;
   pointer-events: auto;
   opacity: var(--bg3t20-opacity);
   transform: scale(var(--bg3t20-scale));
@@ -50,7 +51,7 @@
 #bg3t20-hud .bg3t20-shell::before {
   content: "";
   position: absolute;
-  inset: 21px 5px 4px 5px;
+  inset: 21px 5px 0;
   z-index: -1;
   border: 1px solid var(--bg3t20-border);
   border-radius: 11px 11px 4px 4px;
@@ -62,6 +63,7 @@
 }
 
 #bg3t20-hud button {
+  box-sizing: border-box;
   width: auto;
   min-height: 0;
   margin: 0;
@@ -263,7 +265,7 @@
   flex-direction: column;
   gap: 5px;
   align-self: end;
-  min-width: 0;
+  min-width: 620px;
 }
 
 .bg3t20-weapons {
@@ -362,9 +364,12 @@
 }
 
 .bg3t20-grid {
+  --bg3t20-slot-size: clamp(54px, 4.5vw, 76px);
   display: grid;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-template-columns: repeat(9, var(--bg3t20-slot-size));
+  grid-auto-rows: var(--bg3t20-slot-size);
   gap: 4px;
+  justify-content: center;
   padding: 5px;
   border: 1px solid rgba(210, 179, 110, 0.22);
   border-radius: 5px;
@@ -374,9 +379,11 @@
 
 .bg3t20-slot {
   position: relative;
-  width: 100% !important;
-  aspect-ratio: 1;
+  width: var(--bg3t20-slot-size) !important;
+  height: var(--bg3t20-slot-size) !important;
+  aspect-ratio: 1 / 1;
   min-width: 0;
+  min-height: 0 !important;
   overflow: hidden;
   border: 1px solid rgba(170, 164, 155, 0.28) !important;
   border-radius: 5px !important;
@@ -554,7 +561,11 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 5px;
   align-self: end;
-  padding: 7px 6px 12px 0;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 7px 8px 8px 0;
+  overflow: hidden;
 }
 
 .bg3t20-side-actions button {
@@ -563,7 +574,9 @@
   gap: 4px;
   align-items: center;
   justify-content: center;
-  min-height: 48px !important;
+  width: 100% !important;
+  min-width: 0;
+  min-height: 44px !important;
   padding: 4px !important;
   border: 1px solid rgba(204, 176, 112, 0.31) !important;
   border-radius: 5px !important;
@@ -586,7 +599,7 @@
 
 .bg3t20-side-actions .bg3t20-end-turn {
   grid-column: span 2;
-  min-height: 45px !important;
+  min-height: 42px !important;
   border-color: rgba(112, 87, 159, 0.55) !important;
   color: #b6a2dd;
 }
@@ -596,6 +609,11 @@
   color: #e0d2ff;
   background: linear-gradient(180deg, rgba(103, 71, 153, 0.6), rgba(48, 34, 72, 0.7)) !important;
   box-shadow: 0 0 9px rgba(151, 108, 220, 0.3);
+}
+
+.bg3t20-side-actions button:last-child {
+  grid-column: span 2;
+  min-height: 34px !important;
 }
 
 .bg3t20-roll-panel {
@@ -819,9 +837,13 @@ body.bg3t20-hide-core-hotbar #hotbar {
 
 @media (max-width: 1280px) {
   #bg3t20-hud .bg3t20-shell {
-    grid-template-columns: 145px minmax(520px, 680px) 100px;
-    width: min(940px, calc(100vw - 180px));
-    min-width: 780px;
+    grid-template-columns: 145px minmax(540px, 680px) 106px;
+    width: min(980px, calc(100vw - 140px));
+    min-width: 820px;
+  }
+
+  .bg3t20-main {
+    min-width: 540px;
   }
 
   .bg3t20-portrait {
@@ -865,7 +887,12 @@ body.bg3t20-hide-core-hotbar #hotbar {
   }
 
   .bg3t20-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    --bg3t20-slot-size: 64px;
+    grid-template-columns: repeat(6, var(--bg3t20-slot-size));
+  }
+
+  .bg3t20-main {
+    min-width: 470px;
   }
 
   .bg3t20-item-name {
