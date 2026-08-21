@@ -1,103 +1,58 @@
 {
-  "id": "bg3-inspired-hotbar",
-  "title": "BG3 Inspired HUD",
-  "description": "A custom, persistent, token-specific HUD inspired by Baldur's Gate 3's interface. Provides an intuitive and modern way to manage abilities, spells, and effects for your tokens.",
-  "version": "3.4.4",
+  "id": "bg3-inspired-hotbar-tormenta20",
+  "title": "BG3 Inspired Hotbar — Tormenta20",
+  "description": "Hotbar cinematográfica inspirada em Baldur's Gate 3, adaptada nativamente para o sistema Tormenta20 1.5.015 no Foundry VTT.",
+  "version": "0.1.0",
   "authors": [
     {
       "name": "BragginRites",
-      "discord": "Braggin#1205",
-      "flags": {}
+      "discord": "Braggin#1205"
     },
     {
       "name": "Dapoulp",
-      "discord": "Poulp#3418",
-      "flags": {}
+      "discord": "Poulp#3418"
+    },
+    {
+      "name": "Calistenia Studios",
+      "url": "https://github.com/CalisteniaStudios"
     }
   ],
   "compatibility": {
     "minimum": "13",
-    "verified": "13.346"
+    "verified": "13.351",
+    "maximum": "13"
   },
   "esmodules": [
-    "scripts/module.js"
+    "scripts/t20/module.js"
   ],
   "styles": [
-    "styles/index.css"
+    "styles/t20-hotbar.css"
   ],
   "languages": [
     {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json",
-      "flags": {}
-    },
-    {
-      "lang": "pl",
-      "name": "Polski",
-      "path": "lang/pl.json",
-      "flags": {}
-    },
-    {
-      "lang": "fr",
-      "name": "Français",
-      "path": "lang/fr.json",
-      "flags": {}
-    },
-    {
-      "lang": "nl",
-      "name": "Nederlands",
-      "path": "lang/nl.json",
-      "flags": {}
-    },
-    {
-      "lang": "ru",
-      "name": "Русский",
-      "path": "lang/ru.json",
-      "flags": {}
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
     }
   ],
   "relationships": {
-    "requires": [
-      {
-        "id": "lib-wrapper",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "colorsettings",
-        "type": "module",
-        "compatibility": {}
-      }
-    ],
     "systems": [
       {
-        "id": "dnd5e",
+        "id": "tormenta20",
         "type": "system",
         "compatibility": {
-          "minimum": "5.0.4",
-          "verified": "5.1.1"
+          "minimum": "1.5.015",
+          "verified": "1.5.015",
+          "maximum": "1.5.015"
         }
       }
     ]
   },
   "persistentStorage": true,
-  "url": "https://github.com/BragginRites/bg3-inspired-hotbar",
-  "manifest": "https://github.com/BragginRites/bg3-inspired-hotbar/releases/download/v3.4.4/module.json",
-  "download": "https://github.com/BragginRites/bg3-inspired-hotbar/releases/download/v3.4.4/bg3-inspired-hotbar.zip",
-  "readme": "README.md",
-  "bugs": "https://github.com/BragginRites/bg3-inspired-hotbar/issues",
-  "packs": [
-    {
-      "name": "bg3-inspired-hud",
-      "label": "BG3 Inspired HUD",
-      "path": "packs/bg3-inspired-hud",
-      "type": "Macro",
-      "ownership": {
-        "PLAYER": "LIMITED",
-        "ASSISTANT": "OWNER"
-      },
-      "system": "dnd5e"
-    }
-  ]
+  "url": "https://github.com/CalisteniaStudios/bg3-inspired-hotbar-tormenta20",
+  "manifest": "https://github.com/CalisteniaStudios/bg3-inspired-hotbar-tormenta20/releases/latest/download/module.json",
+  "download": "https://github.com/CalisteniaStudios/bg3-inspired-hotbar-tormenta20/releases/latest/download/bg3-inspired-hotbar-tormenta20.zip",
+  "readme": "https://github.com/CalisteniaStudios/bg3-inspired-hotbar-tormenta20/blob/main/README.md",
+  "bugs": "https://github.com/CalisteniaStudios/bg3-inspired-hotbar-tormenta20/issues",
+  "license": "LICENSE.md"
 }
