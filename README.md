@@ -1,6 +1,6 @@
 # BG3 Inspired Hotbar — Tormenta20
 
-Uma adaptação independente do **BG3 Inspired HUD** para o sistema **Tormenta20 1.5.015** no Foundry VTT 13.
+Uma adaptação independente do **BG3 Inspired HUD** para o sistema **Tormenta20 1.5.015 e 1.6.1** no Foundry VTT 13 e 14.
 
 O módulo mantém a proposta visual cinematográfica da obra original, mas substitui o núcleo de regras do D&D 5e por uma integração nativa com Tormenta20.
 
@@ -12,7 +12,7 @@ No Foundry VTT, abra **Módulos adicionais**, escolha **Instalar módulo** e col
 https://github.com/CalisteniaStudios/bg3-inspired-hotbar-tormenta20/releases/latest/download/module.json
 ```
 
-Depois, ative o módulo no mundo que utiliza Tormenta20 1.5.015.
+Depois, ative o módulo no mundo que utiliza uma versão compatível do Tormenta20.
 
 ## Recursos
 
@@ -23,6 +23,7 @@ Depois, ative o módulo no mundo que utiliza Tormenta20 1.5.015.
 - Área **Personalizado** para arrastar itens, armas, poderes, magias e macros diretamente da ficha ou do Foundry.
 - Atalhos personalizados salvos separadamente para cada ator, com reorganização por arrastar.
 - Uso nativo de armas, magias, poderes, consumíveis e equipamentos por `Item.roll()` do Tormenta20.
+- Efeitos do ator e efeitos transferidos por itens exibidos corretamente no Foundry VTT 14.
 - Custo de PM, círculo da magia e quantidade exibidos diretamente nos ícones.
 - Atributos e perícias em um painel próprio, usando `rollAtributo` e `rollPericia` do sistema.
 - Descanso ruim, normal, confortável ou luxuoso pela função nativa `Actor.descanso()`.
@@ -48,8 +49,8 @@ Depois, ative o módulo no mundo que utiliza Tormenta20 1.5.015.
 
 ## Compatibilidade
 
-- Foundry VTT 13, verificado no build 351.
-- Tormenta20 1.5.015.
+- Foundry VTT 13 e 14, verificado no build 14.365.
+- Tormenta20 1.5.015 e 1.6.1.
 - Não depende de libWrapper, Midi-QOL, D&D 5e ou módulos de pontos de magia.
 
 ## Créditos e licença

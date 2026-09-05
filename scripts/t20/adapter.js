@@ -228,6 +228,120 @@ export function resolveActorDocument(actor, uuid) {
   }
 }
 
+function collectionValues(collection) {
+  if (!collection) return [];
+  try {
+    return Array.from(collection.values?.() ?? collection);
+  } catch (_error) {
+    return [];
+  }
+}
+
+export function getActorEffects(actor) {
+  const effects = [];
+  const seen = new Set();
+  const add = (effect) => {
+    if (!effect) return;
+    const key = effect.uuid ?? `${effect.parent?.uuid ?? effect.parent?.id ?? "effect"}.${effect.id ?? effect.name ?? effects.length}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    effects.push(effect);
+  };
+  const addCollection = (collection) => collectionValues(collection).forEach(add);
+
+  addCollection(actor?.effects);
+  try {
+    addCollection(actor?.allApplicableEffects?.());
+  } catch (_error) {
+    // Some system documents may not be fully prepared while Foundry is loading.
+  }
+  addCollection(actor?.appliedEffects);
+  for (const item of collectionValues(actor?.items)) {
+    for (const effect of collectionValues(item?.effects)) {
+      if (effect?.transfer === true) add(effect);
+    }
+  }
+  return effects;
+}
+
+export function resolveActorEffect(actor, reference) {
+  if (!reference) return null;
+  const value = String(reference);
+  const embedded = getActorEffects(actor).find((effect) => effect.uuid === value || effect.id === value);
+  if (embedded) return embedded;
+  try {
+    return globalThis.fromUuidSync?.(value) ?? null;
+  } catch (_error) {
+    return null;
+  }
+}
+
+export function actorForDocument(document) {
+  let current = document;
+  for (let depth = 0; current && depth < 5; depth += 1) {
+    if (current.documentName === "Actor") return current;
+    if (current.actor?.documentName === "Actor") return current.actor;
+    current = current.parent;
+  }
+  return null;
+}
+
+export function getCoreMessageMode(settings = globalThis.game?.settings) {
+  for (const key of ["messageMode", "rollMode"]) {
+    try {
+      const value = settings?.get?.("core", key);
+      if (value !== undefined && value !== null) return value;
+    } catch (_error) {
+      // Foundry 13 and 14 register different names for this setting.
+    }
+  }
+  return undefined;
+}
+
+export function getDragEventData(event) {
+  try {
+    const modernTextEditor = globalThis.foundry?.applications?.ux?.TextEditor?.implementation;
+    const data = modernTextEditor?.getDragEventData?.(event) ?? globalThis.TextEditor?.getDragEventData?.(event);
+    if (data) return data;
+  } catch (_error) {
+    // Fall through to the serialized drag payload.
+  }
+  try {
+    return JSON.parse(event?.dataTransfer?.getData?.("text/plain") || "{}");
+  } catch (_error) {
+    return {};
+  }
+}
+
+export function installSceneControlToggle(controls, { active = false, onToggle } = {}) {
+  const tokenControls = controls?.tokens ?? controls?.find?.((control) => control.name === "token" || control.name === "tokens");
+  if (!tokenControls) return false;
+  const base = {
+    name: "toggleBG3T20",
+    title: "Alternar BG3 Hotbar para Tormenta20",
+    icon: "fa-solid fa-dragon",
+    toggle: true,
+    active: Boolean(active),
+    order: 90
+  };
+
+  if (Array.isArray(tokenControls.tools) || Array.isArray(controls)) {
+    tokenControls.tools ??= [];
+    tokenControls.tools.push({
+      ...base,
+      onClick: (state) => onToggle?.(Boolean(state))
+    });
+  } else {
+    tokenControls.tools ??= {};
+    tokenControls.tools.toggleBG3T20 = {
+      ...base,
+      button: true,
+      onChange: (_event, state) => onToggle?.(Boolean(state))
+    };
+  }
+  return true;
+}
+
 export function parseResourceInput(input, currentValue = 0) {
   const text = String(input ?? "").trim().replace(",", ".");
   if (!text) return null;
@@ -247,10 +361,13 @@ export async function useDocument(document, event = {}, context = {}) {
     return true;
   }
   if (typeof document.roll === "function") {
+    const messageMode = getCoreMessageMode();
     await document.roll({
       configureDialog: !event.shiftKey,
-      rollMode: globalThis.game?.settings?.get?.("core", "rollMode"),
+      rollMode: messageMode,
+      messageMode,
       createMessage: true,
+      event,
       extra: { event }
     });
     return true;

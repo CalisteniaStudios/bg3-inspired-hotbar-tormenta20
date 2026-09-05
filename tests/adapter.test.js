@@ -2,15 +2,21 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
+  actorForDocument,
   getActionKey,
+  getActorEffects,
   getActorStats,
+  getCoreMessageMode,
+  getDragEventData,
   getManaCost,
   getQuantity,
   getSpellCircle,
   itemMatchesFilter,
+  installSceneControlToggle,
   normalizeOrder,
   parseResourceInput,
   resourcePercent,
+  resolveActorEffect,
   signed,
   sortItems,
   useDocument
@@ -106,4 +112,92 @@ test("executa macros com o ator e token selecionados", async () => {
   const token = { document: { id: "token" } };
   assert.equal(await useDocument(macro, {}, { actor, token }), true);
   assert.deepEqual(context, { actor, token: token.document });
+});
+
+test("encaminha o evento e o modo de mensagem ao rolar itens no Foundry 14", async () => {
+  const previousGame = globalThis.game;
+  const event = { shiftKey: true };
+  let options = null;
+  globalThis.game = {
+    settings: {
+      get: (_namespace, key) => key === "messageMode" ? "gmroll" : undefined
+    }
+  };
+  try {
+    const document = { roll: async (value) => { options = value; } };
+    assert.equal(await useDocument(document, event), true);
+    assert.equal(options.configureDialog, false);
+    assert.equal(options.rollMode, "gmroll");
+    assert.equal(options.messageMode, "gmroll");
+    assert.equal(options.event, event);
+    assert.equal(options.extra.event, event);
+  } finally {
+    globalThis.game = previousGame;
+  }
+});
+
+test("usa o nome antigo do modo de rolagem como compatibilidade com Foundry 13", () => {
+  const settings = {
+    get: (_namespace, key) => {
+      if (key === "messageMode") throw new Error("setting ausente");
+      return key === "rollMode" ? "blindroll" : undefined;
+    }
+  };
+  assert.equal(getCoreMessageMode(settings), "blindroll");
+});
+
+test("lê dados arrastados pela API moderna do Foundry 14 e pelo payload serializado", () => {
+  const previousFoundry = globalThis.foundry;
+  globalThis.foundry = {
+    applications: {
+      ux: {
+        TextEditor: { implementation: { getDragEventData: () => ({ type: "Item", uuid: "Actor.a.Item.b" }) } }
+      }
+    }
+  };
+  try {
+    assert.deepEqual(getDragEventData({}), { type: "Item", uuid: "Actor.a.Item.b" });
+  } finally {
+    globalThis.foundry = previousFoundry;
+  }
+  const event = { dataTransfer: { getData: () => JSON.stringify({ type: "Macro", id: "m1" }) } };
+  assert.deepEqual(getDragEventData(event), { type: "Macro", id: "m1" });
+});
+
+test("inclui efeitos transferidos por itens e resolve efeitos pelo UUID", () => {
+  const direct = { id: "direct", uuid: "Actor.a.ActiveEffect.direct", name: "Direto" };
+  const transferred = { id: "item", uuid: "Actor.a.Item.i.ActiveEffect.item", name: "Transferido", transfer: true };
+  const temporary = { id: "temporary", uuid: "Actor.a.Item.i.ActiveEffect.temporary", transfer: false };
+  const actor = {
+    effects: [direct],
+    allApplicableEffects: () => [direct, transferred],
+    appliedEffects: [transferred],
+    items: [{ effects: [transferred, temporary] }]
+  };
+  assert.deepEqual(getActorEffects(actor), [direct, transferred]);
+  assert.equal(resolveActorEffect(actor, transferred.uuid), transferred);
+  assert.equal(resolveActorEffect(actor, "direct"), direct);
+});
+
+test("encontra o ator de itens e efeitos aninhados", () => {
+  const actor = { id: "a", documentName: "Actor" };
+  const itemDocument = { documentName: "Item", actor };
+  const effect = { documentName: "ActiveEffect", parent: itemDocument };
+  assert.equal(actorForDocument(actor), actor);
+  assert.equal(actorForDocument(itemDocument), actor);
+  assert.equal(actorForDocument(effect), actor);
+});
+
+test("registra o botão da HUD nas APIs de controles do Foundry 13 e 14", () => {
+  const calls = [];
+  const legacy = [{ name: "token", tools: [] }];
+  assert.equal(installSceneControlToggle(legacy, { active: true, onToggle: (active) => calls.push(active) }), true);
+  assert.equal(legacy[0].tools[0].active, true);
+  legacy[0].tools[0].onClick(false);
+
+  const modern = { tokens: { name: "tokens", tools: {} } };
+  assert.equal(installSceneControlToggle(modern, { onToggle: (active) => calls.push(active) }), true);
+  assert.equal(modern.tokens.tools.toggleBG3T20.button, true);
+  modern.tokens.tools.toggleBG3T20.onChange({}, true);
+  assert.deepEqual(calls, [false, true]);
 });

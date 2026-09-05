@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.2] — 2026-09-05
+
+- Adiciona compatibilidade declarada e validada com Foundry VTT 14 e Tormenta20 1.6.1.
+- Corrige o uso de armas, magias, poderes e itens com a nova assinatura de rolagem do sistema.
+- Atualiza a leitura de itens arrastados para a API de editor do Foundry VTT 14, preservando o comportamento do Foundry VTT 13.
+- Adapta o botão dos controles de cena ao novo formato do Foundry VTT 14.
+- Exibe e permite alternar efeitos transferidos por itens, além dos efeitos incorporados diretamente ao ator.
+- Atualiza a HUD quando efeitos pertencentes a itens são criados, alterados ou removidos.
+
 ## [0.2.1] — 2026-08-21
 
 - Adiciona uma ferramenta visual para enquadrar o retrato diretamente nos ajustes da HUD.

@@ -3,7 +3,9 @@ import {
   MODULE_ID,
   escapeHtml,
   getActionData,
+  getActorEffects,
   getActorStats,
+  getDragEventData,
   getItemDescription,
   getManaCost,
   getQuantity,
@@ -14,6 +16,7 @@ import {
   parseResourceInput,
   plainText,
   resourcePercent,
+  resolveActorEffect,
   restActor,
   rollAbility,
   rollSkill,
@@ -269,7 +272,7 @@ export class T20Hotbar {
       return;
     }
     if (action === "toggle-effect") {
-      const effect = this.actor?.effects?.get?.(target.dataset.effectId);
+      const effect = resolveActorEffect(this.actor, target.dataset.effectUuid ?? target.dataset.effectId);
       if (effect && this.canEdit) await effect.update({ disabled: !effect.disabled });
       return;
     }
@@ -331,15 +334,7 @@ export class T20Hotbar {
   }
 
   _dragData(event) {
-    try {
-      return TextEditor?.getDragEventData?.(event) ?? JSON.parse(event.dataTransfer.getData("text/plain") || "{}");
-    } catch (_error) {
-      try {
-        return JSON.parse(event.dataTransfer.getData("text/plain") || "{}");
-      } catch (_nestedError) {
-        return {};
-      }
-    }
+    return getDragEventData(event);
   }
 
   async _resolveDroppedDocument(data) {
@@ -697,9 +692,9 @@ export class T20Hotbar {
   }
 
   _renderEffects() {
-    const effects = Array.from(this.actor?.effects ?? []).slice(0, 8);
+    const effects = getActorEffects(this.actor).slice(0, 8);
     if (!effects.length) return '<div class="bg3t20-effects is-empty"><span>Sem efeitos ativos</span></div>';
-    return `<div class="bg3t20-effects">${effects.map((effect) => `<button type="button" data-action="toggle-effect" data-effect-id="${effect.id}" class="${effect.disabled ? "is-disabled" : ""}" title="${escapeHtml(effect.name)}"><img src="${escapeHtml(effect.img)}" alt=""></button>`).join("")}</div>`;
+    return `<div class="bg3t20-effects">${effects.map((effect) => `<button type="button" data-action="toggle-effect" data-effect-uuid="${escapeHtml(effect.uuid ?? effect.id)}" class="${effect.disabled ? "is-disabled" : ""}" title="${escapeHtml(effect.name)}"><img src="${escapeHtml(effect.img)}" alt=""></button>`).join("")}</div>`;
   }
 
   _renderActions() {

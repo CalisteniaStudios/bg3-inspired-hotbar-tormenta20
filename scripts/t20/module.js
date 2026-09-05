@@ -1,4 +1,4 @@
-import { MODULE_ID } from "./adapter.js";
+import { MODULE_ID, actorForDocument, installSceneControlToggle } from "./adapter.js";
 import { T20Hotbar } from "./hotbar.js";
 import { APPEARANCE_DEFAULTS, THEME_PRESETS } from "./themes.js";
 
@@ -133,19 +133,10 @@ function registerKeybindings() {
 
 function registerSceneControl() {
   Hooks.on("getSceneControlButtons", (controls) => {
-    const tokenControls = controls.tokens ?? controls.find?.((control) => control.name === "token" || control.name === "tokens");
-    if (!tokenControls) return;
-    const tool = {
-      name: "toggleBG3T20",
-      title: "Alternar BG3 Hotbar para Tormenta20",
-      icon: "fa-solid fa-dragon",
-      toggle: true,
+    installSceneControlToggle(controls, {
       active: game.settings.get(MODULE_ID, "enabled"),
-      onClick: (active) => ui.BG3T20?.toggle(active),
-      order: 90
-    };
-    if (Array.isArray(tokenControls.tools)) tokenControls.tools.push(tool);
-    else tokenControls.tools.toggleBG3T20 = tool;
+      onToggle: (active) => ui.BG3T20?.toggle(active)
+    });
   });
 }
 
@@ -181,7 +172,7 @@ Hooks.on("deleteToken", (token) => {
 
 for (const hook of ["updateActor", "createItem", "updateItem", "deleteItem", "createActiveEffect", "updateActiveEffect", "deleteActiveEffect", "updateCombat"]) {
   Hooks.on(hook, (document) => {
-    const actor = document?.documentName === "Actor" ? document : document?.parent;
+    const actor = actorForDocument(document);
     if (!ui.BG3T20?.actor || (actor?.id && actor.id !== ui.BG3T20.actor.id)) return;
     ui.BG3T20.render();
   });

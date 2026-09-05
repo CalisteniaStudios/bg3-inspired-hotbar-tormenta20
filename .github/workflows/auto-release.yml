@@ -23,7 +23,7 @@ jobs:
           VERSION=$(jq -r '.version' module.json)
           echo "Found version: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "::set-output name=version::$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           # Also extract package ID and compatibility
           PACKAGE_ID=$(jq -r '.id' module.json)
           MIN_CORE=$(jq -r '.compatibility.minimum' module.json)
@@ -63,12 +63,12 @@ jobs:
           echo "Creating tag: $TAG"
           git tag "$TAG"
           git push origin "$TAG"
-          echo "::set-output name=tag::$TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
       - name: Create Module ZIP
         run: |
           # Zip everything in the repo except hidden folders/files we don't need
-          zip -r bg3-inspired-hotbar.zip . \
+          zip -r bg3-inspired-hotbar-tormenta20.zip . \
             -x "*.git*" \
                ".github*" \
                "*.vscode*"
@@ -80,7 +80,7 @@ jobs:
           name: Release ${{ steps.tag.outputs.tag }}
           body: ${{ env.CHANGELOG }}
           files: |
-            bg3-inspired-hotbar.zip
+            bg3-inspired-hotbar-tormenta20.zip
             module.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
