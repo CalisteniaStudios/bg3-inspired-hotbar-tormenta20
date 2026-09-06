@@ -29,7 +29,7 @@ Depois, ative o módulo no mundo que utiliza uma versão compatível do Tormenta
 - Descanso ruim, normal, confortável ou luxuoso pela função nativa `Actor.descanso()`.
 - Edição direta de PV e PM: informe um valor exato ou use `+10` e `-5` para alterações relativas.
 - Encerrar turno, descanso e ajustes em controles laterais redesenhados.
-- Painel de personalização com **Original**, **Relicário de Arton**, **Constelação Arcana**, **Arcano 2**, **Aço & Brasa** e **Grimório Vivo**, além de cores livres, brilho e ornamentos.
+- Painel de personalização com **Original**, **Relicário de Arton**, **Constelação Arcana**, **Aço & Brasa** e **Grimório Vivo**, além de cores livres, brilho e ornamentos.
 - Opções de escala, opacidade, posição, origem do retrato, nomes nos atalhos e ocultação da hotbar padrão.
 - Editor visual do retrato com zoom e posição horizontal e vertical, prévia em tempo real e ajustes separados para a imagem da ficha e do token.
 - Enquadramento salvo por personagem e compartilhado com todos que visualizam sua HUD.

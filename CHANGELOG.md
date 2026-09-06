@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.3] — 2026-09-06
+
+- Remove completamente o tema Arcano 2 da Forja da HUD.
+- Preserva a Constelação Arcana original e todos os demais temas.
+
 ## [0.4.2] — 2026-09-06
 
 - Corrige o contêiner central do Arcano 2, que era calculado com altura zero e posicionava o arco de atalhos abaixo da tela.

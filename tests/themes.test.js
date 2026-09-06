@@ -9,10 +9,10 @@ import {
   normalizePortraitTransforms
 } from "../scripts/t20/themes.js";
 
-test("oferece o tema original e os cinco novos layouts", () => {
-  assert.deepEqual(Object.keys(THEME_PRESETS), ["tormenta", "reliquary", "constellation", "arcane2", "steel", "grimoire", "custom"]);
+test("oferece o tema original e os quatro novos layouts", () => {
+  assert.deepEqual(Object.keys(THEME_PRESETS), ["tormenta", "reliquary", "constellation", "steel", "grimoire", "custom"]);
   assert.equal(THEME_PRESETS.tormenta.label, "Original");
-  for (const key of ["reliquary", "constellation", "arcane2", "steel", "grimoire"]) {
+  for (const key of ["reliquary", "constellation", "steel", "grimoire"]) {
     assert.equal(resolveAppearance({ theme: key }).theme, key);
     assert.ok(THEME_PRESETS[key].description);
     assert.ok(THEME_PRESETS[key].icon);
