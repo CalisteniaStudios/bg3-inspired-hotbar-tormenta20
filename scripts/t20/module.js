@@ -170,7 +170,21 @@ Hooks.on("deleteToken", (token) => {
   if (ui.BG3T20?.token?.id === token.id) ui.BG3T20.setToken(null);
 });
 
-for (const hook of ["updateActor", "createItem", "updateItem", "deleteItem", "createActiveEffect", "updateActiveEffect", "deleteActiveEffect", "updateCombat"]) {
+for (const hook of [
+  "updateActor",
+  "createItem",
+  "updateItem",
+  "deleteItem",
+  "createActiveEffect",
+  "updateActiveEffect",
+  "deleteActiveEffect",
+  "createCombat",
+  "updateCombat",
+  "deleteCombat",
+  "createCombatant",
+  "updateCombatant",
+  "deleteCombatant"
+]) {
   Hooks.on(hook, (document) => {
     const actor = actorForDocument(document);
     if (!ui.BG3T20?.actor || (actor?.id && actor.id !== ui.BG3T20.actor.id)) return;

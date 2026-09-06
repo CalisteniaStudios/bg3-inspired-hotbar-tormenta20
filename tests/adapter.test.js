@@ -7,6 +7,8 @@ import {
   getActorEffects,
   getActorStats,
   getCoreMessageMode,
+  getCombatActionState,
+  enterCombatAndRollInitiative,
   getDragEventData,
   getManaCost,
   getQuantity,
@@ -200,4 +202,97 @@ test("registra o botão da HUD nas APIs de controles do Foundry 13 e 14", () => 
   assert.equal(modern.tokens.tools.toggleBG3T20.button, true);
   modern.tokens.tools.toggleBG3T20.onChange({}, true);
   assert.deepEqual(calls, [false, true]);
+});
+
+test("mostra iniciativa desabilitada quando não há encontro ativo", () => {
+  assert.deepEqual(getCombatActionState({ actor: { id: "a" }, token: { id: "t" }, scene: { id: "s" } }), {
+    action: "initiative",
+    label: "Iniciativa",
+    icon: "fa-solid fa-dice-d20",
+    disabled: true,
+    isCurrent: false
+  });
+});
+
+test("habilita iniciativa em encontro ainda não iniciado", () => {
+  const state = getCombatActionState({
+    combat: { scene: { id: "s" }, started: false, combatants: [] },
+    actor: { id: "a" },
+    token: { id: "t" },
+    scene: { id: "s" }
+  });
+  assert.equal(state.action, "initiative");
+  assert.equal(state.disabled, false);
+});
+
+test("desabilita nova iniciativa quando o token já rolou", () => {
+  const state = getCombatActionState({
+    combat: { scene: "s", started: false, combatants: [{ tokenId: "t", initiative: 18 }] },
+    actor: { id: "a" },
+    token: { id: "t" },
+    scene: { id: "s" }
+  });
+  assert.equal(state.action, "initiative");
+  assert.equal(state.disabled, true);
+});
+
+test("durante o combate só habilita encerrar turno para o ator atual", () => {
+  const current = getCombatActionState({
+    combat: { scene: "s", started: true, combatant: { actorId: "a" }, combatants: [{ tokenId: "t", actorId: "a", initiative: 20 }] },
+    actor: { id: "a" }, token: { id: "t" }, scene: "s"
+  });
+  const waiting = getCombatActionState({
+    combat: { scene: "s", started: true, combatant: { actorId: "outro" }, combatants: [{ tokenId: "t", actorId: "a", initiative: 20 }] },
+    actor: { id: "a" }, token: { id: "t" }, scene: "s"
+  });
+  assert.equal(current.action, "end-turn");
+  assert.equal(current.disabled, false);
+  assert.equal(waiting.disabled, true);
+});
+
+test("oferece iniciativa para um ator que ainda não entrou no combate iniciado", () => {
+  const state = getCombatActionState({
+    combat: {
+      scene: "s",
+      started: true,
+      combatant: { actorId: "outro" },
+      combatants: [{ tokenId: "outro-token", actorId: "outro", initiative: 17 }]
+    },
+    actor: { id: "a" },
+    token: { id: "t" },
+    scene: "s"
+  });
+  assert.equal(state.action, "initiative");
+  assert.equal(state.disabled, false);
+});
+
+test("oferece iniciativa para combatente que entrou sem rolar", () => {
+  const state = getCombatActionState({
+    combat: {
+      scene: "s",
+      started: true,
+      combatant: { actorId: "outro" },
+      combatants: [{ tokenId: "t", actorId: "a", initiative: null }]
+    },
+    actor: { id: "a" },
+    token: { id: "t" },
+    scene: "s"
+  });
+  assert.equal(state.action, "initiative");
+  assert.equal(state.disabled, false);
+});
+
+test("entra no encontro e rola iniciativa sem abrir configuração", async () => {
+  let options;
+  const actor = {
+    async rollInitiative(received) {
+      options = received;
+    }
+  };
+  assert.equal(await enterCombatAndRollInitiative(actor), true);
+  assert.deepEqual(options, {
+    createCombatants: true,
+    rerollInitiative: false
+  });
+  assert.equal(await enterCombatAndRollInitiative({}), false);
 });

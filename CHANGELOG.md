@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.3] — 2026-09-06
+
+- Substitui Encerrar turno por Iniciativa enquanto o encontro ativo ainda não começou.
+- Ao clicar em Iniciativa, adiciona o token selecionado ao encontro e realiza a rolagem automaticamente.
+- Mantém Iniciativa visível, porém desabilitada, quando não existe encontro ativo na cena ou quando o token já rolou.
+- Mantém Iniciativa disponível durante um combate em andamento para tokens que ainda não entraram no encontro ou ainda não rolaram.
+- Restaura Encerrar turno durante o combate e o habilita somente para o personagem do turno atual.
+
 ## [0.2.2] — 2026-09-05
 
 - Adiciona compatibilidade declarada e validada com Foundry VTT 14 e Tormenta20 1.6.1.

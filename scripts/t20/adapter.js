@@ -351,6 +351,52 @@ export function parseResourceInput(input, currentValue = 0) {
   return null;
 }
 
+export function getCombatActionState({ combat, actor, token, scene } = {}) {
+  const combatSceneId = combat?.scene?.id ?? combat?.scene ?? null;
+  const sceneId = scene?.id ?? scene ?? null;
+  const hasEncounter = Boolean(combat && (!sceneId || !combatSceneId || combatSceneId === sceneId));
+  const started = Boolean(hasEncounter && combat.started);
+  const actorId = actor?.id ?? null;
+  const tokenId = token?.document?.id ?? token?.id ?? null;
+  const activeActorId = combat?.combatant?.actor?.id ?? combat?.combatant?.actorId ?? null;
+
+  const combatants = Array.from(combat?.combatants ?? []);
+  const existing = combatants.find((entry) => {
+    const entryTokenId = entry.tokenId ?? entry.token?.id ?? null;
+    const entryActorId = entry.actorId ?? entry.actor?.id ?? null;
+    return Boolean((tokenId && entryTokenId === tokenId) || (!tokenId && actorId && entryActorId === actorId));
+  });
+  const alreadyRolled = existing?.initiative !== null && existing?.initiative !== undefined;
+
+  if (started && existing) {
+    const isTurn = Boolean(actorId && activeActorId === actorId);
+    return {
+      action: alreadyRolled ? "end-turn" : "initiative",
+      label: alreadyRolled ? "Encerrar turno" : "Iniciativa",
+      icon: alreadyRolled ? "fa-solid fa-forward-step" : "fa-solid fa-dice-d20",
+      disabled: alreadyRolled ? !isTurn : false,
+      isCurrent: isTurn
+    };
+  }
+
+  return {
+    action: "initiative",
+    label: "Iniciativa",
+    icon: "fa-solid fa-dice-d20",
+    disabled: !hasEncounter || !actor || !token || alreadyRolled,
+    isCurrent: false
+  };
+}
+
+export async function enterCombatAndRollInitiative(actor) {
+  if (!actor?.rollInitiative) return false;
+  await actor.rollInitiative({
+    createCombatants: true,
+    rerollInitiative: false
+  });
+  return true;
+}
+
 export async function useDocument(document, event = {}, context = {}) {
   if (!document) return false;
   if (document.documentName === "Macro" || typeof document.execute === "function") {

@@ -2,9 +2,11 @@ import {
   FILTERS,
   MODULE_ID,
   escapeHtml,
+  enterCombatAndRollInitiative,
   getActionData,
   getActorEffects,
   getActorStats,
+  getCombatActionState,
   getDragEventData,
   getItemDescription,
   getManaCost,
@@ -263,6 +265,17 @@ export class T20Hotbar {
     if (action === "roll-skill") return rollSkill(this.actor, target.dataset.key, event);
     if (action === "end-turn") {
       if (game.combat?.started && game.combat?.combatant?.actor?.id === this.actor?.id) await game.combat.nextTurn();
+      return;
+    }
+    if (action === "initiative") {
+      if (!game.combat || !this.actor || !this.token) return;
+      try {
+        await enterCombatAndRollInitiative(this.actor);
+      } catch (error) {
+        console.error(`${MODULE_ID} | Erro ao entrar no combate e rolar iniciativa`, error);
+        ui.notifications.error("Não foi possível entrar no encontro e rolar iniciativa.");
+      }
+      this.render();
       return;
     }
     if (action === "rest") return this._openRestDialog();
@@ -698,9 +711,14 @@ export class T20Hotbar {
   }
 
   _renderActions() {
-    const isTurn = Boolean(game.combat?.started && game.combat?.combatant?.actor?.id === this.actor?.id);
+    const combatAction = getCombatActionState({
+      combat: game.combat,
+      actor: this.actor,
+      token: this.token,
+      scene: canvas?.scene
+    });
     return `<div class="bg3t20-side-actions">
-      <button type="button" data-action="end-turn" class="bg3t20-end-turn ${isTurn ? "is-current" : ""}" ${isTurn ? "" : "disabled"}><i class="fa-solid fa-forward-step"></i><span>Encerrar turno</span></button>
+      <button type="button" data-action="${combatAction.action}" class="bg3t20-end-turn ${combatAction.isCurrent ? "is-current" : ""}" ${combatAction.disabled ? "disabled" : ""}><i class="${combatAction.icon}"></i><span>${combatAction.label}</span></button>
       <button type="button" data-action="rest" class="bg3t20-rest"><i class="fa-solid fa-campground"></i><span>Descansar</span></button>
       <button type="button" data-action="open-settings" class="bg3t20-settings-button"><i class="fa-solid fa-gear"></i><span>Ajustes</span></button>
     </div>`;
