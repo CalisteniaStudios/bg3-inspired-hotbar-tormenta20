@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.2] — 2026-09-06
+
+- Corrige o contêiner central do Arcano 2, que era calculado com altura zero e posicionava o arco de atalhos abaixo da tela.
+- Mantém os atalhos visíveis nas duas curvas, separados do retrato, dos recursos e dos filtros.
+
 ## [0.4.1] — 2026-09-06
 
 - Reconstrói a geometria do Arcano 2 para acompanhar melhor a referência visual.

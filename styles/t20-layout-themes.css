@@ -413,9 +413,7 @@
 }
 
 #bg3t20-hud[data-theme="arcane2"] .bg3t20-main {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
+  position: static;
   display: block;
   min-width: 0;
   padding: 0;
