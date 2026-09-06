@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.3] — 2026-09-06
+
+- Fixa explicitamente o conteúdo da Constelação Arcana na coluna central, impedindo que atalhos e ações escapem da moldura.
+- Move as armas rápidas do Aço & Brasa para uma coluna interna à esquerda da grade.
+- Move as armas rápidas do Grimório Vivo para dentro da página, eliminando a sobreposição no canto inferior do retrato.
+
 ## [0.3.2] — 2026-09-06
 
 - Restaura a escala visual dos quatro temas alternativos para o mesmo porte da HUD Original e dos conceitos de referência.
