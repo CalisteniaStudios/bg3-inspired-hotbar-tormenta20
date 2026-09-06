@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1] — 2026-09-06
+
+- Reconstrói a geometria do Arcano 2 para acompanhar melhor a referência visual.
+- Separa os atalhos em dois arcos, preservando o espaço central do retrato e dos recursos.
+- Move filtros, armas, efeitos, iniciativa, descanso e ajustes para faixas independentes, eliminando sobreposições.
+- Amplia a moldura astral e melhora a adaptação do layout em diferentes larguras de tela.
+
 ## [0.4.0] — 2026-09-06
 
 - Adiciona Arcano 2 como opção independente, preservando a Constelação Arcana atual.
