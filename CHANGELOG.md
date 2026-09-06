@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0] — 2026-09-06
+
+- Adiciona Arcano 2 como opção independente, preservando a Constelação Arcana atual.
+- Recria a composição da referência com retrato central, recursos laterais, arcos astrais, atalhos circulares e iniciativa em destaque.
+- Organiza os nove filtros em duas fileiras, mantém os 18 atalhos acessíveis e posiciona armas, efeitos e ações dentro da moldura.
+- Adiciona miniatura própria do Arcano 2 à Forja da HUD e comportamento responsivo para telas menores.
+
 ## [0.3.4] — 2026-09-06
 
 - Impede que a camada transparente do retrato da Constelação Arcana bloqueie os quatro filtros posicionados abaixo dele.

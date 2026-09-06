@@ -26,6 +26,15 @@ export const THEME_PRESETS = Object.freeze({
     panel: "#090d1c",
     text: "#edf8ff"
   }),
+  arcane2: Object.freeze({
+    label: "Arcano 2",
+    description: "Retrato central, arcos astrais e comandos orbitais.",
+    icon: "fa-solid fa-hat-wizard",
+    primary: "#54d8ff",
+    secondary: "#8755ff",
+    panel: "#05091a",
+    text: "#f2f7ff"
+  }),
   steel: Object.freeze({
     label: "Aço & Brasa",
     description: "Compacto, sóbrio e cinematográfico.",
