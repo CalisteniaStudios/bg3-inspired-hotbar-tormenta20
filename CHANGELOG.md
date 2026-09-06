@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.2] — 2026-09-06
+
+- Restaura a escala visual dos quatro temas alternativos para o mesmo porte da HUD Original e dos conceitos de referência.
+- Impede que o zoom de 75% do navegador comprima retrato, atalhos, filtros e ações a um tamanho impraticável.
+- Mantém redução responsiva própria em telas estreitas sem alterar a escala escolhida pelo usuário.
+
 ## [0.3.1] — 2026-09-06
 
 - Reconstrói os quatro temas alternativos para seguirem de perto os conceitos visuais originais, com silhuetas e proporções próprias.
