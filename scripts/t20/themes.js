@@ -1,34 +1,53 @@
 export const THEME_PRESETS = Object.freeze({
   tormenta: Object.freeze({
-    label: "Tormenta",
+    label: "Original",
+    description: "A HUD atual, preservada sem alterações.",
+    icon: "fa-solid fa-dragon",
     primary: "#d6aa43",
     secondary: "#8f2630",
     panel: "#171116",
     text: "#f5ecd8"
   }),
-  divine: Object.freeze({
-    label: "Divino",
-    primary: "#e7cb72",
-    secondary: "#9d7834",
-    panel: "#211d14",
-    text: "#fff6d9"
+  reliquary: Object.freeze({
+    label: "Relicário de Arton",
+    description: "Madeira, couro, bronze e rubis.",
+    icon: "fa-solid fa-gem",
+    primary: "#d7af62",
+    secondary: "#9b2635",
+    panel: "#1a100b",
+    text: "#f7ead0"
   }),
-  arcane: Object.freeze({
-    label: "Arcano",
-    primary: "#a986e8",
-    secondary: "#3f68bb",
-    panel: "#151525",
-    text: "#eee9ff"
+  constellation: Object.freeze({
+    label: "Constelação Arcana",
+    description: "Círculos, runas e vidro mágico.",
+    icon: "fa-solid fa-wand-sparkles",
+    primary: "#72d8ff",
+    secondary: "#9b62ff",
+    panel: "#090d1c",
+    text: "#edf8ff"
   }),
-  shadow: Object.freeze({
-    label: "Sombrio",
-    primary: "#c14951",
-    secondary: "#60347a",
-    panel: "#120e16",
-    text: "#eaddea"
+  steel: Object.freeze({
+    label: "Aço & Brasa",
+    description: "Compacto, sóbrio e cinematográfico.",
+    icon: "fa-solid fa-fire-flame-curved",
+    primary: "#df8548",
+    secondary: "#992f36",
+    panel: "#111317",
+    text: "#f1e9dc"
+  }),
+  grimoire: Object.freeze({
+    label: "Grimório Vivo",
+    description: "Pergaminho, iluminuras e marcadores.",
+    icon: "fa-solid fa-book-open",
+    primary: "#c9a35a",
+    secondary: "#7f2939",
+    panel: "#2a190f",
+    text: "#f4e5c7"
   }),
   custom: Object.freeze({
     label: "Personalizado",
+    description: "Use suas próprias cores.",
+    icon: "fa-solid fa-palette",
     primary: "#d6aa43",
     secondary: "#8f2630",
     panel: "#171116",

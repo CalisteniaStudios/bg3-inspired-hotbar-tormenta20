@@ -2,10 +2,22 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
+  THEME_PRESETS,
   PORTRAIT_DEFAULTS,
+  resolveAppearance,
   normalizePortraitTransform,
   normalizePortraitTransforms
 } from "../scripts/t20/themes.js";
+
+test("oferece o tema original e os quatro novos layouts", () => {
+  assert.deepEqual(Object.keys(THEME_PRESETS), ["tormenta", "reliquary", "constellation", "steel", "grimoire", "custom"]);
+  assert.equal(THEME_PRESETS.tormenta.label, "Original");
+  for (const key of ["reliquary", "constellation", "steel", "grimoire"]) {
+    assert.equal(resolveAppearance({ theme: key }).theme, key);
+    assert.ok(THEME_PRESETS[key].description);
+    assert.ok(THEME_PRESETS[key].icon);
+  }
+});
 
 test("normaliza o enquadramento do retrato dentro dos limites", () => {
   assert.deepEqual(normalizePortraitTransform({ zoom: 2.25, x: 18, y: 74 }), { zoom: 2.25, x: 18, y: 74 });

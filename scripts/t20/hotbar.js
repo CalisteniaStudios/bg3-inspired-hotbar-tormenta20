@@ -97,8 +97,9 @@ export class T20Hotbar {
   }
 
   _appearanceValues() {
+    const storedTheme = this._setting("theme");
     return {
-      theme: this._setting("theme"),
+      theme: THEME_PRESETS[storedTheme] ? storedTheme : APPEARANCE_DEFAULTS.theme,
       primaryColor: this._setting("primaryColor"),
       secondaryColor: this._setting("secondaryColor"),
       panelColor: this._setting("panelColor"),
@@ -306,7 +307,15 @@ export class T20Hotbar {
       return;
     }
     if (action === "select-theme") {
-      this.settingsDraft.theme = target.dataset.theme;
+      const themeKey = target.dataset.theme;
+      const preset = THEME_PRESETS[themeKey];
+      this.settingsDraft.theme = themeKey;
+      if (preset && themeKey !== "custom") {
+        this.settingsDraft.primaryColor = preset.primary;
+        this.settingsDraft.secondaryColor = preset.secondary;
+        this.settingsDraft.panelColor = preset.panel;
+        this.settingsDraft.textColor = preset.text;
+      }
       this.applyClientSettings(this.settingsDraft);
       this.render();
       return;
@@ -745,7 +754,7 @@ export class T20Hotbar {
     const portrait = this._activePortraitTransform(draft);
     const portraitSourceLabel = draft.portraitSource === "token" ? "Imagem do token" : "Imagem da ficha";
     const portraitDisabled = this.canEdit ? "" : "disabled";
-    const themes = Object.entries(THEME_PRESETS).map(([key, theme]) => `<button type="button" data-action="select-theme" data-theme="${key}" class="bg3t20-theme ${draft.theme === key ? "is-active" : ""}" style="--theme-primary:${theme.primary};--theme-secondary:${theme.secondary};--theme-panel:${theme.panel}"><span></span><strong>${theme.label}</strong></button>`).join("");
+    const themes = Object.entries(THEME_PRESETS).map(([key, theme]) => `<button type="button" data-action="select-theme" data-theme="${key}" class="bg3t20-theme ${draft.theme === key ? "is-active" : ""}" style="--theme-primary:${theme.primary};--theme-secondary:${theme.secondary};--theme-panel:${theme.panel}"><span class="bg3t20-theme-preview"><i class="${theme.icon}"></i></span><strong>${theme.label}</strong><small>${theme.description}</small></button>`).join("");
     const range = (key, label, min, max, step, value) => `<label class="bg3t20-setting range"><span>${label}<output data-output="${key}">${Math.round(Number(value) * 100)}%</output></span><input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-setting="${key}"></label>`;
     const portraitRange = (key, label, min, max, step, value, display) => `<label class="bg3t20-setting range"><span>${label}<output data-output="${key}">${display}</output></span><input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-setting="${key}" ${portraitDisabled}></label>`;
     const color = (key, label, value) => `<label class="bg3t20-setting color"><span>${label}</span><input type="color" value="${escapeHtml(value)}" data-setting="${key}"></label>`;

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0] — 2026-09-06
+
+- Preserva o visual anterior como tema Original.
+- Adiciona os temas estruturais Relicário de Arton, Constelação Arcana, Aço & Brasa e Grimório Vivo.
+- Cada tema reorganiza retrato, recursos, filtros, armas, grade, efeitos e ações com identidade própria.
+- Amplia os cartões de seleção da Forja da HUD com prévia, ícone e descrição de cada tema.
+- Mantém cores personalizadas, escala, opacidade, enquadramento e demais ajustes compatíveis com todos os temas.
+
 ## [0.2.3] — 2026-09-06
 
 - Substitui Encerrar turno por Iniciativa enquanto o encontro ativo ainda não começou.

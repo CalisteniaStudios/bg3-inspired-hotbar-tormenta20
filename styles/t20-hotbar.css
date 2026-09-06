@@ -1087,7 +1087,7 @@ button.bg3t20-resource.is-editable:hover {
 
 .bg3t20-theme-list {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 7px;
 }
 
@@ -1102,10 +1102,19 @@ button.bg3t20-resource.is-editable:hover {
   background: color-mix(in srgb, var(--theme-panel) 86%, #030305) !important;
 }
 
-.bg3t20-theme > span {
-  height: 20px;
-  border-radius: 3px;
-  background: linear-gradient(110deg, var(--theme-primary) 0 46%, var(--theme-secondary) 47% 100%);
+.bg3t20-theme > .bg3t20-theme-preview {
+  display: grid;
+  place-items: center;
+  height: 42px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 45%, transparent);
+  border-radius: 4px;
+  color: color-mix(in srgb, var(--theme-primary) 68%, white);
+  background:
+    radial-gradient(circle at 50% 110%, var(--theme-primary), transparent 48%),
+    linear-gradient(110deg, var(--theme-panel) 0 38%, var(--theme-secondary) 100%);
+  font-size: 19px;
+  text-shadow: 0 1px 3px #000;
 }
 
 .bg3t20-theme strong {
@@ -1113,6 +1122,16 @@ button.bg3t20-resource.is-editable:hover {
   font-size: 10px;
   font-weight: 600;
   text-overflow: ellipsis;
+}
+
+.bg3t20-theme small {
+  min-height: 22px;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--bg3t20-text-color) 54%, #777);
+  font-size: 8px;
+  font-weight: 400;
+  line-height: 1.25;
+  text-align: left;
 }
 
 .bg3t20-theme.is-active {

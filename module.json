@@ -2,7 +2,7 @@
   "id": "bg3-inspired-hotbar-tormenta20",
   "title": "BG3 Inspired Hotbar — Tormenta20",
   "description": "Hotbar cinematográfica inspirada em Baldur's Gate 3, adaptada nativamente para Tormenta20 no Foundry VTT 13 e 14.",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "authors": [
     {
       "name": "BragginRites",
@@ -26,7 +26,8 @@
     "scripts/t20/module.js"
   ],
   "styles": [
-    "styles/t20-hotbar.css"
+    "styles/t20-hotbar.css",
+    "styles/t20-layout-themes.css"
   ],
   "languages": [
     {
