@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1] — 2026-09-06
+
+- Reconstrói os quatro temas alternativos para seguirem de perto os conceitos visuais originais, com silhuetas e proporções próprias.
+- Corrige elementos soltos, botões vazios, ornamentos deslocados e heranças indevidas do tema Original.
+- Compacta as quatro HUDs sem remover nenhum dos 18 atalhos, filtros, armas, efeitos ou ações.
+- Redesenha a Forja da HUD com contraste estável, cartões de tema mais claros, miniaturas estruturais e seções melhor organizadas.
+- Mantém o tema Original completamente inalterado e preserva todos os ajustes já salvos.
+
 ## [0.3.0] — 2026-09-06
 
 - Preserva o visual anterior como tema Original.

@@ -754,23 +754,29 @@ export class T20Hotbar {
     const portrait = this._activePortraitTransform(draft);
     const portraitSourceLabel = draft.portraitSource === "token" ? "Imagem do token" : "Imagem da ficha";
     const portraitDisabled = this.canEdit ? "" : "disabled";
-    const themes = Object.entries(THEME_PRESETS).map(([key, theme]) => `<button type="button" data-action="select-theme" data-theme="${key}" class="bg3t20-theme ${draft.theme === key ? "is-active" : ""}" style="--theme-primary:${theme.primary};--theme-secondary:${theme.secondary};--theme-panel:${theme.panel}"><span class="bg3t20-theme-preview"><i class="${theme.icon}"></i></span><strong>${theme.label}</strong><small>${theme.description}</small></button>`).join("");
+    const themes = Object.entries(THEME_PRESETS).map(([key, theme]) => `<button type="button" data-action="select-theme" data-theme="${key}" class="bg3t20-theme ${draft.theme === key ? "is-active" : ""}" style="--theme-primary:${theme.primary};--theme-secondary:${theme.secondary};--theme-panel:${theme.panel}">
+      <span class="bg3t20-theme-art" aria-hidden="true"><span class="bg3t20-theme-avatar"><i class="${theme.icon}"></i></span><span class="bg3t20-theme-slots"><i></i><i></i><i></i><i></i><i></i></span><span class="bg3t20-theme-action"></span></span>
+      <span class="bg3t20-theme-copy"><strong>${theme.label}</strong><small>${theme.description}</small></span>
+      <i class="fa-solid fa-check bg3t20-theme-check" aria-hidden="true"></i>
+    </button>`).join("");
     const range = (key, label, min, max, step, value) => `<label class="bg3t20-setting range"><span>${label}<output data-output="${key}">${Math.round(Number(value) * 100)}%</output></span><input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-setting="${key}"></label>`;
     const portraitRange = (key, label, min, max, step, value, display) => `<label class="bg3t20-setting range"><span>${label}<output data-output="${key}">${display}</output></span><input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-setting="${key}" ${portraitDisabled}></label>`;
     const color = (key, label, value) => `<label class="bg3t20-setting color"><span>${label}</span><input type="color" value="${escapeHtml(value)}" data-setting="${key}"></label>`;
-    return `<div class="bg3t20-settings-backdrop"><section class="bg3t20-settings-panel">
-      <header><div><span>Personalização</span><h2>Forja da HUD</h2><p>Molde a interface ao estilo da sua mesa.</p></div><button type="button" data-action="close-settings" title="Fechar sem salvar"><i class="fa-solid fa-xmark"></i></button></header>
+    return `<div class="bg3t20-settings-backdrop"><section class="bg3t20-settings-panel" role="dialog" aria-modal="true" aria-label="Forja da HUD">
+      <header><div class="bg3t20-settings-title"><span><i class="fa-solid fa-hammer"></i> Personalização</span><h2>Forja da HUD</h2><p>Escolha um estilo e refine apenas o que quiser.</p></div><button type="button" data-action="close-settings" title="Fechar sem salvar" aria-label="Fechar sem salvar"><i class="fa-solid fa-xmark"></i></button></header>
       <div class="bg3t20-settings-content">
-        <fieldset><legend>Temas</legend><div class="bg3t20-theme-list">${themes}</div></fieldset>
-        <fieldset><legend>Cores personalizadas</legend><div class="bg3t20-color-list">${color("primaryColor", "Destaque", appearance.primaryColor)}${color("secondaryColor", "Contraste", appearance.secondaryColor)}${color("panelColor", "Painel", appearance.panelColor)}${color("textColor", "Texto", appearance.textColor)}</div></fieldset>
-        <fieldset class="bg3t20-setting-columns"><legend>Presença visual</legend>${range("scale", "Escala", 0.65, 1.35, 0.05, draft.scale)}${range("opacity", "Opacidade", 0.45, 1, 0.05, draft.opacity)}${range("glowStrength", "Brilho", 0, 1, 0.05, draft.glowStrength)}${range("ornamentStrength", "Ornamentos", 0, 1, 0.05, draft.ornamentStrength)}</fieldset>
-        <fieldset class="bg3t20-setting-columns"><legend>Comportamento</legend>
+        <fieldset class="bg3t20-settings-section bg3t20-theme-section"><legend><i class="fa-solid fa-layer-group"></i> Estilo da HUD</legend><p class="bg3t20-section-note">Cada tema altera formato, retrato, slots, filtros e botões — não somente as cores.</p><div class="bg3t20-theme-list">${themes}</div></fieldset>
+        <div class="bg3t20-settings-pair">
+        <fieldset class="bg3t20-settings-section"><legend><i class="fa-solid fa-palette"></i> Cores personalizadas</legend><div class="bg3t20-color-list">${color("primaryColor", "Destaque", appearance.primaryColor)}${color("secondaryColor", "Contraste", appearance.secondaryColor)}${color("panelColor", "Painel", appearance.panelColor)}${color("textColor", "Texto", appearance.textColor)}</div><p class="bg3t20-section-note">Ao alterar uma cor, o tema muda para Personalizado.</p></fieldset>
+        <fieldset class="bg3t20-settings-section bg3t20-setting-columns"><legend><i class="fa-solid fa-wand-magic-sparkles"></i> Presença visual</legend>${range("scale", "Escala", 0.65, 1.35, 0.05, draft.scale)}${range("opacity", "Opacidade", 0.45, 1, 0.05, draft.opacity)}${range("glowStrength", "Brilho", 0, 1, 0.05, draft.glowStrength)}${range("ornamentStrength", "Ornamentos", 0, 1, 0.05, draft.ornamentStrength)}</fieldset>
+        </div>
+        <fieldset class="bg3t20-settings-section bg3t20-setting-columns bg3t20-behavior"><legend><i class="fa-solid fa-sliders"></i> Comportamento</legend>
           <label class="bg3t20-setting select"><span>Posição</span><select data-setting="verticalPosition"><option value="bottom" ${draft.verticalPosition === "bottom" ? "selected" : ""}>Na base da tela</option><option value="raised" ${draft.verticalPosition === "raised" ? "selected" : ""}>Elevada</option></select></label>
           <label class="bg3t20-setting select"><span>Retrato</span><select data-setting="portraitSource"><option value="actor" ${draft.portraitSource === "actor" ? "selected" : ""}>Imagem da ficha</option><option value="token" ${draft.portraitSource === "token" ? "selected" : ""}>Imagem do token</option></select></label>
           <label class="bg3t20-setting toggle"><input type="checkbox" data-setting="showLabels" ${draft.showLabels ? "checked" : ""}><span>Exibir nomes nos atalhos</span></label>
           <label class="bg3t20-setting toggle"><input type="checkbox" data-setting="hideCoreHotbar" ${draft.hideCoreHotbar ? "checked" : ""}><span>Ocultar hotbar padrão</span></label>
         </fieldset>
-        <fieldset class="bg3t20-portrait-editor"><legend>Enquadramento do retrato</legend>
+        <fieldset class="bg3t20-settings-section bg3t20-portrait-editor"><legend><i class="fa-solid fa-crop-simple"></i> Enquadramento do retrato</legend>
           <div class="bg3t20-portrait-editor-layout">
             <div class="bg3t20-portrait-editor-preview"><img src="${escapeHtml(this._portraitImage())}" alt="Prévia de ${escapeHtml(this.actor.name)}" style="${this._portraitStyle(portrait)}"><span>${escapeHtml(portraitSourceLabel)}</span></div>
             <div class="bg3t20-portrait-editor-controls">
@@ -785,7 +791,7 @@ export class T20Hotbar {
           </div>
         </fieldset>
       </div>
-      <footer><button type="button" data-action="reset-settings"><i class="fa-solid fa-rotate-left"></i> Restaurar padrão</button><button type="button" data-action="save-settings" class="is-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar ajustes</button></footer>
+      <footer><span>As mudanças são exibidas ao vivo.</span><div><button type="button" data-action="reset-settings"><i class="fa-solid fa-rotate-left"></i> Restaurar</button><button type="button" data-action="save-settings" class="is-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar ajustes</button></div></footer>
     </section></div>`;
   }
 

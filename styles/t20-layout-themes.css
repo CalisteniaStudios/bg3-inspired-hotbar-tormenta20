@@ -1,957 +1,272 @@
-/* Structural themes for the Tormenta20 HUD. The Original theme remains in t20-hotbar.css. */
+/* Structural presets. Original and Custom remain defined in t20-hotbar.css. */
 
-#bg3t20-hud:not([data-theme="tormenta"]):not([data-theme="custom"]) .bg3t20-shell,
-#bg3t20-hud:not([data-theme="tormenta"]):not([data-theme="custom"]) .bg3t20-portrait,
-#bg3t20-hud:not([data-theme="tormenta"]):not([data-theme="custom"]) .bg3t20-slot,
-#bg3t20-hud:not([data-theme="tormenta"]):not([data-theme="custom"]) .bg3t20-side-actions button {
-  transition: border-color 160ms ease, box-shadow 160ms ease, filter 160ms ease, transform 160ms ease;
-}
-
-/* Theme cards hint at the geometry of each full layout. */
-.bg3t20-theme[data-theme="reliquary"] .bg3t20-theme-preview {
-  border-width: 3px;
-  border-style: double;
-  border-radius: 9px;
-  background:
-    radial-gradient(circle, #9b2635 0 10%, transparent 11%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 8px),
-    linear-gradient(145deg, #3b2114, #110906) !important;
-}
-
-.bg3t20-theme[data-theme="constellation"] .bg3t20-theme-preview {
-  border-radius: 24px 24px 5px 5px;
-  background:
-    radial-gradient(circle at 50% 115%, transparent 0 25%, #72d8ff 26% 27%, transparent 28% 38%, #9b62ff 39% 40%, transparent 41%),
-    #080d1c !important;
-  box-shadow: inset 0 0 16px rgba(114,216,255,.28);
-}
-
-.bg3t20-theme[data-theme="steel"] .bg3t20-theme-preview {
-  border-radius: 1px;
-  clip-path: polygon(4% 0, 96% 0, 100% 24%, 100% 76%, 96% 100%, 4% 100%, 0 76%, 0 24%);
-  background:
-    linear-gradient(100deg, transparent 0 46%, rgba(223,133,72,.55) 47% 53%, transparent 54%),
-    linear-gradient(#25282d, #0c0d10) !important;
-}
-
-.bg3t20-theme[data-theme="grimoire"] .bg3t20-theme-preview {
-  border-color: #8c6330;
-  border-radius: 3px 9px 9px 3px;
-  color: #6f3426;
-  background:
-    linear-gradient(90deg, transparent 49%, rgba(79,43,22,.35) 50%, transparent 51%),
-    linear-gradient(145deg, #f0dbad, #c59b5c) !important;
-  text-shadow: none;
-}
-
-/* ------------------------------------------------------------------------- */
-/* Relicário de Arton                                                        */
-/* ------------------------------------------------------------------------- */
-
-#bg3t20-hud[data-theme="reliquary"] {
-  font-family: "Modesto Condensed", "Palatino Linotype", serif;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-shell {
-  grid-template-columns: 188px minmax(650px, 760px) 150px;
-  gap: 11px;
-  width: min(1210px, calc(100vw - 150px));
-  min-width: 970px;
-  padding: 18px 16px 18px;
-  filter: drop-shadow(0 18px 28px rgba(0,0,0,.78)) drop-shadow(0 0 8px var(--bg3t20-glow));
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-shell::before {
-  inset: 7px 0 0;
-  border: 4px double color-mix(in srgb, var(--bg3t20-primary) 72%, #4a260f);
-  border-radius: 18px 18px 6px 6px;
-  clip-path: polygon(26px 0, calc(100% - 26px) 0, 100% 25px, 100% 100%, 0 100%, 0 25px);
-  background:
-    radial-gradient(circle at 2% 7%, var(--bg3t20-secondary) 0 5px, #edbf69 6px 8px, transparent 9px),
-    radial-gradient(circle at 98% 7%, var(--bg3t20-secondary) 0 5px, #edbf69 6px 8px, transparent 9px),
-    repeating-linear-gradient(92deg, rgba(255,255,255,.025) 0 1px, transparent 1px 11px),
-    linear-gradient(180deg, color-mix(in srgb, var(--bg3t20-panel-color) 80%, #6b3b21), color-mix(in srgb, var(--bg3t20-panel-color) 92%, #090503));
-  box-shadow: inset 0 0 0 2px #251208, inset 0 0 24px #000, 0 0 0 1px rgba(0,0,0,.9);
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-shell::after {
-  content: "◆  RELICÁRIO DE ARTON  ◆";
-  inset: 2px 50% auto auto;
-  width: 46%;
-  height: 22px;
-  border: 2px ridge color-mix(in srgb, var(--bg3t20-primary) 62%, #513017);
-  border-radius: 4px 4px 10px 10px;
-  color: color-mix(in srgb, var(--bg3t20-primary) 78%, white);
-  background: linear-gradient(#372115, #130b07);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  line-height: 18px;
-  mask-image: none;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-portrait {
-  width: 142px !important;
-  height: 142px;
-  border: 4px double var(--bg3t20-primary) !important;
-  box-shadow: 0 0 0 4px #2b160d, 0 0 0 7px #7d5128, inset 0 0 18px #000, 0 8px 18px #000;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-level {
-  border-radius: 2px;
-  background: #2d190e;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-actor-name {
-  width: 176px;
-  color: #f4d79a;
-  font-size: 19px;
-  letter-spacing: .04em;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-resource {
-  width: 166px !important;
-  height: 20px !important;
-  min-height: 20px !important;
-  border: 2px ridge #7b5a31;
-  border-radius: 3px;
-  background: #0d0805;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-resource strong {
-  line-height: 16px;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-main {
-  gap: 7px;
-  min-width: 650px;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters {
-  gap: 2px;
-  padding: 0 4px;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters button {
-  height: 31px;
-  border: 1px solid #6b4c28 !important;
-  border-radius: 5px 5px 1px 1px !important;
-  color: #d9c7a5;
-  background: linear-gradient(#4a2b1a, #1a0f09) !important;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters button.is-active {
-  color: #fff0c6;
-  background: linear-gradient(color-mix(in srgb, var(--bg3t20-secondary) 72%, #5d2e1b), #26110d) !important;
-  box-shadow: inset 0 -3px 0 var(--bg3t20-primary), 0 0 8px var(--bg3t20-glow);
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-grid {
-  --bg3t20-slot-size: clamp(58px, 4.25vw, 70px);
-  border: 3px double #704d27;
+/* Miniatures used in the settings gallery. */
+.bg3t20-theme[data-theme="reliquary"] .bg3t20-theme-art {
+  border: 3px double #b98a45;
   border-radius: 4px;
   background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 9px),
-    rgba(11,6,4,.72);
+    radial-gradient(circle at 5% 12%, #b32632 0 3px, #e0b65d 4px 5px, transparent 6px),
+    radial-gradient(circle at 95% 12%, #b32632 0 3px, #e0b65d 4px 5px, transparent 6px),
+    repeating-linear-gradient(92deg, rgba(255,255,255,.035) 0 1px, transparent 1px 8px),
+    linear-gradient(#402314, #130905);
 }
+.bg3t20-theme[data-theme="reliquary"] .bg3t20-theme-avatar { border-width: 3px; }
+.bg3t20-theme[data-theme="reliquary"] .bg3t20-theme-action { border-radius: 50%; }
 
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-slot {
-  border: 2px ridge color-mix(in srgb, var(--bg3t20-primary) 42%, #3d2715) !important;
-  border-radius: 2px !important;
-  background: #120b07 !important;
-  box-shadow: inset 0 0 0 2px rgba(0,0,0,.45), inset 0 0 9px #000;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-weapons {
-  border: 3px double #74522c;
-  background: linear-gradient(#47291a, #130b07);
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-effects button {
-  border: 2px solid #9b7139 !important;
-  border-radius: 4px !important;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding: 7px 7px 8px 0;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn {
-  grid-column: 1 / -1;
-  min-height: 104px !important;
-  flex-direction: column;
-  border: 5px double color-mix(in srgb, var(--bg3t20-primary) 76%, #4d2615) !important;
-  border-radius: 50% !important;
-  color: #ffe3a2;
+.bg3t20-theme[data-theme="constellation"] .bg3t20-theme-art {
+  border-radius: 50% 50% 6px 6px / 72% 72% 6px 6px;
   background:
-    radial-gradient(circle, color-mix(in srgb, var(--bg3t20-secondary) 82%, #5b151b), #1a0908 68%) !important;
-  box-shadow: inset 0 0 0 4px #30150e, inset 0 0 20px #000, 0 0 12px rgba(0,0,0,.8);
+    radial-gradient(ellipse at 50% 110%, transparent 0 40%, rgba(114,216,255,.4) 41%, transparent 43% 55%, rgba(155,98,255,.34) 56%, transparent 58%),
+    linear-gradient(#101b38, #040713);
+  box-shadow: inset 0 0 13px rgba(114,216,255,.24);
 }
+.bg3t20-theme[data-theme="constellation"] :is(.bg3t20-theme-avatar, .bg3t20-theme-slots i) { border-radius: 50%; }
+.bg3t20-theme[data-theme="constellation"] .bg3t20-theme-action { transform: rotate(45deg); }
 
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn i {
-  font-size: 25px;
-}
-
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-rest,
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-settings-button {
-  min-height: 47px !important;
-  flex-direction: column;
-  padding: 4px !important;
-  border: 2px ridge #6f4e29 !important;
-  border-radius: 2px !important;
-  background: linear-gradient(#382217, #100906) !important;
-  font-size: 8px;
-}
-
-/* ------------------------------------------------------------------------- */
-/* Constelação Arcana                                                       */
-/* ------------------------------------------------------------------------- */
-
-#bg3t20-hud[data-theme="constellation"] {
-  bottom: 2px;
-  font-family: "Signika", sans-serif;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-shell {
-  display: block;
-  width: min(1160px, calc(100vw - 100px));
-  min-width: 900px;
-  min-height: 278px;
-  padding: 102px 145px 14px 125px;
-  filter: drop-shadow(0 0 12px rgba(92,166,255,.42)) drop-shadow(0 18px 26px rgba(0,0,0,.8));
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-shell::before {
-  inset: 46px 3px 0;
-  border: 1px solid rgba(114,216,255,.42);
-  border-radius: 56% 56% 8px 8px / 46% 46% 8px 8px;
-  clip-path: none;
+.bg3t20-theme[data-theme="steel"] .bg3t20-theme-art {
+  border-radius: 1px;
+  clip-path: polygon(7px 0, calc(100% - 7px) 0, 100% 7px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 7px);
   background:
-    radial-gradient(ellipse at 50% 105%, transparent 0 39%, rgba(114,216,255,.22) 40%, transparent 41% 52%, rgba(155,98,255,.2) 53%, transparent 54%),
-    linear-gradient(180deg, transparent 18%, rgba(5,9,23,.82) 58%, rgba(3,6,16,.96));
-  box-shadow: inset 0 -18px 36px rgba(0,0,0,.6), 0 0 22px rgba(114,216,255,.12);
+    linear-gradient(90deg, transparent, rgba(224,111,50,.26), transparent),
+    repeating-linear-gradient(110deg, rgba(255,255,255,.025) 0 1px, transparent 1px 6px),
+    linear-gradient(#242932, #080a0e);
 }
+.bg3t20-theme[data-theme="steel"] :is(.bg3t20-theme-avatar, .bg3t20-theme-slots i, .bg3t20-theme-action) { border-radius: 1px; }
 
-#bg3t20-hud[data-theme="constellation"] .bg3t20-shell::after {
-  content: "✦     ✧     ✦     ✧     ✦";
-  inset: 57px 50% auto auto;
-  width: 68%;
-  border: 0;
-  color: #b7ebff;
-  font-size: 12px;
-  letter-spacing: 2.3em;
-  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+.bg3t20-theme[data-theme="grimoire"] .bg3t20-theme-art {
+  border: 3px double #8c612d;
+  border-radius: 2px 8px 8px 2px;
+  color: #69341f;
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(87,48,24,.3) 50%, transparent 51%),
+    repeating-linear-gradient(0deg, rgba(91,52,25,.03) 0 1px, transparent 1px 5px),
+    linear-gradient(100deg, #c89e62, #f0ddb1 8%, #e2c58e 48%, #b88c53 50%, #efd9a8 53%, #c59356);
 }
+.bg3t20-theme[data-theme="grimoire"] :is(.bg3t20-theme-avatar, .bg3t20-theme-slots i, .bg3t20-theme-action) { border-radius: 1px; }
 
-#bg3t20-hud[data-theme="constellation"] .bg3t20-portrait-wrap {
-  position: absolute;
-  inset: 0 auto auto 50%;
-  z-index: 5;
-  width: 480px;
-  padding: 0;
-  transform: translateX(-50%);
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-portrait {
-  width: 132px !important;
-  height: 132px;
-  border: 2px solid #d9f6ff !important;
-  box-shadow: 0 0 0 5px #11182f, 0 0 0 7px var(--bg3t20-primary), 0 0 22px var(--bg3t20-glow), inset 0 0 16px #000;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-actor-name {
-  position: absolute;
-  inset: 80px 50% auto auto;
-  width: 154px;
+/* Shared reset: every structural preset owns all of its measurements. */
+#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell {
+  box-sizing: border-box;
+  width: min(900px, calc(100vw - 100px));
+  min-width: 760px;
   margin: 0;
-  padding: 4px 7px;
-  border: 1px solid rgba(114,216,255,.28);
-  border-radius: 12px;
-  color: #f2fbff;
-  background: rgba(3,7,20,.78);
-  text-shadow: 0 0 8px var(--bg3t20-glow), 0 2px 2px #000;
-  transform: translateX(50%);
+  opacity: var(--bg3t20-opacity);
 }
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-resource {
-  position: absolute;
-  top: 91px;
-  width: 132px !important;
-  height: 18px !important;
-  min-height: 18px !important;
-  border-color: rgba(174,231,255,.58);
-  border-radius: 12px;
-  background: rgba(2,5,16,.84);
-  box-shadow: 0 0 7px rgba(114,216,255,.2), inset 0 0 5px #000;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-resource.pv { left: 18px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-resource.pm { right: 18px; }
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-defenses {
-  position: absolute;
-  inset: 70px -1px auto;
-  justify-content: space-between;
-  pointer-events: none;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-defenses > * {
-  pointer-events: auto;
-  border-radius: 50% !important;
-  background: #0a1023 !important;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-main {
-  gap: 5px;
-  width: 100%;
+#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) :is(.bg3t20-portrait-wrap, .bg3t20-main, .bg3t20-side-actions) {
+  box-sizing: border-box;
   min-width: 0;
 }
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-weapons {
-  inset: 116px auto auto 8px;
-  z-index: 4;
-  flex-direction: column;
-  border: 0;
-  background: transparent;
+#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) :is(.bg3t20-portrait-wrap, .bg3t20-main, .bg3t20-side-actions, .bg3t20-weapons, .bg3t20-filters, .bg3t20-grid, .bg3t20-effects) { z-index: 1; }
+#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell::after { pointer-events: none; }
+#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) :is(.bg3t20-slot, .bg3t20-mini-slot, .bg3t20-side-actions button) {
+  transition: border-color 140ms ease, box-shadow 140ms ease, filter 140ms ease, transform 140ms ease;
 }
 
-#bg3t20-hud[data-theme="constellation"] .bg3t20-mini-slot,
-#bg3t20-hud[data-theme="constellation"] .bg3t20-slot {
-  border: 1px solid rgba(177,231,255,.68) !important;
-  border-radius: 50% !important;
-  background: radial-gradient(circle, rgba(31,48,88,.65), #030713 74%) !important;
-  box-shadow: inset 0 0 10px #000, 0 0 9px color-mix(in srgb, var(--action-color, var(--bg3t20-primary)) 42%, transparent);
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-grid {
-  --bg3t20-slot-size: clamp(52px, 4vw, 64px);
-  gap: 7px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  box-shadow: none;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-slot::after {
-  inset: 3px;
-  border: 1px solid transparent;
-  border-bottom-color: var(--action-color, transparent);
-  border-radius: 50%;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-item-name {
-  inset: auto 7px 9px;
-  font-size: 7px;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-filters {
-  gap: 0;
-  padding: 0 30px;
-  border: 1px solid rgba(140,190,255,.26);
-  border-radius: 22px;
-  background: rgba(4,7,19,.8);
-  clip-path: polygon(20px 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0 50%);
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-filters button {
-  height: 32px;
-  border-radius: 0 !important;
-  color: #aebad2;
-  background: transparent !important;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-filters button.is-active {
-  color: #fff;
-  background: linear-gradient(90deg, transparent, rgba(92,117,255,.38), transparent) !important;
-  box-shadow: inset 0 -2px 0 var(--bg3t20-primary), 0 0 12px var(--bg3t20-glow);
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-effects {
-  justify-content: center;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-effects button {
-  border-color: #87dfff !important;
-  box-shadow: 0 0 7px rgba(114,216,255,.35);
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions {
-  position: absolute;
-  inset: auto 5px 15px auto;
-  z-index: 4;
-  grid-template-columns: repeat(2, 42px);
-  justify-content: center;
-  width: 124px;
-  padding: 0;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn {
-  grid-column: 1 / -1;
-  min-height: 92px !important;
-  flex-direction: column;
-  border: 2px solid #9ee7ff !important;
-  border-radius: 8px !important;
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-  color: #fff;
-  background: radial-gradient(circle, rgba(91,91,217,.8), #08132d 70%) !important;
-  box-shadow: inset 0 0 24px rgba(114,216,255,.44), 0 0 18px var(--bg3t20-glow);
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-rest,
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-settings-button {
-  width: 42px !important;
-  min-height: 42px !important;
-  padding: 0 !important;
-  border-radius: 50% !important;
-  background: #080e20 !important;
-}
-
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-rest span,
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-settings-button span {
-  display: none;
-}
-
-/* ------------------------------------------------------------------------- */
-/* Aço & Brasa                                                               */
-/* ------------------------------------------------------------------------- */
-
-#bg3t20-hud[data-theme="steel"] {
-  bottom: 3px;
-  font-family: "Signika", sans-serif;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-shell {
-  grid-template-columns: 190px minmax(590px, 700px) 154px;
-  gap: 58px;
-  width: min(1160px, calc(100vw - 120px));
-  min-width: 950px;
-  padding: 8px 10px 10px;
-  filter: drop-shadow(0 15px 24px rgba(0,0,0,.82));
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-shell::before {
-  inset: 20px 0 0;
-  border: 1px solid #4d5055;
-  border-radius: 1px;
-  clip-path: polygon(13px 0, calc(100% - 13px) 0, 100% 13px, 100% calc(100% - 7px), calc(100% - 7px) 100%, 7px 100%, 0 calc(100% - 7px), 0 13px);
-  background:
-    repeating-linear-gradient(105deg, rgba(255,255,255,.025) 0 1px, transparent 1px 7px),
-    linear-gradient(180deg, #25282d, #0b0c0f 68%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -10px 22px #000;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-shell::after {
-  content: "";
-  inset: 20px 12% auto 12%;
-  width: auto;
-  height: 2px;
-  border: 0;
-  background: linear-gradient(90deg, transparent, var(--bg3t20-primary), var(--bg3t20-secondary), transparent);
-  line-height: 0;
-  mask-image: none;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-portrait-wrap {
-  align-items: flex-start;
-  padding: 5px 8px 8px;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-portrait {
-  width: 112px !important;
-  height: 132px;
-  border: 1px solid #65676b !important;
-  border-radius: 2px 22px 2px 2px !important;
-  box-shadow: 0 0 0 3px #101216, inset 0 0 18px #000, 0 8px 15px #000;
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-level {
-  inset: 6px 6px auto auto;
-  border-radius: 2px;
-  color: #ffd0aa;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-actor-name {
-  position: absolute;
-  inset: 10px 5px auto 128px;
-  width: 65px;
-  font: 700 13px "Signika", sans-serif;
-  text-align: left;
-  white-space: normal;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource {
-  position: absolute;
-  left: 128px;
-  width: 58px !important;
-  height: 38px !important;
-  min-height: 38px !important;
-  border: 1px solid #4c4f55;
-  border-radius: 2px;
-  background: #090a0c;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource.pv { top: 52px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource.pm { top: 94px; }
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource strong {
+/* Relicário de Arton ------------------------------------------------------ */
+#bg3t20-hud[data-theme="reliquary"] { bottom: 5px; font-family: "Modesto Condensed", "Palatino Linotype", serif; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-shell {
   display: grid;
-  place-items: center;
-  font-size: 11px;
-  line-height: 1;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource > span {
-  inset: auto 0 0;
-  height: 7px;
-  border-radius: 0;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-defenses {
-  position: absolute;
-  inset: 35px 4px auto 128px;
-  justify-content: flex-start;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-defenses > * {
-  padding: 0 5px !important;
-  border-radius: 1px !important;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-main {
-  gap: 2px;
-  min-width: 590px;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-filters {
-  display: flex;
-  gap: 1px;
-  padding: 0;
-  border-bottom: 1px solid #494b4f;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-filters button {
-  flex: 1;
-  height: 24px;
-  border-radius: 0 !important;
-  background: #15171b !important;
-  font-size: 9px;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-filters button span {
-  display: none;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-filters button.is-active {
-  color: #ffd0a8;
-  background: linear-gradient(#34231d, #15171b) !important;
-  box-shadow: inset 0 -2px 0 var(--bg3t20-primary);
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-grid {
-  --bg3t20-slot-size: clamp(48px, 3.8vw, 58px);
-  gap: 3px;
-  padding: 4px;
-  border-color: #494b50;
-  border-radius: 1px;
-  background: #08090b;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-slot {
-  border-color: #41444a !important;
-  border-radius: 1px !important;
-  background: #111318 !important;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-slot::after {
-  border-width: 1px;
-  border-left-color: var(--action-color, transparent);
-  border-bottom-color: transparent;
-  border-radius: 0;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-weapons {
-  inset: 27px -52px auto auto;
-  flex-direction: column;
-  gap: 3px;
-  padding: 3px;
-  border: 1px solid #4e5055;
-  border-radius: 1px;
-  background: #0c0d10;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-mini-slot {
-  width: 44px !important;
-  height: 44px;
-  border-radius: 1px !important;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-effects {
-  min-height: 21px;
-  padding: 2px 4px;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-effects button {
-  width: 19px !important;
-  height: 19px;
-  border-radius: 2px !important;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions {
-  padding: 5px 5px 7px 0;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions button {
-  border-radius: 1px !important;
-  background: linear-gradient(#22252a, #0b0c0f) !important;
-}
-
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn {
-  min-height: 82px !important;
-  flex-direction: column;
-  border: 2px solid var(--bg3t20-primary) !important;
-  clip-path: polygon(10% 0, 90% 0, 100% 18%, 100% 82%, 90% 100%, 10% 100%, 0 82%, 0 18%);
-  color: #ffd3b1;
-  background: linear-gradient(145deg, #3a1f19, #0d0e11 65%) !important;
-  box-shadow: inset 0 0 18px #000;
-}
-
-/* ------------------------------------------------------------------------- */
-/* Grimório Vivo                                                             */
-/* ------------------------------------------------------------------------- */
-
-#bg3t20-hud[data-theme="grimoire"] {
-  bottom: 0;
-  font-family: "Palatino Linotype", "Book Antiqua", serif;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-shell {
-  grid-template-columns: 292px minmax(610px, 680px) 142px;
+  grid-template-columns: 148px minmax(0, 1fr) 108px;
   gap: 8px;
-  width: min(1160px, calc(100vw - 100px));
-  min-width: 1010px;
-  padding: 18px 15px 18px;
-  color: #342215;
-  filter: drop-shadow(0 18px 26px rgba(0,0,0,.72));
+  align-items: end;
+  padding: 20px 15px 13px;
+  filter: drop-shadow(0 16px 24px rgba(0,0,0,.78)) drop-shadow(0 0 7px rgba(215,175,98,.22));
 }
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-shell::before {
-  inset: 4px 0 0;
-  border: 5px ridge #785127;
-  border-radius: 8px 18px 18px 8px;
-  clip-path: none;
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-shell::before {
+  inset: 8px 0 0;
+  border: 4px double #9b7138;
+  border-radius: 10px 10px 3px 3px;
+  clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%, 0 18px);
   background:
-    linear-gradient(90deg, transparent 0 25%, rgba(74,42,20,.18) 25.2%, transparent 25.7% 74%, rgba(74,42,20,.24) 74.4%, transparent 75%),
-    radial-gradient(circle at 25% 50%, rgba(255,255,255,.35), transparent 42%),
-    radial-gradient(circle at 73% 48%, rgba(255,255,255,.28), transparent 46%),
-    repeating-linear-gradient(0deg, rgba(95,59,29,.025) 0 1px, transparent 1px 6px),
-    linear-gradient(100deg, #c6a36d, #f1dfb6 6%, #e8d0a0 48%, #b68c54 50%, #ead3a4 52%, #f1dfb8 95%, #b6884e);
-  box-shadow: inset 0 0 24px rgba(64,34,14,.42), 0 0 0 2px #2b170d;
+    radial-gradient(circle at 13px 13px, #a52331 0 4px, #e5ba63 5px 7px, transparent 8px),
+    radial-gradient(circle at calc(100% - 13px) 13px, #a52331 0 4px, #e5ba63 5px 7px, transparent 8px),
+    repeating-linear-gradient(93deg, rgba(255,255,255,.025) 0 1px, transparent 1px 10px),
+    linear-gradient(180deg, #422719, #1b0f09 54%, #090504);
+  box-shadow: inset 0 0 0 2px #1f0e07, inset 0 0 22px #000, 0 0 0 1px #050302;
 }
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-shell::after {
-  content: "";
-  inset: 13px auto 10px 49.5%;
-  width: 9px;
-  height: auto;
-  border: 0;
-  background: linear-gradient(90deg, transparent, rgba(67,37,18,.4), rgba(255,255,255,.25), transparent);
-  opacity: .65;
-  transform: none;
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-shell::after {
+  content: "◆  ◇  ◆";
+  inset: 4px 50% auto auto;
+  width: 34%;
+  height: 18px;
+  border: 1px solid #8a6030;
+  border-radius: 2px 2px 8px 8px;
+  color: #dcb765;
+  background: linear-gradient(#372014, #120905);
+  font-size: 8px;
+  line-height: 16px;
+  letter-spacing: .4em;
+  opacity: var(--bg3t20-ornament-opacity);
+  transform: translateX(50%);
   mask-image: none;
 }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-portrait-wrap { position: relative; align-items: center; padding: 2px 2px 5px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-portrait { width: 102px !important; height: 102px; border: 3px double #e0bc6c !important; border-radius: 50% !important; box-shadow: 0 0 0 4px #271309, 0 0 0 6px #7b5228, inset 0 0 15px #000, 0 7px 15px #000; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-level { inset: auto 14px 4px; border-color: #9b7138; background: #1e0f08; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-actor-name { width: 140px; margin: 2px 0 3px; color: #f2d69a; font-size: 15px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-resource { width: 132px !important; height: 15px !important; min-height: 15px !important; margin: 1px 0; border: 1px solid #77552e; border-radius: 2px; background: #090504; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-resource strong { font-size: 8px; line-height: 13px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-defenses { margin-top: 3px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-defenses > * { height: 21px; border-color: #684925 !important; background: #160c07 !important; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-main { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 0 0 2px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 2px; padding: 0; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters button { height: 24px; padding: 0 3px !important; border: 1px solid #60401e !important; border-radius: 3px 3px 1px 1px !important; color: #cab990; background: linear-gradient(#482b19, #160c07) !important; font-size: 8px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters button span { display: inline; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters button.is-active { border-color: #d2a44c !important; color: #fff0c4; background: linear-gradient(#782c2c, #2b100e) !important; box-shadow: inset 0 -2px 0 #e0b95f, 0 0 6px rgba(224,185,95,.25); }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-grid { --bg3t20-slot-size: clamp(43px, 3.2vw, 49px); grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 3px; padding: 5px; border: 3px double #6f4b26; border-radius: 2px; background: rgba(8,4,2,.72); box-shadow: inset 0 0 13px #000; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-slot { border: 2px ridge #634522 !important; border-radius: 1px !important; background: #100906 !important; box-shadow: inset 0 0 7px #000; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-weapons { inset: -42px auto auto 2px; gap: 3px; padding: 3px 5px; border: 2px double #74522b; border-bottom: 0; border-radius: 5px 5px 0 0; background: linear-gradient(#422517, #120a06); }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-mini-slot { width: 33px !important; height: 33px; border: 1px solid #75532a !important; border-radius: 2px !important; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-resource.is-editing input { width: 82px; height: 19px; margin-left: 3px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-effects { min-height: 20px; padding: 1px 4px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-effects button { width: 19px !important; height: 19px; border: 1px solid #98703a !important; border-radius: 3px !important; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; padding: 3px 1px 5px 0; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn { grid-column: 1 / -1; min-height: 82px !important; flex-direction: column; padding: 8px !important; border: 4px double #b58743 !important; border-radius: 50% !important; color: #f1d897; background: radial-gradient(circle, #6f2728, #180a08 70%) !important; box-shadow: inset 0 0 0 3px #2b120c, inset 0 0 17px #000, 0 0 8px #000; font-size: 8px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 17px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) { min-height: 34px !important; padding: 4px !important; border: 1px solid #73522c !important; border-radius: 2px !important; background: linear-gradient(#3a2215, #100906) !important; font-size: 0; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) i { font-size: 13px; }
 
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait-wrap {
-  align-items: flex-start;
-  min-height: 240px;
-  padding: 7px 20px 9px;
-}
+/* Constelação Arcana ------------------------------------------------------ */
+#bg3t20-hud[data-theme="constellation"] { bottom: 2px; font-family: "Signika", sans-serif; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-shell { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr) 86px; gap: 7px; align-items: end; min-height: 196px; padding: 75px 20px 10px; filter: drop-shadow(0 0 10px rgba(114,216,255,.3)) drop-shadow(0 16px 22px rgba(0,0,0,.8)); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-shell::before { inset: 37px 0 0; border: 1px solid rgba(137,218,255,.44); border-radius: 50% 50% 5px 5px / 56% 56% 5px 5px; clip-path: none; background: radial-gradient(ellipse at 50% 108%, transparent 0 42%, rgba(114,216,255,.17) 42.5%, transparent 43.5% 54%, rgba(155,98,255,.18) 54.5%, transparent 55.5%), linear-gradient(180deg, transparent 4%, rgba(8,15,33,.62) 35%, rgba(3,7,17,.97) 78%); box-shadow: inset 0 -16px 30px rgba(0,0,0,.68), 0 0 18px rgba(114,216,255,.12); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-shell::after { content: "✦     ·     ✧     ·     ✦"; inset: 46px 50% auto auto; width: 64%; color: #b9ecff; font-size: 8px; letter-spacing: 1.4em; opacity: calc(var(--bg3t20-ornament-opacity) * .8); transform: translateX(50%); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-portrait-wrap { position: absolute; inset: 0 auto auto 50%; z-index: 5; width: 360px; height: 105px; padding: 0; transform: translateX(-50%); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-portrait { width: 92px !important; height: 92px; border: 2px solid #e9fbff !important; border-radius: 50% !important; box-shadow: 0 0 0 4px #0c142b, 0 0 0 6px #70d4f7, 0 0 18px rgba(114,216,255,.58), inset 0 0 13px #000; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-level { inset: auto 11px 3px; border-color: rgba(114,216,255,.5); background: #071021; font-size: 7px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-actor-name { position: absolute; inset: 69px 50% auto auto; width: 120px; margin: 0; padding: 3px 6px; border: 1px solid rgba(114,216,255,.28); border-radius: 10px; background: rgba(3,8,20,.86); font-size: 11px; transform: translateX(50%); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-resource { position: absolute; top: 54px; width: 108px !important; height: 14px !important; min-height: 14px !important; margin: 0; border: 1px solid rgba(157,227,255,.46); border-radius: 9px; background: #020611; box-shadow: inset 0 0 5px #000, 0 0 6px rgba(114,216,255,.14); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-resource.pv { left: 3px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-resource.pm { right: 3px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-resource strong { font-size: 8px; line-height: 12px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-resource.is-editing input { width: 72px; height: 18px; margin-left: 4px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-defenses { position: absolute; inset: 26px 3px auto; justify-content: space-between; margin: 0; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-defenses > * { height: 22px; padding: 0 6px !important; border-color: rgba(114,216,255,.35) !important; border-radius: 50% !important; background: #071022 !important; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-main { position: relative; display: flex; flex-direction: column; gap: 4px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-filters { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 0; margin: 0 13px; padding: 0 15px; border: 1px solid rgba(138,202,255,.22); border-radius: 16px; background: rgba(3,8,20,.82); clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-filters button { height: 24px; padding: 0 2px !important; border-radius: 0 !important; color: #aebbd3; background: transparent !important; font-size: 8px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-filters button span { display: none; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-filters button.is-active { color: #fff; background: linear-gradient(90deg, transparent, rgba(91,101,210,.52), transparent) !important; box-shadow: inset 0 -2px 0 #72d8ff, 0 0 8px rgba(114,216,255,.28); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-grid { --bg3t20-slot-size: clamp(40px, 3.05vw, 47px); grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 5px; padding: 4px 8px; border: 0; border-radius: 50%; background: transparent; box-shadow: none; }
+#bg3t20-hud[data-theme="constellation"] :is(.bg3t20-slot, .bg3t20-mini-slot) { border: 1px solid rgba(157,226,255,.62) !important; border-radius: 50% !important; background: radial-gradient(circle, #17254a, #020611 74%) !important; box-shadow: inset 0 0 8px #000, 0 0 7px color-mix(in srgb, var(--action-color, #72d8ff) 35%, transparent); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-slot::after { inset: 3px; border-width: 1px; border-radius: 50%; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-item-name { inset: auto 6px 7px; font-size: 6px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-weapons { inset: auto auto 2px -79px; flex-direction: column; gap: 3px; padding: 0; border: 0; background: transparent; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-mini-slot { width: 27px !important; height: 27px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-effects { justify-content: center; min-height: 19px; padding: 0; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-effects button { width: 18px !important; height: 18px; border-color: #83dcfb !important; box-shadow: 0 0 5px rgba(114,216,255,.3); }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions { display: grid; grid-template-columns: repeat(2, 34px); gap: 5px; justify-content: center; padding: 0 0 3px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn { grid-column: 1 / -1; min-height: 68px !important; flex-direction: column; padding: 6px !important; border: 2px solid #9ee8ff !important; border-radius: 8px !important; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); color: #eefbff; background: radial-gradient(circle, #4a4fa5, #071128 72%) !important; box-shadow: inset 0 0 18px rgba(114,216,255,.32), 0 0 12px rgba(114,216,255,.3); font-size: 7px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 14px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) { width: 34px !important; min-height: 34px !important; padding: 0 !important; border: 1px solid rgba(151,226,255,.58) !important; border-radius: 50% !important; background: #061022 !important; font-size: 0; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
 
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait {
-  width: 142px !important;
-  height: 166px;
-  border: 5px double #8d622d !important;
-  border-radius: 3px !important;
-  background: #d0ae74 !important;
-  box-shadow: 0 0 0 2px #4e2d16, inset 0 0 13px rgba(44,21,8,.55);
-}
+/* Aço & Brasa ------------------------------------------------------------- */
+#bg3t20-hud[data-theme="steel"] { bottom: 4px; font-family: "Signika", sans-serif; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-shell { display: grid; grid-template-columns: 146px minmax(0, 1fr) 102px; gap: 7px; align-items: end; padding: 16px 12px 9px; filter: drop-shadow(0 16px 23px rgba(0,0,0,.84)); }
+#bg3t20-hud[data-theme="steel"] .bg3t20-shell::before { inset: 13px 0 0; border: 1px solid #515862; border-radius: 1px; clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 10px); background: linear-gradient(90deg, transparent, rgba(225,117,59,.1), transparent), repeating-linear-gradient(108deg, rgba(255,255,255,.022) 0 1px, transparent 1px 7px), linear-gradient(#232830, #0a0c10 70%); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -10px 18px #000; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-shell::after { content: ""; inset: 13px 12% auto; width: auto; height: 2px; border: 0; background: linear-gradient(90deg, transparent, #e18448, #9a3037, transparent); transform: none; mask-image: none; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-portrait-wrap { position: relative; align-items: flex-start; min-height: 120px; padding: 3px 4px 4px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-portrait { width: 78px !important; height: 94px; border: 1px solid #6b7078 !important; border-radius: 1px 15px 1px 1px !important; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); box-shadow: 0 0 0 3px #0b0e12, inset 0 0 12px #000, 0 7px 13px #000; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-level { inset: 4px 4px auto auto; border-radius: 1px; color: #ffd2b4; background: #11151b; font-size: 7px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-actor-name { position: absolute; inset: 5px 2px auto 88px; width: 54px; margin: 0; font: 700 10px "Signika", sans-serif; text-align: left; white-space: normal; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-resource { position: absolute; left: 88px; width: 52px !important; height: 27px !important; min-height: 27px !important; margin: 0; border: 1px solid #4d535c; border-radius: 1px; background: #080a0d; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-resource.pv { top: 32px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-resource.pm { top: 63px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-resource > span { inset: auto 0 0; height: 5px; border-radius: 0; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-resource strong { display: grid; place-items: center; font-size: 8px; line-height: 1; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-resource.is-editing input { width: 46px; height: 22px; margin: 0 3px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-resource.is-editing em { display: none; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-defenses { position: absolute; inset: auto 4px 1px 88px; justify-content: flex-start; margin: 0; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-defenses > * { height: 21px; padding: 0 4px !important; border-color: #4e555e !important; border-radius: 1px !important; background: #101319 !important; font-size: 8px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-main { position: relative; display: flex; flex-direction: column; gap: 2px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-filters { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 1px; padding: 0; border-bottom: 1px solid #4b5159; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-filters button { height: 21px; padding: 0 2px !important; border-radius: 0 !important; color: #aeb2b7; background: #15191f !important; font-size: 8px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-filters button span { display: none; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-filters button.is-active { color: #ffd2ae; background: linear-gradient(#3a241b, #15191f) !important; box-shadow: inset 0 -2px 0 #df8548; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-grid { --bg3t20-slot-size: clamp(41px, 3.1vw, 47px); grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 2px; padding: 4px; border-color: #474d56; border-radius: 1px; background: #07090c; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-slot { border-color: #3f4650 !important; border-radius: 1px !important; background: #11151b !important; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-slot::after { border-width: 1px; border-left-color: var(--action-color, transparent); border-bottom-color: transparent; border-radius: 0; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-item-name { font-size: 6px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-weapons { inset: auto -37px 0 auto; flex-direction: column; gap: 2px; padding: 2px; border: 1px solid #4e555d; border-radius: 1px; background: #090c10; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-mini-slot { width: 31px !important; height: 31px; border-radius: 1px !important; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-effects { min-height: 18px; padding: 1px 3px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-effects button { width: 17px !important; height: 17px; border-radius: 1px !important; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 2px 1px 4px 0; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions button { border-color: #4d535c !important; border-radius: 1px !important; background: linear-gradient(#22272e, #090b0f) !important; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn { grid-column: 1 / -1; min-height: 70px !important; flex-direction: column; padding: 6px !important; border: 1px solid #dd7c43 !important; clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px); color: #ffd1b1; background: linear-gradient(145deg, #3a2019, #0b0d11 68%) !important; box-shadow: inset 0 0 15px #000; font-size: 8px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 17px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) { min-height: 31px !important; padding: 0 !important; font-size: 0; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
 
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-level {
-  inset: auto 8px 7px;
-  border-color: #8b5b28;
-  border-radius: 1px;
-  color: #f8e6bb;
-  background: #5b331b;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-actor-name {
-  position: absolute;
-  inset: 15px 16px auto 176px;
-  width: 96px;
-  color: #502b1a;
-  font-size: 20px;
-  line-height: 1.05;
-  text-align: left;
-  text-shadow: none;
-  white-space: normal;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource {
-  position: absolute;
-  left: 176px;
-  width: 90px !important;
-  height: 54px !important;
-  min-height: 54px !important;
-  border: 3px double #6d431f;
-  border-radius: 50% 50% 8px 8px;
-  background: #5b311e;
-  box-shadow: 0 4px 0 #7a3d24, 0 7px 10px rgba(65,31,13,.28);
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.pv { top: 79px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.pm { top: 148px; background: #253e77; box-shadow: 0 4px 0 #314d8c, 0 7px 10px rgba(25,31,65,.25); }
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource > span {
-  inset: auto 0 0;
-  height: 9px;
-  border-radius: 0 0 5px 5px;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource strong {
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  line-height: 1;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-defenses {
-  position: absolute;
-  inset: auto 21px 15px 20px;
-  justify-content: flex-start;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-defenses > * {
-  border-color: #80572d !important;
-  color: #4e2c1b;
-  background: rgba(255,246,215,.4) !important;
-  text-shadow: none;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-main {
-  display: grid;
-  grid-template-columns: minmax(470px, 1fr) 116px;
-  grid-template-rows: auto auto;
-  gap: 6px 8px;
-  min-width: 610px;
-  padding: 5px 2px 0 8px;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  justify-content: center;
-  padding: 2px 0;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button {
-  justify-content: flex-start;
-  height: 25px;
-  padding: 0 8px !important;
-  border: 1px solid #70451f !important;
-  border-radius: 2px 8px 8px 2px !important;
-  color: #f4dfb0;
-  background: linear-gradient(90deg, #6a3c22, #321b11) !important;
-  box-shadow: 2px 2px 3px rgba(69,35,16,.25);
-}
-
+/* Grimório Vivo ----------------------------------------------------------- */
+#bg3t20-hud[data-theme="grimoire"] { bottom: 2px; font-family: "Palatino Linotype", "Book Antiqua", serif; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-shell { display: grid; grid-template-columns: 206px minmax(0, 1fr) 100px; gap: 7px; align-items: end; padding: 15px 12px 11px; color: #3e2919; filter: drop-shadow(0 16px 24px rgba(0,0,0,.72)); }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-shell::before { inset: 5px 0 0; border: 4px ridge #80562a; border-radius: 4px 13px 13px 4px; clip-path: none; background: linear-gradient(90deg, transparent 23.2%, rgba(79,43,21,.2) 23.5%, rgba(255,255,255,.22) 24%, transparent 24.5% 76%, rgba(79,43,21,.2) 76.4%, rgba(255,255,255,.2) 77%, transparent 77.4%), repeating-linear-gradient(0deg, rgba(89,54,27,.026) 0 1px, transparent 1px 6px), linear-gradient(100deg, #b98e54, #f0dfb8 5%, #e9d1a0 48%, #b4864e 50%, #efd9ac 52%, #efdcb4 95%, #b1844d); box-shadow: inset 0 0 20px rgba(62,32,13,.38), 0 0 0 2px #2c180d; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-shell::after { content: "❦"; inset: 12px auto 9px 76%; width: 1px; height: auto; border: 0; color: rgba(93,52,26,.58); background: linear-gradient(transparent, rgba(87,47,23,.34), transparent); font-size: 14px; line-height: 18px; text-indent: -6px; opacity: var(--bg3t20-ornament-opacity); transform: none; mask-image: none; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait-wrap { position: relative; align-items: flex-start; min-height: 126px; padding: 3px 8px 4px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait { width: 88px !important; height: 104px; border: 4px double #8b602d !important; border-radius: 2px !important; background: #cfaa73 !important; box-shadow: 0 0 0 2px #4f2e17, inset 0 0 11px rgba(44,21,8,.55); }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-level { inset: auto 5px 5px; border-color: #8b5b28; border-radius: 1px; color: #f8e6bb; background: #5b331b; font-size: 7px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-actor-name { position: absolute; inset: 7px 5px auto 107px; width: 88px; margin: 0; color: #512c1a; font-size: 14px; line-height: 1.05; text-align: left; text-shadow: none; white-space: normal; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource { position: absolute; left: 107px; width: 82px !important; height: 28px !important; min-height: 28px !important; margin: 0; border: 2px double #71451f; border-radius: 2px; background: #5a2f1d; box-shadow: 0 3px 0 #743b23, 0 5px 8px rgba(65,31,13,.22); }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.pv { top: 39px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.pm { top: 73px; background: #263d72; box-shadow: 0 3px 0 #314d8b, 0 5px 8px rgba(25,31,65,.2); }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource > span { inset: auto 0 0; height: 5px; border-radius: 0; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource strong { display: grid; place-items: center; font-size: 8px; line-height: 1; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.is-editing input { width: 55px; height: 22px; margin-left: 3px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.is-editing em { padding-right: 3px; font-size: 7px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-defenses { position: absolute; inset: auto 5px 0 106px; justify-content: flex-start; margin: 0; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-defenses > * { height: 21px; padding: 0 5px !important; border-color: #80572d !important; border-radius: 2px !important; color: #4e2c1b; background: rgba(255,246,215,.38) !important; text-shadow: none; font-size: 8px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-main { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 80px; grid-template-rows: auto auto; gap: 4px 6px; padding: 0; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 2px; justify-content: center; padding: 0; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button { justify-content: flex-start; height: 19px; padding: 0 5px !important; border: 1px solid #70451f !important; border-radius: 1px 6px 6px 1px !important; color: #f2deb0; background: linear-gradient(90deg, #6a3c22, #321b11) !important; box-shadow: 1px 1px 2px rgba(69,35,16,.22); font-size: 7px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button span { display: inline; }
 #bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button:nth-child(3n + 2) { background: linear-gradient(90deg, #3e643a, #1e351d) !important; }
 #bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button:nth-child(3n) { background: linear-gradient(90deg, #473975, #251d40) !important; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button.is-active { border-color: #f0d28f !important; color: #fff5d2; filter: brightness(1.18); box-shadow: inset 3px 0 0 #e9c56f, 1px 1px 3px rgba(55,26,10,.3); }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-grid { --bg3t20-slot-size: clamp(38px, 2.95vw, 44px); grid-column: 1; grid-row: 1; grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 3px; padding: 3px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-slot { border: 2px double #87602f !important; border-radius: 1px !important; background: rgba(91,57,26,.1) !important; box-shadow: inset 0 0 6px rgba(48,25,10,.42), 1px 1px 2px rgba(79,43,19,.22); }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-slot.is-empty > span { color: rgba(65,39,20,.38); }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-slot::after { border-width: 1px; border-color: transparent; border-top-color: var(--action-color, transparent); }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-item-name { font-size: 6px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-effects { grid-column: 1; grid-row: 2; min-height: 18px; padding: 0 3px; color: #62472c; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-effects button { width: 17px !important; height: 17px; border: 1px solid #76502a !important; border-radius: 2px !important; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-weapons { inset: auto auto -2px -202px; gap: 3px; padding: 3px; border: 2px solid #80572d; border-radius: 2px; background: rgba(246,224,178,.5); }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-mini-slot { width: 29px !important; height: 29px; border: 1px solid #76502a !important; border-radius: 1px !important; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 2px 1px 3px 0; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions button { border: 2px double #76502a !important; border-radius: 2px !important; color: #f6e4b9; background: linear-gradient(#53331e, #20130c) !important; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn { grid-column: 1 / -1; min-height: 72px !important; flex-direction: column; padding: 6px !important; border-radius: 50% !important; background: radial-gradient(circle, #5b4c3b, #18130f 72%) !important; box-shadow: 0 0 0 3px #9a733b, 0 0 0 5px #402613, inset 0 0 14px #000; font-size: 8px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 16px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) { min-height: 30px !important; padding: 0 !important; font-size: 0; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
 
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button.is-active {
-  border-color: #f0d28f !important;
-  color: #fff4cf;
-  filter: brightness(1.2);
-  box-shadow: inset 3px 0 0 #e9c56f, 2px 2px 5px rgba(55,26,10,.35);
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-grid {
-  --bg3t20-slot-size: clamp(58px, 4vw, 66px);
-  grid-column: 1;
-  grid-row: 1;
-  grid-template-columns: repeat(6, var(--bg3t20-slot-size));
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-slot {
-  border: 3px double #87602f !important;
-  border-radius: 2px !important;
-  background: rgba(91,57,26,.12) !important;
-  box-shadow: inset 0 0 8px rgba(48,25,10,.45), 1px 2px 3px rgba(79,43,19,.28);
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-slot.is-empty > span {
-  color: rgba(65,39,20,.42);
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-slot::after {
-  border-width: 1px;
-  border-color: transparent;
-  border-top-color: var(--action-color, transparent);
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-effects {
-  grid-column: 1;
-  grid-row: 2;
-  color: #62472c;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-effects button {
-  border: 2px solid #76502a !important;
-  border-radius: 3px !important;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-weapons {
-  inset: auto auto -6px -286px;
-  z-index: 4;
-  border: 2px solid #80572d;
-  border-radius: 2px;
-  background: rgba(246,224,178,.52);
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-mini-slot {
-  border: 2px solid #76502a !important;
-  border-radius: 2px !important;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions {
-  padding: 7px 5px 8px 0;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions button {
-  border: 3px double #76502a !important;
-  border-radius: 3px !important;
-  color: #f6e4b9;
-  background: linear-gradient(#52331e, #20130c) !important;
-}
-
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn {
-  min-height: 104px !important;
-  flex-direction: column;
-  border-radius: 50% !important;
-  background: radial-gradient(circle, #4a4034, #17130f 72%) !important;
-  box-shadow: 0 0 0 4px #a47b3f, 0 0 0 7px #402613, inset 0 0 18px #000;
-}
-
-/* Theme-aware auxiliary panels. */
+/* Auxiliary panels inherit the visual language without changing layout. */
 #bg3t20-hud[data-theme="reliquary"] :is(.bg3t20-roll-panel, .bg3t20-tooltip),
-#bg3t20-hud[data-theme="steel"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) {
-  border-radius: 2px;
-}
+#bg3t20-hud[data-theme="steel"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) { border-radius: 2px; }
+#bg3t20-hud[data-theme="constellation"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) { border-color: rgba(114,216,255,.7); border-radius: 16px; background: linear-gradient(145deg, rgba(14,21,46,.98), rgba(2,5,15,.98)); box-shadow: 0 0 20px rgba(114,216,255,.22), inset 0 0 23px rgba(83,65,180,.16); }
+#bg3t20-hud[data-theme="grimoire"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) { border: 4px double #80572d; border-radius: 3px; color: #3b2718; background: linear-gradient(100deg, #d4b47c, #f0deb7 8%, #ead2a5 92%, #b78d54); box-shadow: inset 0 0 18px rgba(73,39,17,.32), 0 14px 28px rgba(0,0,0,.58); }
+#bg3t20-hud[data-theme="grimoire"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) :is(h3, h4, strong, p, span, footer) { color: #3e2818; text-shadow: none; }
 
-#bg3t20-hud[data-theme="constellation"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) {
-  border-color: rgba(114,216,255,.7);
-  border-radius: 18px;
-  background: linear-gradient(145deg, rgba(14,21,46,.98), rgba(2,5,15,.98));
-  box-shadow: 0 0 22px rgba(114,216,255,.25), inset 0 0 25px rgba(83,65,180,.18);
-}
-
-#bg3t20-hud[data-theme="grimoire"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) {
-  border: 4px double #80572d;
-  border-radius: 3px;
-  color: #3b2718;
-  background: linear-gradient(100deg, #d4b47c, #f0deb7 8%, #ead2a5 92%, #b78d54);
-  box-shadow: inset 0 0 20px rgba(73,39,17,.35), 0 14px 30px rgba(0,0,0,.6);
-}
-
-#bg3t20-hud[data-theme="grimoire"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) :is(h3, h4, strong, p, span, footer) {
-  color: #3e2818;
-  text-shadow: none;
-}
-
-/* Responsive reductions preserve each silhouette instead of reverting to Original. */
-@media (max-width: 1280px) {
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-shell {
-    grid-template-columns: 154px minmax(560px, 660px) 126px;
-    width: min(1020px, calc(100vw - 100px));
-    min-width: 850px;
-  }
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-portrait { width: 116px !important; height: 116px; }
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-resource { width: 140px !important; }
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-main { min-width: 560px; }
-
-  #bg3t20-hud[data-theme="constellation"] .bg3t20-shell {
-    width: min(1020px, calc(100vw - 70px));
-    min-width: 850px;
-    padding-right: 130px;
-    padding-left: 110px;
-  }
-
-  #bg3t20-hud[data-theme="steel"] .bg3t20-shell {
-    grid-template-columns: 172px minmax(520px, 620px) 135px;
-    gap: 54px;
-    width: min(1040px, calc(100vw - 80px));
-    min-width: 880px;
-  }
-  #bg3t20-hud[data-theme="steel"] .bg3t20-main { min-width: 520px; }
-
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-shell {
-    grid-template-columns: 250px minmax(545px, 610px) 126px;
-    width: min(1030px, calc(100vw - 70px));
-    min-width: 930px;
-  }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-main { grid-template-columns: minmax(410px, 1fr) 108px; min-width: 545px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait { width: 122px !important; height: 148px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-actor-name,
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-resource { left: 152px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-resource { width: 78px !important; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-weapons { left: -244px; }
-}
-
-@media (max-width: 980px) {
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-shell,
-  #bg3t20-hud[data-theme="steel"] .bg3t20-shell,
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-shell {
-    width: calc(100vw - 34px);
-    min-width: 700px;
-  }
-
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-shell { grid-template-columns: 118px minmax(470px, 1fr) 88px; gap: 5px; }
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-main { min-width: 470px; }
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn { min-height: 76px !important; }
-
-  #bg3t20-hud[data-theme="constellation"] .bg3t20-shell {
-    width: calc(100vw - 30px);
-    min-width: 700px;
-    padding-right: 102px;
-    padding-left: 84px;
-  }
-  #bg3t20-hud[data-theme="constellation"] .bg3t20-portrait { width: 106px !important; height: 106px; }
-  #bg3t20-hud[data-theme="constellation"] .bg3t20-resource { width: 170px !important; }
-  #bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions { width: 92px; }
-  #bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn { min-height: 72px !important; }
-
-  #bg3t20-hud[data-theme="steel"] .bg3t20-shell { grid-template-columns: 158px minmax(430px, 1fr) 98px; gap: 48px; }
-  #bg3t20-hud[data-theme="steel"] .bg3t20-main { min-width: 430px; }
-  #bg3t20-hud[data-theme="steel"] .bg3t20-portrait { width: 94px !important; height: 112px; }
-  #bg3t20-hud[data-theme="steel"] .bg3t20-actor-name,
-  #bg3t20-hud[data-theme="steel"] .bg3t20-resource,
-  #bg3t20-hud[data-theme="steel"] .bg3t20-defenses { left: 106px; }
-
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-shell { grid-template-columns: 220px minmax(420px, 1fr) 92px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-main { grid-template-columns: minmax(315px, 1fr) 96px; min-width: 420px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-grid { grid-template-columns: repeat(6, 50px); }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait { width: 106px !important; height: 126px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-actor-name,
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-resource { left: 132px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-weapons { left: -214px; }
+@media (max-width: 1050px) {
+  #bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell { width: calc(100vw - 34px); min-width: 700px; }
+  #bg3t20-hud[data-theme="reliquary"] .bg3t20-shell { grid-template-columns: 128px minmax(0, 1fr) 92px; padding-inline: 10px; }
+  #bg3t20-hud[data-theme="reliquary"] .bg3t20-portrait { width: 88px !important; height: 88px; }
+  #bg3t20-hud[data-theme="reliquary"] .bg3t20-resource { width: 116px !important; }
+  #bg3t20-hud[data-theme="reliquary"] .bg3t20-grid { --bg3t20-slot-size: clamp(36px, 5vw, 44px); }
+  #bg3t20-hud[data-theme="constellation"] .bg3t20-shell { grid-template-columns: 70px minmax(0, 1fr) 70px; padding-inline: 12px; }
+  #bg3t20-hud[data-theme="constellation"] .bg3t20-grid { --bg3t20-slot-size: clamp(35px, 4.8vw, 43px); gap: 3px; }
+  #bg3t20-hud[data-theme="constellation"] .bg3t20-weapons { left: -62px; }
+  #bg3t20-hud[data-theme="steel"] .bg3t20-shell { grid-template-columns: 130px minmax(0, 1fr) 86px; padding-inline: 8px; }
+  #bg3t20-hud[data-theme="steel"] :is(.bg3t20-actor-name, .bg3t20-resource, .bg3t20-defenses) { left: 80px; }
+  #bg3t20-hud[data-theme="steel"] .bg3t20-grid { --bg3t20-slot-size: clamp(35px, 4.8vw, 42px); }
+  #bg3t20-hud[data-theme="grimoire"] .bg3t20-shell { grid-template-columns: 184px minmax(0, 1fr) 88px; padding-inline: 8px; }
+  #bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait { width: 78px !important; height: 96px; }
+  #bg3t20-hud[data-theme="grimoire"] :is(.bg3t20-actor-name, .bg3t20-resource, .bg3t20-defenses) { left: 94px; }
+  #bg3t20-hud[data-theme="grimoire"] .bg3t20-weapons { left: -180px; }
+  #bg3t20-hud[data-theme="grimoire"] .bg3t20-main { grid-template-columns: minmax(0, 1fr) 72px; }
+  #bg3t20-hud[data-theme="grimoire"] .bg3t20-grid { --bg3t20-slot-size: clamp(33px, 4.5vw, 39px); }
 }
 
 @media (max-width: 760px) {
-  .bg3t20-theme-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell { min-width: 620px; transform: scale(calc(var(--bg3t20-scale) * .86)); }
 }
