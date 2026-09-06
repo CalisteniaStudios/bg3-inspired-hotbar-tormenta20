@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.3.4] — 2026-09-06
+
+- Impede que a camada transparente do retrato da Constelação Arcana bloqueie os quatro filtros posicionados abaixo dele.
+- Mantém retrato, recursos, Defesa e abertura de perícias normalmente clicáveis.
+
 ## [0.3.3] — 2026-09-06
 
 - Fixa explicitamente o conteúdo da Constelação Arcana na coluna central, impedindo que atalhos e ações escapem da moldura.
