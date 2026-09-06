@@ -86,8 +86,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to Foundry VTT
-        if: ${{ secrets.FOUNDRY_API_KEY != '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FOUNDRY_API_KEY: ${{ secrets.FOUNDRY_API_KEY }}
         run: |
+          if [ -z "$FOUNDRY_API_KEY" ]; then
+            echo "::warning::GitHub release created, but FOUNDRY_API_KEY is not configured. The Foundry catalog was not updated."
+            exit 0
+          fi
+
           # Construct the manifest and notes URLs using the version
           MANIFEST_URL="https://github.com/${{ github.repository }}/releases/download/v${{ env.VERSION }}/module.json"
           NOTES_URL="https://github.com/${{ github.repository }}/releases/tag/v${{ env.VERSION }}"
@@ -113,12 +120,6 @@ jobs:
           # Send the release to Foundry VTT
           curl --fail-with-body --silent --show-error -X POST \
             -H "Content-Type: application/json" \
-            -H "Authorization: ${{ secrets.FOUNDRY_API_KEY }}" \
+            -H "Authorization: $FOUNDRY_API_KEY" \
             -d "$payload" \
             https://api.foundryvtt.com/_api/packages/release_version/
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Foundry catalog publication unavailable
-        if: ${{ secrets.FOUNDRY_API_KEY == '' }}
-        run: echo "::warning::GitHub release created, but FOUNDRY_API_KEY is not configured. The Foundry catalog was not updated."
