@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.5] — 2026-09-12
+
+- Compatibilidade preservada com Foundry VTT 13 e verificada no Foundry VTT 14.367.
+
 ## [0.4.4] — 2026-09-12
 
 - Simplifica os cartões de seleção de tema para mostrar somente o nome sobre o fundo de cada estilo.

@@ -49,7 +49,7 @@ Depois, ative o módulo no mundo que utiliza uma versão compatível do Tormenta
 
 ## Compatibilidade
 
-- Foundry VTT 13 e 14, verificado no build 14.365.
+- Foundry VTT 13 e 14, verificado no build 14.367.
 - Tormenta20 1.5.015 e 1.6.1.
 - Não depende de libWrapper, Midi-QOL, D&D 5e ou módulos de pontos de magia.
 
