@@ -754,9 +754,8 @@ export class T20Hotbar {
     const portrait = this._activePortraitTransform(draft);
     const portraitSourceLabel = draft.portraitSource === "token" ? "Imagem do token" : "Imagem da ficha";
     const portraitDisabled = this.canEdit ? "" : "disabled";
-    const themes = Object.entries(THEME_PRESETS).map(([key, theme]) => `<button type="button" data-action="select-theme" data-theme="${key}" class="bg3t20-theme ${draft.theme === key ? "is-active" : ""}" style="--theme-primary:${theme.primary};--theme-secondary:${theme.secondary};--theme-panel:${theme.panel}">
-      <span class="bg3t20-theme-art" aria-hidden="true"><span class="bg3t20-theme-avatar"><i class="${theme.icon}"></i></span><span class="bg3t20-theme-slots"><i></i><i></i><i></i><i></i><i></i></span><span class="bg3t20-theme-action"></span></span>
-      <span class="bg3t20-theme-copy"><strong>${theme.label}</strong><small>${theme.description}</small></span>
+    const themes = Object.entries(THEME_PRESETS).map(([key, theme]) => `<button type="button" data-action="select-theme" data-theme="${key}" class="bg3t20-theme ${draft.theme === key ? "is-active" : ""}" style="--theme-primary:${theme.primary};--theme-secondary:${theme.secondary};--theme-panel:${theme.panel}" title="${escapeHtml(theme.description)}" aria-pressed="${draft.theme === key}">
+      <strong>${theme.label}</strong>
       <i class="fa-solid fa-check bg3t20-theme-check" aria-hidden="true"></i>
     </button>`).join("");
     const range = (key, label, min, max, step, value) => `<label class="bg3t20-setting range"><span>${label}<output data-output="${key}">${Math.round(Number(value) * 100)}%</output></span><input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-setting="${key}"></label>`;

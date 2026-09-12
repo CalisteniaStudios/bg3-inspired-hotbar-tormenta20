@@ -1,49 +1,5 @@
 /* Structural presets. Original and Custom remain defined in t20-hotbar.css. */
 
-/* Miniatures used in the settings gallery. */
-.bg3t20-theme[data-theme="reliquary"] .bg3t20-theme-art {
-  border: 3px double #b98a45;
-  border-radius: 4px;
-  background:
-    radial-gradient(circle at 5% 12%, #b32632 0 3px, #e0b65d 4px 5px, transparent 6px),
-    radial-gradient(circle at 95% 12%, #b32632 0 3px, #e0b65d 4px 5px, transparent 6px),
-    repeating-linear-gradient(92deg, rgba(255,255,255,.035) 0 1px, transparent 1px 8px),
-    linear-gradient(#402314, #130905);
-}
-.bg3t20-theme[data-theme="reliquary"] .bg3t20-theme-avatar { border-width: 3px; }
-.bg3t20-theme[data-theme="reliquary"] .bg3t20-theme-action { border-radius: 50%; }
-
-.bg3t20-theme[data-theme="constellation"] .bg3t20-theme-art {
-  border-radius: 50% 50% 6px 6px / 72% 72% 6px 6px;
-  background:
-    radial-gradient(ellipse at 50% 110%, transparent 0 40%, rgba(114,216,255,.4) 41%, transparent 43% 55%, rgba(155,98,255,.34) 56%, transparent 58%),
-    linear-gradient(#101b38, #040713);
-  box-shadow: inset 0 0 13px rgba(114,216,255,.24);
-}
-.bg3t20-theme[data-theme="constellation"] :is(.bg3t20-theme-avatar, .bg3t20-theme-slots i) { border-radius: 50%; }
-.bg3t20-theme[data-theme="constellation"] .bg3t20-theme-action { transform: rotate(45deg); }
-
-.bg3t20-theme[data-theme="steel"] .bg3t20-theme-art {
-  border-radius: 1px;
-  clip-path: polygon(7px 0, calc(100% - 7px) 0, 100% 7px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 7px);
-  background:
-    linear-gradient(90deg, transparent, rgba(224,111,50,.26), transparent),
-    repeating-linear-gradient(110deg, rgba(255,255,255,.025) 0 1px, transparent 1px 6px),
-    linear-gradient(#242932, #080a0e);
-}
-.bg3t20-theme[data-theme="steel"] :is(.bg3t20-theme-avatar, .bg3t20-theme-slots i, .bg3t20-theme-action) { border-radius: 1px; }
-
-.bg3t20-theme[data-theme="grimoire"] .bg3t20-theme-art {
-  border: 3px double #8c612d;
-  border-radius: 2px 8px 8px 2px;
-  color: #69341f;
-  background:
-    linear-gradient(90deg, transparent 49%, rgba(87,48,24,.3) 50%, transparent 51%),
-    repeating-linear-gradient(0deg, rgba(91,52,25,.03) 0 1px, transparent 1px 5px),
-    linear-gradient(100deg, #c89e62, #f0ddb1 8%, #e2c58e 48%, #b88c53 50%, #efd9a8 53%, #c59356);
-}
-.bg3t20-theme[data-theme="grimoire"] :is(.bg3t20-theme-avatar, .bg3t20-theme-slots i, .bg3t20-theme-action) { border-radius: 1px; }
-
 /* Shared reset: every structural preset owns all of its measurements. */
 #bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell {
   box-sizing: border-box;

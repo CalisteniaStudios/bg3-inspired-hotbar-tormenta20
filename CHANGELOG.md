@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Simplifica os cartões de seleção de tema para mostrar somente o nome sobre o fundo de cada estilo.
+- Remove as miniaturas internas de avatar, slots e ações que deixavam a Forja da HUD visualmente carregada.
+
 ## [0.4.3] — 2026-09-06
 
 - Remove completamente o tema Arcano 2 da Forja da HUD.
