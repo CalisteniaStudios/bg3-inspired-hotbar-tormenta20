@@ -55,6 +55,6 @@ Depois, ative o módulo no mundo que utiliza uma versão compatível do Tormenta
 
 ## Créditos e licença
 
-Este projeto deriva do [BG3 Inspired Hotbar](https://github.com/BragginRites/bg3-inspired-hotbar), criado por BragginRites e Dapoulp e distribuído sob a licença MIT. A adaptação para Tormenta20 é mantida pela Calistenia Studios.
+Este projeto deriva do [BG3 Inspired Hotbar](https://github.com/BragginRites/bg3-inspired-hotbar), criado por BragginRites e Dapoulp e distribuído sob a licença MIT. Os avisos do projeto original estão em [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). A adaptação e os materiais da Calistenia Studios usam a [licença sem revenda](LICENSE.md).
 
 Este projeto é uma criação independente, sem vínculo ou endosso da Jambô Editora, Larian Studios ou dos autores do sistema Tormenta20.

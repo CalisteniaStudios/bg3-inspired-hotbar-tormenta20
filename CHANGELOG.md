@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.6] — 2026-09-14
+
+- Substitui a licença anterior pela licença de uso da Calistenia Studios, que proíbe venda, revenda e redistribuição sem autorização.
+
 ## [0.4.5] — 2026-09-12
 
 - Compatibilidade preservada com Foundry VTT 13 e verificada no Foundry VTT 14.367.
