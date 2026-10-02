@@ -77,12 +77,12 @@
 #bg3t20-hud[data-theme="reliquary"] .bg3t20-resource.is-editing input { width: 82px; height: 19px; margin-left: 3px; }
 #bg3t20-hud[data-theme="reliquary"] .bg3t20-effects { min-height: 20px; padding: 1px 4px; }
 #bg3t20-hud[data-theme="reliquary"] .bg3t20-effects button { width: 19px !important; height: 19px; border: 1px solid #98703a !important; border-radius: 3px !important; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; padding: 3px 1px 5px 0; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 82px !important; flex-direction: column; padding: 8px 8px 25px !important; border: 4px double #b58743 !important; border-radius: 50% !important; color: #f1d897; background: radial-gradient(circle, #6f2728, #180a08 70%) !important; box-shadow: inset 0 0 0 3px #2b120c, inset 0 0 17px #000, 0 0 8px #000; font-size: 8px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-guide-button { grid-area: 1 / 1 / 2 / -1; width: calc(100% - 18px) !important; min-height: 19px !important; border: 1px solid #73522c !important; border-radius: 999px !important; color: #f1d897; background: linear-gradient(#3a2215, #100906) !important; font-size: 8px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions { --bg3t20-side-gap: 5px; --bg3t20-utility-height: 31px; display: grid; grid-template-columns: 1fr; padding: 3px 1px 5px 0; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 52px !important; flex-direction: column; padding: 7px !important; border: 4px double #b58743 !important; border-radius: 50% !important; color: #f1d897; background: radial-gradient(circle, #6f2728, #180a08 70%) !important; box-shadow: inset 0 0 0 3px #2b120c, inset 0 0 17px #000, 0 0 8px #000; font-size: 8px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-guide-button { border: 1px solid #73522c !important; border-radius: 2px !important; color: #f1d897; background: linear-gradient(#3a2215, #100906) !important; font-size: 8px; }
 #bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 17px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) { min-height: 34px !important; padding: 4px !important; border: 1px solid #73522c !important; border-radius: 2px !important; background: linear-gradient(#3a2215, #100906) !important; font-size: 0; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) i { font-size: 13px; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 4px !important; border: 1px solid #73522c !important; border-radius: 2px !important; background: linear-gradient(#3a2215, #100906) !important; }
+#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 13px; }
 
 /* Constelação Arcana ------------------------------------------------------ */
 #bg3t20-hud[data-theme="constellation"] { bottom: 2px; font-family: "Signika", sans-serif; }
@@ -114,12 +114,12 @@
 #bg3t20-hud[data-theme="constellation"] .bg3t20-mini-slot { width: 27px !important; height: 27px; }
 #bg3t20-hud[data-theme="constellation"] .bg3t20-effects { justify-content: center; min-height: 19px; padding: 0; }
 #bg3t20-hud[data-theme="constellation"] .bg3t20-effects button { width: 18px !important; height: 18px; border-color: #83dcfb !important; box-shadow: 0 0 5px rgba(114,216,255,.3); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions { grid-column: 3; display: grid; grid-template-columns: repeat(2, 34px); gap: 5px; justify-content: center; padding: 0 0 3px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 68px !important; flex-direction: column; padding: 6px 6px 21px !important; border: 2px solid #9ee8ff !important; border-radius: 8px !important; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); color: #eefbff; background: radial-gradient(circle, #4a4fa5, #071128 72%) !important; box-shadow: inset 0 0 18px rgba(114,216,255,.32), 0 0 12px rgba(114,216,255,.3); font-size: 7px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-guide-button { grid-area: 1 / 1 / 2 / -1; width: 52px !important; min-height: 18px !important; border: 1px solid rgba(151,226,255,.58) !important; border-radius: 12px !important; color: #eefbff; background: #061022 !important; font-size: 8px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions { --bg3t20-side-gap: 4px; --bg3t20-utility-height: 28px; grid-column: 3; display: grid; grid-template-columns: 1fr; justify-content: center; padding: 0 8px 3px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 58px !important; flex-direction: column; padding: 6px !important; border: 2px solid #9ee8ff !important; border-radius: 8px !important; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); color: #eefbff; background: radial-gradient(circle, #4a4fa5, #071128 72%) !important; box-shadow: inset 0 0 18px rgba(114,216,255,.32), 0 0 12px rgba(114,216,255,.3); font-size: 7px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-guide-button { border: 1px solid rgba(151,226,255,.58) !important; border-radius: 12px !important; color: #eefbff; background: #061022 !important; font-size: 8px; }
 #bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 14px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) { width: 34px !important; min-height: 34px !important; padding: 0 !important; border: 1px solid rgba(151,226,255,.58) !important; border-radius: 50% !important; background: #061022 !important; font-size: 0; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 0 !important; border: 1px solid rgba(151,226,255,.58) !important; border-radius: 12px !important; background: #061022 !important; }
+#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
 
 /* Aço & Brasa ------------------------------------------------------------- */
 #bg3t20-hud[data-theme="steel"] { bottom: 4px; font-family: "Signika", sans-serif; }
@@ -152,13 +152,13 @@
 #bg3t20-hud[data-theme="steel"] .bg3t20-mini-slot { width: 31px !important; height: 31px; border-radius: 1px !important; }
 #bg3t20-hud[data-theme="steel"] .bg3t20-effects { grid-column: 2; grid-row: 3; min-height: 18px; padding: 1px 3px; }
 #bg3t20-hud[data-theme="steel"] .bg3t20-effects button { width: 17px !important; height: 17px; border-radius: 1px !important; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 2px 1px 4px 0; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions { --bg3t20-side-gap: 4px; --bg3t20-utility-height: 29px; display: grid; grid-template-columns: 1fr; padding: 2px 1px 4px 0; }
 #bg3t20-hud[data-theme="steel"] .bg3t20-side-actions button { border-color: #4d535c !important; border-radius: 1px !important; background: linear-gradient(#22272e, #090b0f) !important; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 70px !important; flex-direction: column; padding: 6px 6px 23px !important; border: 1px solid #dd7c43 !important; clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px); color: #ffd1b1; background: linear-gradient(145deg, #3a2019, #0b0d11 68%) !important; box-shadow: inset 0 0 15px #000; font-size: 8px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-guide-button { grid-area: 1 / 1 / 2 / -1; width: calc(100% - 16px) !important; min-height: 18px !important; color: #ffd1b1; font-size: 8px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 50px !important; flex-direction: column; padding: 6px !important; border: 1px solid #dd7c43 !important; clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px); color: #ffd1b1; background: linear-gradient(145deg, #3a2019, #0b0d11 68%) !important; box-shadow: inset 0 0 15px #000; font-size: 8px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-guide-button { color: #ffd1b1; font-size: 8px; }
 #bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 17px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) { min-height: 31px !important; padding: 0 !important; font-size: 0; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 0 !important; }
+#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
 
 /* Grimório Vivo ----------------------------------------------------------- */
 #bg3t20-hud[data-theme="grimoire"] { bottom: 2px; font-family: "Palatino Linotype", "Book Antiqua", serif; }
@@ -194,13 +194,13 @@
 #bg3t20-hud[data-theme="grimoire"] .bg3t20-effects button { width: 17px !important; height: 17px; border: 1px solid #76502a !important; border-radius: 2px !important; }
 #bg3t20-hud[data-theme="grimoire"] .bg3t20-weapons { position: static; grid-column: 1; grid-row: 1 / span 2; align-self: start; flex-direction: column; gap: 3px; padding: 3px; border: 2px solid #80572d; border-radius: 2px; background: rgba(246,224,178,.5); }
 #bg3t20-hud[data-theme="grimoire"] .bg3t20-mini-slot { width: 29px !important; height: 29px; border: 1px solid #76502a !important; border-radius: 1px !important; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 2px 1px 3px 0; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions { --bg3t20-side-gap: 4px; --bg3t20-utility-height: 24px; display: grid; grid-template-columns: 1fr; padding: 2px 1px 3px 0; }
 #bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions button { border: 2px double #76502a !important; border-radius: 2px !important; color: #f6e4b9; background: linear-gradient(#53331e, #20130c) !important; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 72px !important; flex-direction: column; padding: 6px 6px 23px !important; border-radius: 50% !important; background: radial-gradient(circle, #5b4c3b, #18130f 72%) !important; box-shadow: 0 0 0 3px #9a733b, 0 0 0 5px #402613, inset 0 0 14px #000; font-size: 8px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-guide-button { grid-area: 1 / 1 / 2 / -1; width: calc(100% - 18px) !important; min-height: 18px !important; color: #f6e4b9; font-size: 8px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 44px !important; flex-direction: column; padding: 6px !important; border-radius: 50% !important; background: radial-gradient(circle, #5b4c3b, #18130f 72%) !important; box-shadow: 0 0 0 3px #9a733b, 0 0 0 5px #402613, inset 0 0 14px #000; font-size: 8px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-guide-button { color: #f6e4b9; font-size: 8px; }
 #bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 16px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) { min-height: 30px !important; padding: 0 !important; font-size: 0; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 0 !important; }
+#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
 
 /* Auxiliary panels inherit the visual language without changing layout. */
 #bg3t20-hud[data-theme="reliquary"] :is(.bg3t20-roll-panel, .bg3t20-tooltip),

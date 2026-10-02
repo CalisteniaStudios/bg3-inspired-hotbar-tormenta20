@@ -665,10 +665,13 @@ button.bg3t20-resource.is-editable:hover {
 }
 
 .bg3t20-side-actions {
+  --bg3t20-side-gap: 6px;
+  --bg3t20-utility-height: 34px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 6px;
-  align-self: end;
+  grid-template-rows: minmax(52px, 1fr) repeat(3, var(--bg3t20-utility-height));
+  gap: var(--bg3t20-side-gap);
+  align-self: stretch;
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
@@ -711,10 +714,10 @@ button.bg3t20-resource.is-editable:hover {
 }
 
 .bg3t20-side-actions .bg3t20-end-turn {
-  grid-area: 1 / 1;
-  min-height: 48px !important;
-  padding-bottom: 22px !important;
-  flex-direction: row;
+  grid-area: 1 / 1 / 2 / -1;
+  min-height: 52px !important;
+  padding: 8px !important;
+  flex-direction: column;
   border-color: color-mix(in srgb, var(--bg3t20-secondary) 66%, var(--bg3t20-primary)) !important;
   color: color-mix(in srgb, var(--bg3t20-secondary) 44%, white);
   background: linear-gradient(145deg, color-mix(in srgb, var(--bg3t20-secondary) 35%, transparent), color-mix(in srgb, var(--bg3t20-panel-color) 85%, black)) !important;
@@ -724,25 +727,8 @@ button.bg3t20-resource.is-editable:hover {
 }
 
 .bg3t20-side-actions .bg3t20-guide-button {
-  z-index: 3;
-  grid-area: 1 / 1;
-  align-self: end;
-  justify-self: center;
-  width: calc(100% - 16px) !important;
-  min-height: 19px !important;
-  padding: 2px 7px !important;
-  border-radius: 999px !important;
+  grid-area: 2 / 1 / 3 / -1;
   color: color-mix(in srgb, var(--bg3t20-primary) 70%, var(--bg3t20-text-color));
-  font-size: 8px;
-  transform: translateY(-3px);
-}
-
-.bg3t20-side-actions .bg3t20-guide-button:hover:not(:disabled) {
-  transform: translateY(-4px);
-}
-
-.bg3t20-side-actions .bg3t20-guide-button i {
-  font-size: 9px;
 }
 
 .bg3t20-side-actions .bg3t20-guide-button.is-active {
@@ -752,13 +738,23 @@ button.bg3t20-resource.is-editable:hover {
   box-shadow: 0 0 10px var(--bg3t20-glow), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) {
-  min-height: 34px !important;
+.bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) {
+  width: 100% !important;
+  min-height: var(--bg3t20-utility-height) !important;
+  height: var(--bg3t20-utility-height);
   padding-inline: 4px !important;
 }
 
-.bg3t20-side-actions :is(.bg3t20-rest, .bg3t20-settings-button) span {
+.bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) span {
   font-size: 8px;
+}
+
+.bg3t20-side-actions .bg3t20-rest {
+  grid-area: 3 / 1 / 4 / -1;
+}
+
+.bg3t20-side-actions .bg3t20-settings-button {
+  grid-area: 4 / 1 / 5 / -1;
 }
 
 .bg3t20-side-actions .bg3t20-end-turn.is-current {

@@ -14,17 +14,21 @@ test("guia mantém categoria padrão e referência completa", () => {
   assert.equal(ACTION_GUIDE_URL, "https://referencet20.vercel.app/");
 });
 
-test("botão do guia compartilha a linha da iniciativa sem aumentar as HUDs", async () => {
+test("ações laterais mantêm combate destacado e três utilitários iguais", async () => {
   const base = await readFile(new URL("../styles/t20-hotbar.css", import.meta.url), "utf8");
   const themes = await readFile(new URL("../styles/t20-layout-themes.css", import.meta.url), "utf8");
 
-  assert.match(base, /\.bg3t20-side-actions \.bg3t20-end-turn\s*\{[^}]*grid-area:\s*1\s*\/\s*1/s);
-  assert.match(base, /\.bg3t20-side-actions \.bg3t20-guide-button\s*\{[^}]*grid-area:\s*1\s*\/\s*1/s);
+  assert.match(base, /grid-template-rows:\s*minmax\(52px, 1fr\) repeat\(3, var\(--bg3t20-utility-height\)\)/);
+  assert.match(base, /\.bg3t20-side-actions \.bg3t20-end-turn\s*\{[^}]*grid-area:\s*1\s*\/\s*1\s*\/\s*2\s*\/\s*-1/s);
+  assert.match(base, /\.bg3t20-side-actions \.bg3t20-guide-button\s*\{[^}]*grid-area:\s*2\s*\/\s*1\s*\/\s*3\s*\/\s*-1/s);
+  assert.match(base, /\.bg3t20-side-actions \.bg3t20-rest\s*\{[^}]*grid-area:\s*3\s*\/\s*1\s*\/\s*4\s*\/\s*-1/s);
+  assert.match(base, /\.bg3t20-side-actions \.bg3t20-settings-button\s*\{[^}]*grid-area:\s*4\s*\/\s*1\s*\/\s*5\s*\/\s*-1/s);
 
   for (const theme of ["reliquary", "constellation", "steel", "grimoire"]) {
-    const selector = `#bg3t20-hud[data-theme="${theme}"] .bg3t20-side-actions .bg3t20-guide-button`;
+    const selector = `#bg3t20-hud[data-theme="${theme}"] .bg3t20-side-actions`;
     const start = themes.indexOf(selector);
-    assert.notEqual(start, -1, `tema ${theme} deve ajustar o botão Guia`);
-    assert.match(themes.slice(start, themes.indexOf("}", start) + 1), /grid-area:\s*1\s*\/\s*1\s*\/\s*2\s*\/\s*-1/);
+    assert.notEqual(start, -1, `tema ${theme} deve ajustar a coluna lateral`);
+    assert.match(themes.slice(start, themes.indexOf("}", start) + 1), /--bg3t20-utility-height:/);
+    assert.match(themes.slice(start, themes.indexOf("}", start) + 1), /grid-template-columns:\s*1fr/);
   }
 });

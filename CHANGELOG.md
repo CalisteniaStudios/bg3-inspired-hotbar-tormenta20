@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.2] — 2026-10-02
+
+- Reorganiza a coluna lateral sem sobreposição: Iniciativa/Encerrar turno ocupa o bloco maior no topo.
+- Mantém Guia, Descansar e Ajustes com o mesmo tamanho, largura e alinhamento na base da HUD.
+- Ajusta as proporções individualmente nos temas Original, Personalizada, Relicário, Constelação, Aço e Grimório.
+
 ## [0.5.1] — 2026-10-02
 
 - Integra o botão **Guia** à área de Iniciativa/Encerrar turno sem criar uma linha adicional.
