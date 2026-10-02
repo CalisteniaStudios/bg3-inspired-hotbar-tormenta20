@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.5] — 2026-10-02
+
+- Restaura o tamanho e a posição externa originais das armas rápidas.
+- Mantém o botão Encerrar turno dentro da moldura do tema Original sem aumentar a HUD.
+- Redistribui os filtros de ação, preserva os nomes completos e impede que ícones ou textos invadam o botão vizinho.
+
 ## [0.5.4] — 2026-10-02
 
 - Mantém as armas rápidas dentro da estrutura visual dos temas Original e Personalizado.

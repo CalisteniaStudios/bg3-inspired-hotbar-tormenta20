@@ -32,3 +32,12 @@ test("ações laterais mantêm combate destacado e três utilitários iguais", a
     assert.match(themes.slice(start, themes.indexOf("}", start) + 1), /grid-template-columns:\s*1fr/);
   }
 });
+
+test("filtros mantêm ícones e rótulos dentro de cada botão", async () => {
+  const base = await readFile(new URL("../styles/t20-hotbar.css", import.meta.url), "utf8");
+
+  assert.match(base, /grid-template-columns:\s*0\.78fr 1\.13fr 1\.08fr 0\.9fr 0\.7fr 0\.9fr 0\.92fr 0\.68fr 1\.38fr/);
+  assert.match(base, /\.bg3t20-filters button\s*\{[^}]*overflow:\s*hidden/s);
+  assert.match(base, /\.bg3t20-filters button span\s*\{[^}]*text-overflow:\s*ellipsis/s);
+  assert.match(base, /button:is\(:nth-child\(2\), :nth-child\(3\), :nth-child\(9\)\)\s*\{[^}]*font-size:\s*9px/s);
+});
