@@ -349,6 +349,14 @@ button.bg3t20-resource.is-editable:hover {
   background: linear-gradient(180deg, rgba(35, 34, 42, 0.98), rgba(13, 13, 17, 0.96));
 }
 
+/* The base themes keep the quick weapons inside the measured HUD. This lets the
+   panel background and viewport fitting include the full visible interface. */
+#bg3t20-hud:is([data-theme="tormenta"], [data-theme="custom"]) .bg3t20-weapons {
+  position: static;
+  align-self: flex-start;
+  margin-left: 7px;
+}
+
 .bg3t20-mini-slot {
   position: relative;
   width: 42px !important;

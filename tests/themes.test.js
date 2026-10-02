@@ -15,6 +15,8 @@ test("tema base reduz apenas a escala que ultrapassaria as margens da tela", () 
   assert.equal(fitBaseHudScale(1.35, 1600, 1120), 1380 / 1120);
   assert.equal(fitBaseHudScale(0.9, 1600, 1120), 0.9);
   assert.equal(fitBaseHudScale(1.35, 1200, 980), 1060 / 980);
+  assert.equal(fitBaseHudScale(1.35, 2200, 1120, 600, 500, 8), 568 / 500);
+  assert.equal(fitBaseHudScale(1.1, 2200, 1120, 600, 500, 76), 1);
 });
 
 test("oferece o tema original e os quatro novos layouts", () => {

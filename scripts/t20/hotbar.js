@@ -164,7 +164,15 @@ export class T20Hotbar {
       return;
     }
 
-    const fitted = fitBaseHudScale(requested, window.innerWidth, shell.offsetWidth);
+    const bottomOffset = this.root.dataset.position === "raised" ? 76 : 8;
+    const fitted = fitBaseHudScale(
+      requested,
+      window.innerWidth,
+      shell.offsetWidth,
+      window.innerHeight,
+      shell.offsetHeight,
+      bottomOffset
+    );
     this.root.style.setProperty("--bg3t20-scale", String(fitted));
     this.root.dataset.viewportFit = String(fitted < requested);
   }

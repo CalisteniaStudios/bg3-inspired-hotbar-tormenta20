@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.4] — 2026-10-02
+
+- Mantém as armas rápidas dentro da estrutura visual dos temas Original e Personalizado.
+- Considera também a altura disponível ao ajustar automaticamente a escala da HUD.
+- Evita cortes na parte superior ou inferior em janelas baixas e na posição elevada.
+
 ## [0.5.3] — 2026-10-02
 
 - Impede que os temas Original e Personalizado ultrapassem as bordas laterais em escalas maiores.
