@@ -666,7 +666,7 @@ button.bg3t20-resource.is-editable:hover {
 
 .bg3t20-side-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 6px;
   align-self: end;
   box-sizing: border-box;
@@ -711,8 +711,9 @@ button.bg3t20-resource.is-editable:hover {
 }
 
 .bg3t20-side-actions .bg3t20-end-turn {
-  grid-column: 1 / -1;
+  grid-area: 1 / 1;
   min-height: 48px !important;
+  padding-bottom: 22px !important;
   flex-direction: row;
   border-color: color-mix(in srgb, var(--bg3t20-secondary) 66%, var(--bg3t20-primary)) !important;
   color: color-mix(in srgb, var(--bg3t20-secondary) 44%, white);
@@ -723,9 +724,25 @@ button.bg3t20-resource.is-editable:hover {
 }
 
 .bg3t20-side-actions .bg3t20-guide-button {
-  grid-column: 1 / -1;
-  min-height: 34px !important;
+  z-index: 3;
+  grid-area: 1 / 1;
+  align-self: end;
+  justify-self: center;
+  width: calc(100% - 16px) !important;
+  min-height: 19px !important;
+  padding: 2px 7px !important;
+  border-radius: 999px !important;
   color: color-mix(in srgb, var(--bg3t20-primary) 70%, var(--bg3t20-text-color));
+  font-size: 8px;
+  transform: translateY(-3px);
+}
+
+.bg3t20-side-actions .bg3t20-guide-button:hover:not(:disabled) {
+  transform: translateY(-4px);
+}
+
+.bg3t20-side-actions .bg3t20-guide-button i {
+  font-size: 9px;
 }
 
 .bg3t20-side-actions .bg3t20-guide-button.is-active {

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.1] — 2026-10-02
+
+- Integra o botão **Guia** à área de Iniciativa/Encerrar turno sem criar uma linha adicional.
+- Restaura as dimensões originais das HUDs Original, Personalizada, Relicário, Constelação, Aço e Grimório.
+- Ajusta o espaço interno do botão de combate para manter ícone, texto e Guia legíveis em todas as escalas.
+
 ## [0.5.0] — 2026-10-01
 
 - Adiciona o botão **Guia** logo abaixo de Iniciativa/Encerrar turno.
