@@ -4,10 +4,18 @@ import assert from "node:assert/strict";
 import {
   THEME_PRESETS,
   PORTRAIT_DEFAULTS,
+  fitBaseHudScale,
   resolveAppearance,
   normalizePortraitTransform,
   normalizePortraitTransforms
 } from "../scripts/t20/themes.js";
+
+test("tema base reduz apenas a escala que ultrapassaria as margens da tela", () => {
+  assert.equal(fitBaseHudScale(1, 1600, 1120), 1);
+  assert.equal(fitBaseHudScale(1.35, 1600, 1120), 1380 / 1120);
+  assert.equal(fitBaseHudScale(0.9, 1600, 1120), 0.9);
+  assert.equal(fitBaseHudScale(1.35, 1200, 980), 1060 / 980);
+});
 
 test("oferece o tema original e os quatro novos layouts", () => {
   assert.deepEqual(Object.keys(THEME_PRESETS), ["tormenta", "reliquary", "constellation", "steel", "grimoire", "custom"]);

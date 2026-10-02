@@ -74,6 +74,14 @@ export const PORTRAIT_DEFAULTS = Object.freeze({
   y: 50
 });
 
+export function fitBaseHudScale(requestedScale, viewportWidth, shellWidth) {
+  const requested = Number.isFinite(Number(requestedScale)) ? Number(requestedScale) : 1;
+  const viewport = Math.max(1, Number(viewportWidth) || 1);
+  const shell = Math.max(1, Number(shellWidth) || 1);
+  const margin = viewport <= 980 ? 48 : viewport <= 1280 ? 140 : 220;
+  return Math.max(0.4, Math.min(requested, Math.max(1, viewport - margin) / shell));
+}
+
 export function normalizePortraitTransform(value = {}) {
   const clamp = (number, min, max, fallback) => {
     if (number === null || number === undefined || number === "") return fallback;

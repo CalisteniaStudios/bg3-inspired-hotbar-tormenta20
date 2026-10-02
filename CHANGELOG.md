@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.5.3] — 2026-10-02
+
+- Impede que os temas Original e Personalizado ultrapassem as bordas laterais em escalas maiores.
+- Preserva a escala escolhida quando existe espaço e aplica somente a redução necessária para manter as margens responsivas.
+
 ## [0.5.2] — 2026-10-02
 
 - Reorganiza a coluna lateral sem sobreposição: Iniciativa/Encerrar turno ocupa o bloco maior no topo.

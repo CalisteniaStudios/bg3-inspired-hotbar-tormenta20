@@ -30,6 +30,7 @@ import {
   APPEARANCE_DEFAULTS,
   PORTRAIT_DEFAULTS,
   THEME_PRESETS,
+  fitBaseHudScale,
   hexToRgba,
   normalizePortraitTransform,
   normalizePortraitTransforms,
@@ -75,6 +76,7 @@ export class T20Hotbar {
     this.editingResource = null;
     this.tooltipTimer = null;
     this.tooltipUuid = null;
+    this.requestedScale = 1;
     this.root = document.createElement("section");
     this.root.id = "bg3t20-hud";
     this.root.className = "bg3t20-hud is-hidden";
@@ -92,6 +94,8 @@ export class T20Hotbar {
     };
     document.addEventListener("pointerdown", this._onDocumentPointerDown);
     document.addEventListener("keydown", this._onDocumentKeyDown);
+    this._onWindowResize = () => this._applyViewportFit();
+    window.addEventListener("resize", this._onWindowResize);
     this._bindEvents();
     this.applyClientSettings();
   }
@@ -135,7 +139,7 @@ export class T20Hotbar {
       ...this._appearanceValues()
     };
     const appearance = resolveAppearance(source);
-    this.root.style.setProperty("--bg3t20-scale", String(Number(source.scale ?? 1)));
+    this.requestedScale = Number(source.scale ?? 1);
     this.root.style.setProperty("--bg3t20-opacity", String(Number(source.opacity ?? 0.96)));
     this.root.style.setProperty("--bg3t20-primary", appearance.primaryColor);
     this.root.style.setProperty("--bg3t20-secondary", appearance.secondaryColor);
@@ -147,6 +151,22 @@ export class T20Hotbar {
     this.root.dataset.theme = appearance.theme;
     this.root.dataset.labels = appearance.showLabels ? "show" : "hide";
     document.body.classList.toggle("bg3t20-hide-core-hotbar", Boolean(this.enabled && source.hideCoreHotbar));
+    this._applyViewportFit();
+  }
+
+  _applyViewportFit() {
+    const requested = Number.isFinite(this.requestedScale) ? this.requestedScale : 1;
+    const shell = this.root.querySelector(".bg3t20-shell");
+    const usesBaseLayout = ["tormenta", "custom"].includes(this.root.dataset.theme);
+    if (!shell || !usesBaseLayout) {
+      this.root.style.setProperty("--bg3t20-scale", String(requested));
+      this.root.dataset.viewportFit = "false";
+      return;
+    }
+
+    const fitted = fitBaseHudScale(requested, window.innerWidth, shell.offsetWidth);
+    this.root.style.setProperty("--bg3t20-scale", String(fitted));
+    this.root.dataset.viewportFit = String(fitted < requested);
   }
 
   async setToken(token) {
@@ -868,6 +888,7 @@ export class T20Hotbar {
       <main class="bg3t20-main">${this._renderWeapons()}${this._renderFilters()}${this._renderGrid()}${this._renderPageControls()}${this._renderEffects()}</main>
       ${this._renderActions()}${this._renderAbilities()}${this._renderActionGuide()}
     </div><div class="bg3t20-tooltip"></div>${this._renderSettingsPanel()}`;
+    this._applyViewportFit();
   }
 
   async toggle(force) {
@@ -878,6 +899,7 @@ export class T20Hotbar {
     clearTimeout(this.tooltipTimer);
     document.removeEventListener("pointerdown", this._onDocumentPointerDown);
     document.removeEventListener("keydown", this._onDocumentKeyDown);
+    window.removeEventListener("resize", this._onWindowResize);
     this.root.remove();
   }
 }
