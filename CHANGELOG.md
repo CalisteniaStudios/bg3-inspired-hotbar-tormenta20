@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0] — 2026-10-01
+
+- Adiciona o botão **Guia** logo abaixo de Iniciativa/Encerrar turno.
+- Inclui referência rápida para ações padrão, de movimento, completas, livres e manobras de combate.
+- Abre o guia em um painel compacto acima da HUD, com rolagem e link para a referência completa.
+- Reorganiza Descansar e Ajustes em uma linha compacta para preservar o tamanho da interface.
+
 ## [0.4.6] — 2026-09-14
 
 - Substitui a licença anterior pela licença de uso da Calistenia Studios, que proíbe venda, revenda e redistribuição sem autorização.

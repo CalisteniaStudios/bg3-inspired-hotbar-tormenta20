@@ -35,6 +35,7 @@ import {
   normalizePortraitTransforms,
   resolveAppearance
 } from "./themes.js";
+import { ACTION_GUIDE_CATEGORIES, ACTION_GUIDE_URL, getActionGuideCategory } from "./action-guide.js";
 
 const FLAG_LAYOUT = "layout";
 const SLOT_COUNT = 18;
@@ -67,6 +68,8 @@ export class T20Hotbar {
     this.filter = "action";
     this.page = 0;
     this.abilitiesOpen = false;
+    this.actionGuideOpen = false;
+    this.actionGuideTab = "standard";
     this.settingsOpen = false;
     this.settingsDraft = null;
     this.editingResource = null;
@@ -76,6 +79,19 @@ export class T20Hotbar {
     this.root.id = "bg3t20-hud";
     this.root.className = "bg3t20-hud is-hidden";
     document.body.appendChild(this.root);
+    this._onDocumentPointerDown = (event) => {
+      if (!this.actionGuideOpen) return;
+      if (this.root.contains(event.target)) return;
+      this.actionGuideOpen = false;
+      this.render();
+    };
+    this._onDocumentKeyDown = (event) => {
+      if (event.key !== "Escape" || !this.actionGuideOpen) return;
+      this.actionGuideOpen = false;
+      this.render();
+    };
+    document.addEventListener("pointerdown", this._onDocumentPointerDown);
+    document.addEventListener("keydown", this._onDocumentKeyDown);
     this._bindEvents();
     this.applyClientSettings();
   }
@@ -234,6 +250,15 @@ export class T20Hotbar {
     event.preventDefault();
     event.stopPropagation();
 
+    const guideActions = ["toggle-action-guide", "close-action-guide", "action-guide-tab", "open-action-guide-site"];
+    if (this.actionGuideOpen && !guideActions.includes(action)) {
+      this.actionGuideOpen = false;
+      this.root.querySelector(".bg3t20-guide-panel")?.remove();
+      const guideButton = this.root.querySelector(".bg3t20-guide-button");
+      guideButton?.classList.remove("is-active");
+      guideButton?.setAttribute("aria-expanded", "false");
+    }
+
     if (action === "use-item") {
       const document = this._resolveEntry({ uuid: target.dataset.uuid });
       try {
@@ -248,6 +273,25 @@ export class T20Hotbar {
     if (action === "toggle-abilities") {
       this.abilitiesOpen = !this.abilitiesOpen;
       this.render();
+      return;
+    }
+    if (action === "toggle-action-guide") {
+      this.actionGuideOpen = !this.actionGuideOpen;
+      this.render();
+      return;
+    }
+    if (action === "close-action-guide") {
+      this.actionGuideOpen = false;
+      this.render();
+      return;
+    }
+    if (action === "action-guide-tab") {
+      this.actionGuideTab = target.dataset.tab;
+      this.render();
+      return;
+    }
+    if (action === "open-action-guide-site") {
+      window.open(ACTION_GUIDE_URL, "_blank", "noopener,noreferrer");
       return;
     }
     if (action === "filter") {
@@ -728,9 +772,27 @@ export class T20Hotbar {
     });
     return `<div class="bg3t20-side-actions">
       <button type="button" data-action="${combatAction.action}" class="bg3t20-end-turn ${combatAction.isCurrent ? "is-current" : ""}" ${combatAction.disabled ? "disabled" : ""}><i class="${combatAction.icon}"></i><span>${combatAction.label}</span></button>
+      <button type="button" data-action="toggle-action-guide" class="bg3t20-guide-button ${this.actionGuideOpen ? "is-active" : ""}" aria-expanded="${this.actionGuideOpen}" title="Consultar ações de Tormenta20"><i class="fa-solid fa-book-open"></i><span>Guia</span></button>
       <button type="button" data-action="rest" class="bg3t20-rest"><i class="fa-solid fa-campground"></i><span>Descansar</span></button>
       <button type="button" data-action="open-settings" class="bg3t20-settings-button"><i class="fa-solid fa-gear"></i><span>Ajustes</span></button>
     </div>`;
+  }
+
+  _renderActionGuide() {
+    if (!this.actionGuideOpen) return "";
+    const active = getActionGuideCategory(this.actionGuideTab);
+    const regular = active.actions.filter((action) => !action.group);
+    const maneuvers = active.actions.filter((action) => action.group === "Manobras");
+    const cards = (actions) => actions.map((action) => `<article class="bg3t20-guide-card">
+      <i class="${action.icon}" aria-hidden="true"></i><div><strong>${escapeHtml(action.name)}</strong><span>${escapeHtml(action.summary)}</span></div>
+    </article>`).join("");
+    return `<aside class="bg3t20-guide-panel" role="dialog" aria-modal="false" aria-label="Guia de ações de Tormenta20">
+      <header><div><span>REFERÊNCIA RÁPIDA</span><h3>Guia de ações</h3></div><button type="button" data-action="close-action-guide" title="Fechar guia" aria-label="Fechar guia"><i class="fa-solid fa-xmark"></i></button></header>
+      <nav aria-label="Tipos de ação">${ACTION_GUIDE_CATEGORIES.map((category) => `<button type="button" data-action="action-guide-tab" data-tab="${category.id}" class="${active.id === category.id ? "is-active" : ""}" aria-pressed="${active.id === category.id}"><i class="${category.icon}"></i><span>${escapeHtml(category.label)}</span></button>`).join("")}</nav>
+      <div class="bg3t20-guide-intro"><i class="${active.icon}"></i><span>${escapeHtml(active.description)}</span></div>
+      <div class="bg3t20-guide-content"><div class="bg3t20-guide-grid">${cards(regular)}</div>${maneuvers.length ? `<h4>Manobras de combate</h4><div class="bg3t20-guide-grid maneuvers">${cards(maneuvers)}</div>` : ""}</div>
+      <footer><span>Resumo para consulta durante a partida.</span><button type="button" data-action="open-action-guide-site"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir referência completa</button></footer>
+    </aside>`;
   }
 
   _renderAbilities() {
@@ -804,7 +866,7 @@ export class T20Hotbar {
     this.root.innerHTML = `<div class="bg3t20-shell">
       ${this._renderPortrait(stats)}
       <main class="bg3t20-main">${this._renderWeapons()}${this._renderFilters()}${this._renderGrid()}${this._renderPageControls()}${this._renderEffects()}</main>
-      ${this._renderActions()}${this._renderAbilities()}
+      ${this._renderActions()}${this._renderAbilities()}${this._renderActionGuide()}
     </div><div class="bg3t20-tooltip"></div>${this._renderSettingsPanel()}`;
   }
 
@@ -814,6 +876,8 @@ export class T20Hotbar {
 
   destroy() {
     clearTimeout(this.tooltipTimer);
+    document.removeEventListener("pointerdown", this._onDocumentPointerDown);
+    document.removeEventListener("keydown", this._onDocumentKeyDown);
     this.root.remove();
   }
 }
