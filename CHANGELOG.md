@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.0] - 2026-10-11
+
+- Adiciona as organizações Lenda e Saga, com medalhões e esferas de fantasia e painéis de quadrinhos, respectivamente.
+- Saga segue a Ficha Heroica com arte integrada, papel claro, tinta escura, recortes diagonais e acentos vermelhos e azul-petróleo. O tema Personalizado permite trocar os acentos.
+- Permite acompanhar o estilo pessoal da Ficha Heroica por personagem, sem tornar esse módulo obrigatório.
+- Inclui Favoritos nos novos estilos usando a marcação nativa da ficha de Tormenta20.
+- Mantém os temas anteriores na organização Atual e separa a escolha de estrutura da paleta de cores.
+- Adapta os novos estilos à largura e altura da janela e mantém o guia e os atributos acessíveis em telas menores.
+- Cria as molduras e fundos com CSS, sem adicionar imagens geradas por IA.
+
 ## [0.5.5] — 2026-10-02
 
 - Restaura o tamanho e a posição externa originais das armas rápidas.

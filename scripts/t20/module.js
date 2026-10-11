@@ -2,7 +2,14 @@ import { MODULE_ID, actorForDocument, installSceneControlToggle } from "./adapte
 import { T20Hotbar } from "./hotbar.js";
 import { APPEARANCE_DEFAULTS, THEME_PRESETS } from "./themes.js";
 
+import { HUD_STYLES } from "./hud-styles.js";
+
 function registerSettings() {
+  game.settings.register(MODULE_ID, "style", {
+    name: "Organização da HUD", scope: "client", config: false, type: String,
+    choices: Object.fromEntries(Object.entries(HUD_STYLES).map(([key, value]) => [key, value.label])),
+    default: "original", onChange: () => ui.BG3T20?.render()
+  });
   game.settings.register(MODULE_ID, "enabled", {
     name: "Exibir a hotbar inspirada em BG3",
     hint: "Mostra a interface quando um token controlado é selecionado.",
@@ -193,3 +200,9 @@ for (const hook of [
 }
 
 Hooks.on("renderSettingsConfig", () => ui.BG3T20?.applyClientSettings());
+
+// Heroic Sheet stores personal appearances on the user, not the actor.
+Hooks.on("updateUser", (user, changes) => {
+  if (user.id !== game.user.id || !ui.BG3T20 || ui.BG3T20._setting("style") !== "sheet") return;
+  if (Object.keys(changes).some((key) => key === "flags" || key.startsWith("flags.tormenta20-ficha-heroica"))) ui.BG3T20.render();
+});

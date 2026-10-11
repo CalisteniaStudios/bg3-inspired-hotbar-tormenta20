@@ -38,9 +38,12 @@ import {
 } from "./themes.js";
 import { ACTION_GUIDE_CATEGORIES, ACTION_GUIDE_URL, getActionGuideCategory } from "./action-guide.js";
 
+import { HUD_STYLES, resolveHudStyle, isFavorite, fitStyledHudScale } from "./hud-styles.js";
+
 const FLAG_LAYOUT = "layout";
 const SLOT_COUNT = 18;
 const CLIENT_SETTING_KEYS = Object.freeze([
+  "style",
   "scale",
   "opacity",
   "verticalPosition",
@@ -119,6 +122,7 @@ export class T20Hotbar {
   _appearanceValues() {
     const storedTheme = this._setting("theme");
     return {
+      style: this._setting("style") ?? "original",
       theme: THEME_PRESETS[storedTheme] ? storedTheme : APPEARANCE_DEFAULTS.theme,
       primaryColor: this._setting("primaryColor"),
       secondaryColor: this._setting("secondaryColor"),
@@ -147,6 +151,7 @@ export class T20Hotbar {
     this.root.style.setProperty("--bg3t20-text-color", appearance.textColor);
     this.root.style.setProperty("--bg3t20-glow", hexToRgba(appearance.primaryColor, appearance.glowStrength));
     this.root.style.setProperty("--bg3t20-ornament-opacity", String(appearance.ornamentStrength));
+    this.root.dataset.style = this._resolveStyle(source.style);
     this.root.dataset.position = source.verticalPosition ?? "bottom";
     this.root.dataset.theme = appearance.theme;
     this.root.dataset.labels = appearance.showLabels ? "show" : "hide";
@@ -154,9 +159,29 @@ export class T20Hotbar {
     this._applyViewportFit();
   }
 
+  _resolveStyle(choice = this.settingsDraft?.style ?? this._setting("style")) {
+    if (choice !== "sheet" || !game.modules?.get("tormenta20-ficha-heroica")?.active) return resolveHudStyle(choice);
+    return resolveHudStyle(choice, {
+      active: true,
+      preferences: game.user?.getFlag?.("tormenta20-ficha-heroica", "personalAppearanceByActor"),
+      actor: this.actor
+    });
+  }
+
   _applyViewportFit() {
     const requested = Number.isFinite(this.requestedScale) ? this.requestedScale : 1;
     const shell = this.root.querySelector(".bg3t20-shell");
+    if (!shell) return;
+    if (this.root.dataset.style !== "original") {
+      const fitted = fitStyledHudScale(this.requestedScale, window.innerWidth, window.innerHeight, shell.offsetWidth, shell.offsetHeight, this.root.dataset.position === "raised");
+      this.root.style.setProperty("--bg3t20-scale", String(fitted));
+      this.root.dataset.viewportFit = fitted < this.requestedScale ? "true" : "false";
+      const roomAbove = shell.getBoundingClientRect().top - 24;
+      const above = roomAbove >= 240;
+      this.root.style.setProperty("--bg3t20-panel-offset", above ? "calc(100% + 12px)" : "16px");
+      this.root.style.setProperty("--bg3t20-panel-height", `${Math.max(100, (above ? roomAbove : window.innerHeight - 100) / fitted)}px`);
+      return;
+    }
     const usesBaseLayout = ["tormenta", "custom"].includes(this.root.dataset.theme);
     if (!shell || !usesBaseLayout) {
       this.root.style.setProperty("--bg3t20-scale", String(requested));
@@ -215,7 +240,7 @@ export class T20Hotbar {
   }
 
   _automaticDocuments() {
-    return sortItems((this.actor?.items ?? []).filter((item) => itemMatchesFilter(item, this.filter)));
+    return sortItems((this.actor?.items ?? []).filter((item) => this.filter === "favorites" ? isFavorite(item) : itemMatchesFilter(item, this.filter)));
   }
 
   _resolveEntry(entry) {
@@ -367,6 +392,12 @@ export class T20Hotbar {
     if (action === "reset-portrait") {
       const source = this.settingsDraft?.portraitSource ?? "actor";
       this.settingsDraft.portraitTransforms[source] = { ...PORTRAIT_DEFAULTS };
+      this.render();
+      return;
+    }
+    if (action === "select-style" && this.settingsDraft) {
+      this.settingsDraft.style = Object.hasOwn(HUD_STYLES, target.dataset.style) ? target.dataset.style : "original";
+      this.applyClientSettings(this.settingsDraft);
       this.render();
       return;
     }
@@ -658,6 +689,7 @@ export class T20Hotbar {
       portraitSource: "actor",
       hideCoreHotbar: false,
       portraitTransforms: normalizePortraitTransforms(),
+      style: "original",
       ...APPEARANCE_DEFAULTS
     };
     this.applyClientSettings(this.settingsDraft);
@@ -697,14 +729,14 @@ export class T20Hotbar {
     const temp = resource.temp ? ` +${resource.temp}` : "";
     if (this.editingResource === type) {
       return `<div class="bg3t20-resource ${type} is-editing">
-        <span style="width:${resourcePercent(resource)}%"></span>
+        <span style="width:${resourcePercent(resource)}%;--resource-fill:${resourcePercent(resource)}%"></span>
         <input type="text" inputmode="numeric" value="${resource.value}" data-resource-input="${type}" aria-label="Editar ${type.toUpperCase()}" title="Valor exato, +10 ou -5">
         <em>/ ${resource.max}</em>
       </div>`;
     }
     const editable = this.canEdit ? "is-editable" : "";
-    return `<button type="button" class="bg3t20-resource ${type} ${editable}" data-action="edit-resource" data-resource="${type}" title="${this.canEdit ? "Clique para editar. Use um valor exato, +10 ou -5." : type.toUpperCase()}">
-      <span style="width:${resourcePercent(resource)}%"></span><strong>${resource.value}${temp} / ${resource.max}</strong>
+    return `<button type="button" class="bg3t20-resource ${type} ${editable}" data-action="edit-resource" data-resource="${type}" aria-label="${type.toUpperCase()}: ${resource.value}${temp} / ${resource.max}" title="${this.canEdit ? "Clique para editar. Use um valor exato, +10 ou -5." : type.toUpperCase()}">
+      <span style="width:${resourcePercent(resource)}%;--resource-fill:${resourcePercent(resource)}%"></span><strong>${resource.value}${temp} / ${resource.max}</strong>
     </button>`;
   }
 
@@ -743,7 +775,8 @@ export class T20Hotbar {
   }
 
   _renderFilters() {
-    return `<nav class="bg3t20-filters" aria-label="Filtros da hotbar">${FILTERS.map((filter) => `<button type="button" data-action="filter" data-filter="${filter.id}" class="${this.filter === filter.id ? "is-active" : ""}" title="${escapeHtml(filter.label)}"><i class="${filter.icon}"></i><span>${escapeHtml(filter.label)}</span></button>`).join("")}</nav>`;
+    const filters = this.root.dataset.style === "original" ? FILTERS : [...FILTERS, { id: "favorites", label: "Favoritos", icon: "fa-solid fa-star" }];
+    return `<nav class="bg3t20-filters" aria-label="Filtros da hotbar">${filters.map((filter) => `<button type="button" data-action="filter" data-filter="${filter.id}" class="${this.filter === filter.id ? "is-active" : ""}" title="${escapeHtml(filter.label)}"><i class="${filter.icon}"></i><span>${escapeHtml(filter.label)}</span></button>`).join("")}</nav>`;
   }
 
   _renderGrid() {
@@ -766,7 +799,7 @@ export class T20Hotbar {
     const quantity = getQuantity(document);
     const circle = getSpellCircle(document);
     return `<button type="button" class="bg3t20-slot has-item" style="--action-color:${action.color}" data-action="use-item" data-slot-index="${index}" data-uuid="${escapeHtml(document.uuid)}" draggable="${this.canEdit}">
-      <img src="${escapeHtml(document.img)}" alt="${escapeHtml(document.name)}"><span class="bg3t20-slot-number">${index + 1}</span><span class="bg3t20-item-name">${escapeHtml(document.name)}</span>
+      <img src="${escapeHtml(document.img)}" alt="${escapeHtml(document.name)}">${isFavorite(document) ? '<i class="fa-solid fa-star bg3t20-favorite-mark" title="Favorito"></i>' : ""}<span class="bg3t20-slot-number">${index + 1}</span><span class="bg3t20-item-name">${escapeHtml(document.name)}</span>
       ${mana ? `<span class="bg3t20-badge mana">${mana}</span>` : ""}${circle !== null ? `<span class="bg3t20-badge circle">${circle}</span>` : ""}${quantity !== null && (document.type === "consumivel" || quantity !== 1) ? `<span class="bg3t20-badge quantity">${quantity}</span>` : ""}
     </button>`;
   }
@@ -836,6 +869,7 @@ export class T20Hotbar {
     const portrait = this._activePortraitTransform(draft);
     const portraitSourceLabel = draft.portraitSource === "token" ? "Imagem do token" : "Imagem da ficha";
     const portraitDisabled = this.canEdit ? "" : "disabled";
+    const styles = Object.entries(HUD_STYLES).map(([key, style]) => `<button type="button" data-action="select-style" data-style="${key}" class="bg3t20-style-card ${draft.style === key ? "is-active" : ""}" aria-pressed="${draft.style === key}"><span class="bg3t20-style-sketch" data-sketch="${key}" aria-hidden="true"><i class="${style.icon}"></i><b></b><b></b><b></b></span><strong>${style.label}</strong><small>${style.description}</small></button>`).join("");
     const themes = Object.entries(THEME_PRESETS).map(([key, theme]) => `<button type="button" data-action="select-theme" data-theme="${key}" class="bg3t20-theme ${draft.theme === key ? "is-active" : ""}" style="--theme-primary:${theme.primary};--theme-secondary:${theme.secondary};--theme-panel:${theme.panel}" title="${escapeHtml(theme.description)}" aria-pressed="${draft.theme === key}">
       <strong>${theme.label}</strong>
       <i class="fa-solid fa-check bg3t20-theme-check" aria-hidden="true"></i>
@@ -846,7 +880,7 @@ export class T20Hotbar {
     return `<div class="bg3t20-settings-backdrop"><section class="bg3t20-settings-panel" role="dialog" aria-modal="true" aria-label="Forja da HUD">
       <header><div class="bg3t20-settings-title"><span><i class="fa-solid fa-hammer"></i> Personalização</span><h2>Forja da HUD</h2><p>Escolha um estilo e refine apenas o que quiser.</p></div><button type="button" data-action="close-settings" title="Fechar sem salvar" aria-label="Fechar sem salvar"><i class="fa-solid fa-xmark"></i></button></header>
       <div class="bg3t20-settings-content">
-        <fieldset class="bg3t20-settings-section bg3t20-theme-section"><legend><i class="fa-solid fa-layer-group"></i> Estilo da HUD</legend><p class="bg3t20-section-note">Cada tema altera formato, retrato, slots, filtros e botões — não somente as cores.</p><div class="bg3t20-theme-list">${themes}</div></fieldset>
+        <fieldset class="bg3t20-settings-section"><legend><i class="fa-solid fa-layer-group"></i> Organização da HUD</legend><div class="bg3t20-style-list">${styles}</div></fieldset><fieldset class="bg3t20-settings-section bg3t20-theme-section"><legend><i class="fa-solid fa-palette"></i> Tema</legend><p class="bg3t20-section-note">Nos estilos Lenda e Saga, o tema define as cores de destaque. Em Atual, mantém também a organização original.</p><div class="bg3t20-theme-list">${themes}</div></fieldset>
         <div class="bg3t20-settings-pair">
         <fieldset class="bg3t20-settings-section"><legend><i class="fa-solid fa-palette"></i> Cores personalizadas</legend><div class="bg3t20-color-list">${color("primaryColor", "Destaque", appearance.primaryColor)}${color("secondaryColor", "Contraste", appearance.secondaryColor)}${color("panelColor", "Painel", appearance.panelColor)}${color("textColor", "Texto", appearance.textColor)}</div><p class="bg3t20-section-note">Ao alterar uma cor, o tema muda para Personalizado.</p></fieldset>
         <fieldset class="bg3t20-settings-section bg3t20-setting-columns"><legend><i class="fa-solid fa-wand-magic-sparkles"></i> Presença visual</legend>${range("scale", "Escala", 0.65, 1.35, 0.05, draft.scale)}${range("opacity", "Opacidade", 0.45, 1, 0.05, draft.opacity)}${range("glowStrength", "Brilho", 0, 1, 0.05, draft.glowStrength)}${range("ornamentStrength", "Ornamentos", 0, 1, 0.05, draft.ornamentStrength)}</fieldset>
@@ -882,6 +916,8 @@ export class T20Hotbar {
       this.root.innerHTML = '<div class="bg3t20-tooltip"></div>';
       return;
     }
+    this.applyClientSettings(this.settingsDraft);
+    if (this.root.dataset.style === "original" && this.filter === "favorites") { this.filter = "action"; this.page = 0; }
     const stats = getActorStats(this.actor);
     this.root.innerHTML = `<div class="bg3t20-shell">
       ${this._renderPortrait(stats)}

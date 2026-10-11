@@ -1,0 +1,28 @@
+import { APPEARANCE_DEFAULTS } from '../scripts/t20/themes.js';
+import { MODULE_ID } from '../scripts/t20/adapter.js';
+import { T20Hotbar } from '../scripts/t20/hotbar.js';
+const values = {enabled:true,scale:1,opacity:.96,verticalPosition:'bottom',portraitSource:'actor',hideCoreHotbar:false,style:'legend',...APPEARANCE_DEFAULTS};
+let rolls=0;
+const illustration=(symbol,color)=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><rect width="160" height="160" fill="#142226"/><circle cx="80" cy="74" r="52" fill="${color}" opacity=".35"/><text x="80" y="100" text-anchor="middle" fill="#efdbac" font-size="76">${symbol}</text></svg>`);
+const names=['Shinryū','Porrete','Serrilheira','Estilo de Uma Arma','Empunhadura Poderosa','Asas Aliadas','Cura pelas Ervas','Queda Suave','Passo do Vento','Poção de Cura','Explosão de Chamas','Escudo de Mana','Ataque Poderoso','Foco em Arma','Reflexos de Combate','Coragem','Sentinela','Ataque Preciso','Último Ataque'];
+const items=names.map((name,i)=>({id:`i${i}`,uuid:`Actor.a.Item.i${i}`,name,documentName:'Item',type:i<3?'arma':i===9?'consumivel':[6,7,10,11].includes(i)?'magia':'poder',img:illustration(i<3?'⚔':i===9?'◈':i>5&&i<12?'✦':'❧',['#bf662f','#2b8998','#9a507c'][i%3]),flags:{tormenta20:{favorito:[0,3,6,8].includes(i)}},system:{ativacao:{execucao:'action',custo:i>5&&i<12?2:0},circulo:1,equipado:i<2,description:{value:'Uma habilidade de demonstração para conferir o comportamento da HUD.'}},roll:async()=>{rolls++},sheet:{render:()=>{document.querySelector('#checks').textContent='Ficha do item aberta.'}}}));
+const actor={id:'a',uuid:'Actor.a',name:'Ayame So-Dak',type:'character',isOwner:true,img:illustration('♞','#56847c'),items,effects:[],system:{attributes:{pv:{value:34,max:42},pm:{value:18,max:27},nivel:{value:5},defesa:{value:24}},atributos:{for:{value:5},des:{value:1},con:{value:2},int:{value:1},sab:{value:-1},car:{value:5}},pericias:{luta:{value:9,treinado:true},perc:{value:3},fort:{value:6,treinado:true}}},sheet:{render:()=>{document.querySelector('#checks').textContent='Ficha do personagem aberta.'}},getFlag:()=>({}),setFlag:async()=>{},update:async(data)=>{for(const [key,val] of Object.entries(data)){let cursor=actor;const parts=key.split('.');for(const p of parts.slice(0,-1))cursor=cursor[p];cursor[parts.at(-1)]=val}hud.render()},rollAtributo:async()=>{rolls++},rollPericia:async()=>{rolls++},descanso:async()=>{rolls++}};
+const preferences={default:{layout:'legend'},actors:{a:{layout:'legend'},b:{layout:'saga'}}};
+globalThis.game={settings:{get:(id,key)=>values[key],set:async(id,key,v)=>{values[key]=v;hud.render()}},user:{id:'u',isGM:true,getFlag:()=>preferences},modules:new Map([['tormenta20-ficha-heroica',{active:true}]]),i18n:{localize:v=>v},macros:[],version:'14.367'};
+globalThis.CONFIG={T20:{atributos:{for:'Força',des:'Destreza',con:'Constituição',int:'Inteligência',sab:'Sabedoria',car:'Carisma'},pericias:{luta:{label:'Luta'},perc:{label:'Percepção'},fort:{label:'Fortitude'}}}};
+globalThis.canvas={scene:{id:'s'},tokens:{controlled:[]}};
+globalThis.ui={notifications:{info:console.info,warn:console.warn,error:console.error}};
+globalThis.Dialog=class{render(){document.querySelector('#checks').textContent='Janela de descanso aberta.'}};
+globalThis.CONST={DICE_ROLL_MODES:{PUBLIC:'publicroll'}};
+const hud=new T20Hotbar(); await hud.setToken({id:'t',actor,document:{texture:{src:actor.img}}}); globalThis.previewHud=hud;
+document.querySelectorAll('[data-preview]').forEach(b=>b.addEventListener('click',()=>{values.style=b.dataset.preview;hud.render()}));
+document.querySelector('#switch-actor').onclick=async()=>{const next=hud.actor.id==='a'?{...actor,id:'b',uuid:'Actor.b',name:'Outro aventureiro'}:actor;await hud.setToken({id:next.id,actor:next,document:{texture:{src:next.img}}})};
+document.querySelector('#check').onclick=()=>{
+ const shell=hud.root.querySelector('.bg3t20-shell').getBoundingClientRect();
+ const slots=[...hud.root.querySelectorAll('.bg3t20-slot')];
+ const controls=[...hud.root.querySelectorAll('.bg3t20-slot,.bg3t20-resource,.bg3t20-side-actions button,.bg3t20-filters button')];
+ const clipped=controls.filter(el=>{const r=el.getBoundingClientRect();return r.left<0||r.right>innerWidth||r.top<0||r.bottom>innerHeight});
+ const rows=[...new Set(slots.map(el=>Math.round(el.getBoundingClientRect().top)))];
+ const overlap=controls.some((a,i)=>controls.slice(i+1).some(b=>{const x=a.getBoundingClientRect(),y=b.getBoundingClientRect();return Math.min(x.right,y.right)-Math.max(x.left,y.left)>1&&Math.min(x.bottom,y.bottom)-Math.max(x.top,y.top)>1}));
+ document.querySelector('#checks').textContent=JSON.stringify({style:hud.root.dataset.style,viewport:[innerWidth,innerHeight],bounds:[Math.round(shell.left),Math.round(shell.right)],slots:slots.length,rows:rows.length,clipped:clipped.length,overlap,rolls},null,2);
+};

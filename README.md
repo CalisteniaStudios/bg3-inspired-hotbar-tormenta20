@@ -31,6 +31,10 @@ Depois, ative o módulo no mundo que utiliza uma versão compatível do Tormenta
 - Encerrar turno, descanso e ajustes em controles laterais redesenhados.
 - Botão **Guia** abaixo de Iniciativa/Encerrar turno, com consulta rápida de ações padrão, de movimento, completas, livres e manobras de combate.
 - Painel de personalização com **Original**, **Relicário de Arton**, **Constelação Arcana**, **Aço & Brasa** e **Grimório Vivo**, além de cores livres, brilho e ornamentos.
+- Saga usa a linguagem de quadrinhos da Ficha Heroica: papel claro, arte integrada e tinta escura com vermelho e azul-petróleo. Em **Personalizado**, as duas cores de destaque podem ser alteradas.
+- Organizações **Lenda** e **Saga**, inspiradas nos estilos da Ficha Heroica, com estruturas próprias e seleção em **Ajustes → Organização da HUD**. A opção **Atual** preserva todos os temas anteriores.
+- **Acompanhar Ficha Heroica** segue a preferência pessoal do personagem selecionado. A integração é opcional; os três estilos funcionam sem esse módulo.
+- Categoria **Favoritos** nos novos estilos, usando os itens marcados como favoritos na ficha de Tormenta20.
 - Opções de escala, opacidade, posição, origem do retrato, nomes nos atalhos e ocultação da hotbar padrão.
 - Editor visual do retrato com zoom e posição horizontal e vertical, prévia em tempo real e ajustes separados para a imagem da ficha e do token.
 - Enquadramento salvo por personagem e compartilhado com todos que visualizam sua HUD.

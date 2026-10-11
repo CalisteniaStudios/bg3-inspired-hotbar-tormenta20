@@ -25,7 +25,7 @@ test("ações laterais mantêm combate destacado e três utilitários iguais", a
   assert.match(base, /\.bg3t20-side-actions \.bg3t20-settings-button\s*\{[^}]*grid-area:\s*4\s*\/\s*1\s*\/\s*5\s*\/\s*-1/s);
 
   for (const theme of ["reliquary", "constellation", "steel", "grimoire"]) {
-    const selector = `#bg3t20-hud[data-theme="${theme}"] .bg3t20-side-actions`;
+    const selector = `#bg3t20-hud[data-style="original"][data-theme="${theme}"] .bg3t20-side-actions`;
     const start = themes.indexOf(selector);
     assert.notEqual(start, -1, `tema ${theme} deve ajustar a coluna lateral`);
     assert.match(themes.slice(start, themes.indexOf("}", start) + 1), /--bg3t20-utility-height:/);

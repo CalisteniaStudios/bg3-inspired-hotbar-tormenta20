@@ -1,7 +1,7 @@
 /* Structural presets. Original and Custom remain defined in t20-hotbar.css. */
 
 /* Shared reset: every structural preset owns all of its measurements. */
-#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell {
+#bg3t20-hud[data-style="original"]:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell {
   box-sizing: border-box;
   width: min(900px, calc(100vw - 100px));
   min-width: 760px;
@@ -9,19 +9,19 @@
   opacity: var(--bg3t20-opacity);
   transform: scale(var(--bg3t20-scale)) scale(1.28);
 }
-#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) :is(.bg3t20-portrait-wrap, .bg3t20-main, .bg3t20-side-actions) {
+#bg3t20-hud[data-style="original"]:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) :is(.bg3t20-portrait-wrap, .bg3t20-main, .bg3t20-side-actions) {
   box-sizing: border-box;
   min-width: 0;
 }
-#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) :is(.bg3t20-portrait-wrap, .bg3t20-main, .bg3t20-side-actions, .bg3t20-weapons, .bg3t20-filters, .bg3t20-grid, .bg3t20-effects) { z-index: 1; }
-#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell::after { pointer-events: none; }
-#bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) :is(.bg3t20-slot, .bg3t20-mini-slot, .bg3t20-side-actions button) {
+#bg3t20-hud[data-style="original"]:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) :is(.bg3t20-portrait-wrap, .bg3t20-main, .bg3t20-side-actions, .bg3t20-weapons, .bg3t20-filters, .bg3t20-grid, .bg3t20-effects) { z-index: 1; }
+#bg3t20-hud[data-style="original"]:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell::after { pointer-events: none; }
+#bg3t20-hud[data-style="original"]:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) :is(.bg3t20-slot, .bg3t20-mini-slot, .bg3t20-side-actions button) {
   transition: border-color 140ms ease, box-shadow 140ms ease, filter 140ms ease, transform 140ms ease;
 }
 
 /* Relicário de Arton ------------------------------------------------------ */
-#bg3t20-hud[data-theme="reliquary"] { bottom: 5px; font-family: "Modesto Condensed", "Palatino Linotype", serif; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-shell {
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] { bottom: 5px; font-family: "Modesto Condensed", "Palatino Linotype", serif; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-shell {
   display: grid;
   grid-template-columns: 148px minmax(0, 1fr) 108px;
   gap: 8px;
@@ -29,7 +29,7 @@
   padding: 20px 15px 13px;
   filter: drop-shadow(0 16px 24px rgba(0,0,0,.78)) drop-shadow(0 0 7px rgba(215,175,98,.22));
 }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-shell::before {
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-shell::before {
   inset: 8px 0 0;
   border: 4px double #9b7138;
   border-radius: 10px 10px 3px 3px;
@@ -41,7 +41,7 @@
     linear-gradient(180deg, #422719, #1b0f09 54%, #090504);
   box-shadow: inset 0 0 0 2px #1f0e07, inset 0 0 22px #000, 0 0 0 1px #050302;
 }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-shell::after {
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-shell::after {
   content: "◆  ◇  ◆";
   inset: 4px 50% auto auto;
   width: 34%;
@@ -57,177 +57,177 @@
   transform: translateX(50%);
   mask-image: none;
 }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-portrait-wrap { position: relative; align-items: center; padding: 2px 2px 5px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-portrait { width: 102px !important; height: 102px; border: 3px double #e0bc6c !important; border-radius: 50% !important; box-shadow: 0 0 0 4px #271309, 0 0 0 6px #7b5228, inset 0 0 15px #000, 0 7px 15px #000; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-level { inset: auto 14px 4px; border-color: #9b7138; background: #1e0f08; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-actor-name { width: 140px; margin: 2px 0 3px; color: #f2d69a; font-size: 15px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-resource { width: 132px !important; height: 15px !important; min-height: 15px !important; margin: 1px 0; border: 1px solid #77552e; border-radius: 2px; background: #090504; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-resource strong { font-size: 8px; line-height: 13px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-defenses { margin-top: 3px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-defenses > * { height: 21px; border-color: #684925 !important; background: #160c07 !important; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-main { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 0 0 2px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 2px; padding: 0; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters button { height: 24px; padding: 0 3px !important; border: 1px solid #60401e !important; border-radius: 3px 3px 1px 1px !important; color: #cab990; background: linear-gradient(#482b19, #160c07) !important; font-size: 8px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters button span { display: inline; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-filters button.is-active { border-color: #d2a44c !important; color: #fff0c4; background: linear-gradient(#782c2c, #2b100e) !important; box-shadow: inset 0 -2px 0 #e0b95f, 0 0 6px rgba(224,185,95,.25); }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-grid { --bg3t20-slot-size: clamp(43px, 3.2vw, 49px); grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 3px; padding: 5px; border: 3px double #6f4b26; border-radius: 2px; background: rgba(8,4,2,.72); box-shadow: inset 0 0 13px #000; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-slot { border: 2px ridge #634522 !important; border-radius: 1px !important; background: #100906 !important; box-shadow: inset 0 0 7px #000; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-weapons { inset: -42px auto auto 2px; gap: 3px; padding: 3px 5px; border: 2px double #74522b; border-bottom: 0; border-radius: 5px 5px 0 0; background: linear-gradient(#422517, #120a06); }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-mini-slot { width: 33px !important; height: 33px; border: 1px solid #75532a !important; border-radius: 2px !important; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-resource.is-editing input { width: 82px; height: 19px; margin-left: 3px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-effects { min-height: 20px; padding: 1px 4px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-effects button { width: 19px !important; height: 19px; border: 1px solid #98703a !important; border-radius: 3px !important; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions { --bg3t20-side-gap: 5px; --bg3t20-utility-height: 31px; display: grid; grid-template-columns: 1fr; padding: 3px 1px 5px 0; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 52px !important; flex-direction: column; padding: 7px !important; border: 4px double #b58743 !important; border-radius: 50% !important; color: #f1d897; background: radial-gradient(circle, #6f2728, #180a08 70%) !important; box-shadow: inset 0 0 0 3px #2b120c, inset 0 0 17px #000, 0 0 8px #000; font-size: 8px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-guide-button { border: 1px solid #73522c !important; border-radius: 2px !important; color: #f1d897; background: linear-gradient(#3a2215, #100906) !important; font-size: 8px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 17px; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 4px !important; border: 1px solid #73522c !important; border-radius: 2px !important; background: linear-gradient(#3a2215, #100906) !important; }
-#bg3t20-hud[data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 13px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-portrait-wrap { position: relative; align-items: center; padding: 2px 2px 5px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-portrait { width: 102px !important; height: 102px; border: 3px double #e0bc6c !important; border-radius: 50% !important; box-shadow: 0 0 0 4px #271309, 0 0 0 6px #7b5228, inset 0 0 15px #000, 0 7px 15px #000; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-level { inset: auto 14px 4px; border-color: #9b7138; background: #1e0f08; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-actor-name { width: 140px; margin: 2px 0 3px; color: #f2d69a; font-size: 15px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-resource { width: 132px !important; height: 15px !important; min-height: 15px !important; margin: 1px 0; border: 1px solid #77552e; border-radius: 2px; background: #090504; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-resource strong { font-size: 8px; line-height: 13px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-defenses { margin-top: 3px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-defenses > * { height: 21px; border-color: #684925 !important; background: #160c07 !important; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-main { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 0 0 2px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-filters { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 2px; padding: 0; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-filters button { height: 24px; padding: 0 3px !important; border: 1px solid #60401e !important; border-radius: 3px 3px 1px 1px !important; color: #cab990; background: linear-gradient(#482b19, #160c07) !important; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-filters button span { display: inline; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-filters button.is-active { border-color: #d2a44c !important; color: #fff0c4; background: linear-gradient(#782c2c, #2b100e) !important; box-shadow: inset 0 -2px 0 #e0b95f, 0 0 6px rgba(224,185,95,.25); }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-grid { --bg3t20-slot-size: clamp(43px, 3.2vw, 49px); grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 3px; padding: 5px; border: 3px double #6f4b26; border-radius: 2px; background: rgba(8,4,2,.72); box-shadow: inset 0 0 13px #000; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-slot { border: 2px ridge #634522 !important; border-radius: 1px !important; background: #100906 !important; box-shadow: inset 0 0 7px #000; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-weapons { inset: -42px auto auto 2px; gap: 3px; padding: 3px 5px; border: 2px double #74522b; border-bottom: 0; border-radius: 5px 5px 0 0; background: linear-gradient(#422517, #120a06); }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-mini-slot { width: 33px !important; height: 33px; border: 1px solid #75532a !important; border-radius: 2px !important; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-resource.is-editing input { width: 82px; height: 19px; margin-left: 3px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-effects { min-height: 20px; padding: 1px 4px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-effects button { width: 19px !important; height: 19px; border: 1px solid #98703a !important; border-radius: 3px !important; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-side-actions { --bg3t20-side-gap: 5px; --bg3t20-utility-height: 31px; display: grid; grid-template-columns: 1fr; padding: 3px 1px 5px 0; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 52px !important; flex-direction: column; padding: 7px !important; border: 4px double #b58743 !important; border-radius: 50% !important; color: #f1d897; background: radial-gradient(circle, #6f2728, #180a08 70%) !important; box-shadow: inset 0 0 0 3px #2b120c, inset 0 0 17px #000, 0 0 8px #000; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-side-actions .bg3t20-guide-button { border: 1px solid #73522c !important; border-radius: 2px !important; color: #f1d897; background: linear-gradient(#3a2215, #100906) !important; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 17px; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 4px !important; border: 1px solid #73522c !important; border-radius: 2px !important; background: linear-gradient(#3a2215, #100906) !important; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 13px; }
 
 /* Constelação Arcana ------------------------------------------------------ */
-#bg3t20-hud[data-theme="constellation"] { bottom: 2px; font-family: "Signika", sans-serif; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-shell { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr) 86px; gap: 7px; align-items: end; min-height: 196px; padding: 75px 20px 10px; filter: drop-shadow(0 0 10px rgba(114,216,255,.3)) drop-shadow(0 16px 22px rgba(0,0,0,.8)); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-shell::before { inset: 37px 0 0; border: 1px solid rgba(137,218,255,.44); border-radius: 50% 50% 5px 5px / 56% 56% 5px 5px; clip-path: none; background: radial-gradient(ellipse at 50% 108%, transparent 0 42%, rgba(114,216,255,.17) 42.5%, transparent 43.5% 54%, rgba(155,98,255,.18) 54.5%, transparent 55.5%), linear-gradient(180deg, transparent 4%, rgba(8,15,33,.62) 35%, rgba(3,7,17,.97) 78%); box-shadow: inset 0 -16px 30px rgba(0,0,0,.68), 0 0 18px rgba(114,216,255,.12); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-shell::after { content: "✦     ·     ✧     ·     ✦"; inset: 46px 50% auto auto; width: 64%; color: #b9ecff; font-size: 8px; letter-spacing: 1.4em; opacity: calc(var(--bg3t20-ornament-opacity) * .8); transform: translateX(50%); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-portrait-wrap { position: absolute; inset: 0 auto auto 50%; z-index: 5; width: 360px; height: 105px; padding: 0; pointer-events: none; transform: translateX(-50%); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-portrait-wrap button { pointer-events: auto; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-portrait { width: 92px !important; height: 92px; border: 2px solid #e9fbff !important; border-radius: 50% !important; box-shadow: 0 0 0 4px #0c142b, 0 0 0 6px #70d4f7, 0 0 18px rgba(114,216,255,.58), inset 0 0 13px #000; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-level { inset: auto 11px 3px; border-color: rgba(114,216,255,.5); background: #071021; font-size: 7px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-actor-name { position: absolute; inset: 69px 50% auto auto; width: 120px; margin: 0; padding: 3px 6px; border: 1px solid rgba(114,216,255,.28); border-radius: 10px; background: rgba(3,8,20,.86); font-size: 11px; transform: translateX(50%); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-resource { position: absolute; top: 54px; width: 108px !important; height: 14px !important; min-height: 14px !important; margin: 0; border: 1px solid rgba(157,227,255,.46); border-radius: 9px; background: #020611; box-shadow: inset 0 0 5px #000, 0 0 6px rgba(114,216,255,.14); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-resource.pv { left: 3px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-resource.pm { right: 3px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-resource strong { font-size: 8px; line-height: 12px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-resource.is-editing input { width: 72px; height: 18px; margin-left: 4px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-defenses { position: absolute; inset: 26px 3px auto; justify-content: space-between; margin: 0; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-defenses > * { height: 22px; padding: 0 6px !important; border-color: rgba(114,216,255,.35) !important; border-radius: 50% !important; background: #071022 !important; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-main { position: relative; grid-column: 2; display: flex; flex-direction: column; gap: 4px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-filters { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 0; margin: 0 13px; padding: 0 15px; border: 1px solid rgba(138,202,255,.22); border-radius: 16px; background: rgba(3,8,20,.82); clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-filters button { height: 24px; padding: 0 2px !important; border-radius: 0 !important; color: #aebbd3; background: transparent !important; font-size: 8px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-filters button span { display: none; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-filters button.is-active { color: #fff; background: linear-gradient(90deg, transparent, rgba(91,101,210,.52), transparent) !important; box-shadow: inset 0 -2px 0 #72d8ff, 0 0 8px rgba(114,216,255,.28); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-grid { --bg3t20-slot-size: clamp(40px, 3.05vw, 47px); grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 5px; padding: 4px 8px; border: 0; border-radius: 50%; background: transparent; box-shadow: none; }
-#bg3t20-hud[data-theme="constellation"] :is(.bg3t20-slot, .bg3t20-mini-slot) { border: 1px solid rgba(157,226,255,.62) !important; border-radius: 50% !important; background: radial-gradient(circle, #17254a, #020611 74%) !important; box-shadow: inset 0 0 8px #000, 0 0 7px color-mix(in srgb, var(--action-color, #72d8ff) 35%, transparent); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-slot::after { inset: 3px; border-width: 1px; border-radius: 50%; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-item-name { inset: auto 6px 7px; font-size: 6px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-weapons { inset: auto auto 2px -79px; flex-direction: column; gap: 3px; padding: 0; border: 0; background: transparent; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-mini-slot { width: 27px !important; height: 27px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-effects { justify-content: center; min-height: 19px; padding: 0; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-effects button { width: 18px !important; height: 18px; border-color: #83dcfb !important; box-shadow: 0 0 5px rgba(114,216,255,.3); }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions { --bg3t20-side-gap: 4px; --bg3t20-utility-height: 28px; grid-column: 3; display: grid; grid-template-columns: 1fr; justify-content: center; padding: 0 8px 3px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 58px !important; flex-direction: column; padding: 6px !important; border: 2px solid #9ee8ff !important; border-radius: 8px !important; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); color: #eefbff; background: radial-gradient(circle, #4a4fa5, #071128 72%) !important; box-shadow: inset 0 0 18px rgba(114,216,255,.32), 0 0 12px rgba(114,216,255,.3); font-size: 7px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-guide-button { border: 1px solid rgba(151,226,255,.58) !important; border-radius: 12px !important; color: #eefbff; background: #061022 !important; font-size: 8px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 14px; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 0 !important; border: 1px solid rgba(151,226,255,.58) !important; border-radius: 12px !important; background: #061022 !important; }
-#bg3t20-hud[data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] { bottom: 2px; font-family: "Signika", sans-serif; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-shell { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr) 86px; gap: 7px; align-items: end; min-height: 196px; padding: 75px 20px 10px; filter: drop-shadow(0 0 10px rgba(114,216,255,.3)) drop-shadow(0 16px 22px rgba(0,0,0,.8)); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-shell::before { inset: 37px 0 0; border: 1px solid rgba(137,218,255,.44); border-radius: 50% 50% 5px 5px / 56% 56% 5px 5px; clip-path: none; background: radial-gradient(ellipse at 50% 108%, transparent 0 42%, rgba(114,216,255,.17) 42.5%, transparent 43.5% 54%, rgba(155,98,255,.18) 54.5%, transparent 55.5%), linear-gradient(180deg, transparent 4%, rgba(8,15,33,.62) 35%, rgba(3,7,17,.97) 78%); box-shadow: inset 0 -16px 30px rgba(0,0,0,.68), 0 0 18px rgba(114,216,255,.12); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-shell::after { content: "✦     ·     ✧     ·     ✦"; inset: 46px 50% auto auto; width: 64%; color: #b9ecff; font-size: 8px; letter-spacing: 1.4em; opacity: calc(var(--bg3t20-ornament-opacity) * .8); transform: translateX(50%); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-portrait-wrap { position: absolute; inset: 0 auto auto 50%; z-index: 5; width: 360px; height: 105px; padding: 0; pointer-events: none; transform: translateX(-50%); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-portrait-wrap button { pointer-events: auto; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-portrait { width: 92px !important; height: 92px; border: 2px solid #e9fbff !important; border-radius: 50% !important; box-shadow: 0 0 0 4px #0c142b, 0 0 0 6px #70d4f7, 0 0 18px rgba(114,216,255,.58), inset 0 0 13px #000; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-level { inset: auto 11px 3px; border-color: rgba(114,216,255,.5); background: #071021; font-size: 7px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-actor-name { position: absolute; inset: 69px 50% auto auto; width: 120px; margin: 0; padding: 3px 6px; border: 1px solid rgba(114,216,255,.28); border-radius: 10px; background: rgba(3,8,20,.86); font-size: 11px; transform: translateX(50%); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-resource { position: absolute; top: 54px; width: 108px !important; height: 14px !important; min-height: 14px !important; margin: 0; border: 1px solid rgba(157,227,255,.46); border-radius: 9px; background: #020611; box-shadow: inset 0 0 5px #000, 0 0 6px rgba(114,216,255,.14); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-resource.pv { left: 3px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-resource.pm { right: 3px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-resource strong { font-size: 8px; line-height: 12px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-resource.is-editing input { width: 72px; height: 18px; margin-left: 4px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-defenses { position: absolute; inset: 26px 3px auto; justify-content: space-between; margin: 0; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-defenses > * { height: 22px; padding: 0 6px !important; border-color: rgba(114,216,255,.35) !important; border-radius: 50% !important; background: #071022 !important; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-main { position: relative; grid-column: 2; display: flex; flex-direction: column; gap: 4px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-filters { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 0; margin: 0 13px; padding: 0 15px; border: 1px solid rgba(138,202,255,.22); border-radius: 16px; background: rgba(3,8,20,.82); clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-filters button { height: 24px; padding: 0 2px !important; border-radius: 0 !important; color: #aebbd3; background: transparent !important; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-filters button span { display: none; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-filters button.is-active { color: #fff; background: linear-gradient(90deg, transparent, rgba(91,101,210,.52), transparent) !important; box-shadow: inset 0 -2px 0 #72d8ff, 0 0 8px rgba(114,216,255,.28); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-grid { --bg3t20-slot-size: clamp(40px, 3.05vw, 47px); grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 5px; padding: 4px 8px; border: 0; border-radius: 50%; background: transparent; box-shadow: none; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] :is(.bg3t20-slot, .bg3t20-mini-slot) { border: 1px solid rgba(157,226,255,.62) !important; border-radius: 50% !important; background: radial-gradient(circle, #17254a, #020611 74%) !important; box-shadow: inset 0 0 8px #000, 0 0 7px color-mix(in srgb, var(--action-color, #72d8ff) 35%, transparent); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-slot::after { inset: 3px; border-width: 1px; border-radius: 50%; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-item-name { inset: auto 6px 7px; font-size: 6px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-weapons { inset: auto auto 2px -79px; flex-direction: column; gap: 3px; padding: 0; border: 0; background: transparent; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-mini-slot { width: 27px !important; height: 27px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-effects { justify-content: center; min-height: 19px; padding: 0; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-effects button { width: 18px !important; height: 18px; border-color: #83dcfb !important; box-shadow: 0 0 5px rgba(114,216,255,.3); }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-side-actions { --bg3t20-side-gap: 4px; --bg3t20-utility-height: 28px; grid-column: 3; display: grid; grid-template-columns: 1fr; justify-content: center; padding: 0 8px 3px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 58px !important; flex-direction: column; padding: 6px !important; border: 2px solid #9ee8ff !important; border-radius: 8px !important; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); color: #eefbff; background: radial-gradient(circle, #4a4fa5, #071128 72%) !important; box-shadow: inset 0 0 18px rgba(114,216,255,.32), 0 0 12px rgba(114,216,255,.3); font-size: 7px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-side-actions .bg3t20-guide-button { border: 1px solid rgba(151,226,255,.58) !important; border-radius: 12px !important; color: #eefbff; background: #061022 !important; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 14px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 0 !important; border: 1px solid rgba(151,226,255,.58) !important; border-radius: 12px !important; background: #061022 !important; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
 
 /* Aço & Brasa ------------------------------------------------------------- */
-#bg3t20-hud[data-theme="steel"] { bottom: 4px; font-family: "Signika", sans-serif; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-shell { display: grid; grid-template-columns: 146px minmax(0, 1fr) 102px; gap: 7px; align-items: end; padding: 16px 12px 9px; filter: drop-shadow(0 16px 23px rgba(0,0,0,.84)); }
-#bg3t20-hud[data-theme="steel"] .bg3t20-shell::before { inset: 13px 0 0; border: 1px solid #515862; border-radius: 1px; clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 10px); background: linear-gradient(90deg, transparent, rgba(225,117,59,.1), transparent), repeating-linear-gradient(108deg, rgba(255,255,255,.022) 0 1px, transparent 1px 7px), linear-gradient(#232830, #0a0c10 70%); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -10px 18px #000; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-shell::after { content: ""; inset: 13px 12% auto; width: auto; height: 2px; border: 0; background: linear-gradient(90deg, transparent, #e18448, #9a3037, transparent); transform: none; mask-image: none; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-portrait-wrap { position: relative; align-items: flex-start; min-height: 120px; padding: 3px 4px 4px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-portrait { width: 78px !important; height: 94px; border: 1px solid #6b7078 !important; border-radius: 1px 15px 1px 1px !important; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); box-shadow: 0 0 0 3px #0b0e12, inset 0 0 12px #000, 0 7px 13px #000; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-level { inset: 4px 4px auto auto; border-radius: 1px; color: #ffd2b4; background: #11151b; font-size: 7px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-actor-name { position: absolute; inset: 5px 2px auto 88px; width: 54px; margin: 0; font: 700 10px "Signika", sans-serif; text-align: left; white-space: normal; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource { position: absolute; left: 88px; width: 52px !important; height: 27px !important; min-height: 27px !important; margin: 0; border: 1px solid #4d535c; border-radius: 1px; background: #080a0d; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource.pv { top: 32px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource.pm { top: 63px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource > span { inset: auto 0 0; height: 5px; border-radius: 0; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource strong { display: grid; place-items: center; font-size: 8px; line-height: 1; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource.is-editing input { width: 46px; height: 22px; margin: 0 3px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-resource.is-editing em { display: none; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-defenses { position: absolute; inset: auto 4px 1px 88px; justify-content: flex-start; margin: 0; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-defenses > * { height: 21px; padding: 0 4px !important; border-color: #4e555e !important; border-radius: 1px !important; background: #101319 !important; font-size: 8px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-main { position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); grid-template-rows: auto auto auto; gap: 2px 4px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-filters { grid-column: 1 / -1; grid-row: 1; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 1px; padding: 0; border-bottom: 1px solid #4b5159; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-filters button { height: 21px; padding: 0 2px !important; border-radius: 0 !important; color: #aeb2b7; background: #15191f !important; font-size: 8px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-filters button span { display: none; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-filters button.is-active { color: #ffd2ae; background: linear-gradient(#3a241b, #15191f) !important; box-shadow: inset 0 -2px 0 #df8548; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-grid { --bg3t20-slot-size: clamp(41px, 3.1vw, 47px); grid-column: 2; grid-row: 2; grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 2px; padding: 4px; border-color: #474d56; border-radius: 1px; background: #07090c; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-slot { border-color: #3f4650 !important; border-radius: 1px !important; background: #11151b !important; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-slot::after { border-width: 1px; border-left-color: var(--action-color, transparent); border-bottom-color: transparent; border-radius: 0; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-item-name { font-size: 6px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-weapons { position: static; grid-column: 1; grid-row: 2 / span 2; align-self: start; flex-direction: column; gap: 2px; padding: 2px; border: 1px solid #4e555d; border-radius: 1px; background: #090c10; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-mini-slot { width: 31px !important; height: 31px; border-radius: 1px !important; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-effects { grid-column: 2; grid-row: 3; min-height: 18px; padding: 1px 3px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-effects button { width: 17px !important; height: 17px; border-radius: 1px !important; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions { --bg3t20-side-gap: 4px; --bg3t20-utility-height: 29px; display: grid; grid-template-columns: 1fr; padding: 2px 1px 4px 0; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions button { border-color: #4d535c !important; border-radius: 1px !important; background: linear-gradient(#22272e, #090b0f) !important; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 50px !important; flex-direction: column; padding: 6px !important; border: 1px solid #dd7c43 !important; clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px); color: #ffd1b1; background: linear-gradient(145deg, #3a2019, #0b0d11 68%) !important; box-shadow: inset 0 0 15px #000; font-size: 8px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-guide-button { color: #ffd1b1; font-size: 8px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 17px; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 0 !important; }
-#bg3t20-hud[data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] { bottom: 4px; font-family: "Signika", sans-serif; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-shell { display: grid; grid-template-columns: 146px minmax(0, 1fr) 102px; gap: 7px; align-items: end; padding: 16px 12px 9px; filter: drop-shadow(0 16px 23px rgba(0,0,0,.84)); }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-shell::before { inset: 13px 0 0; border: 1px solid #515862; border-radius: 1px; clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 10px); background: linear-gradient(90deg, transparent, rgba(225,117,59,.1), transparent), repeating-linear-gradient(108deg, rgba(255,255,255,.022) 0 1px, transparent 1px 7px), linear-gradient(#232830, #0a0c10 70%); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -10px 18px #000; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-shell::after { content: ""; inset: 13px 12% auto; width: auto; height: 2px; border: 0; background: linear-gradient(90deg, transparent, #e18448, #9a3037, transparent); transform: none; mask-image: none; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-portrait-wrap { position: relative; align-items: flex-start; min-height: 120px; padding: 3px 4px 4px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-portrait { width: 78px !important; height: 94px; border: 1px solid #6b7078 !important; border-radius: 1px 15px 1px 1px !important; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); box-shadow: 0 0 0 3px #0b0e12, inset 0 0 12px #000, 0 7px 13px #000; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-level { inset: 4px 4px auto auto; border-radius: 1px; color: #ffd2b4; background: #11151b; font-size: 7px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-actor-name { position: absolute; inset: 5px 2px auto 88px; width: 54px; margin: 0; font: 700 10px "Signika", sans-serif; text-align: left; white-space: normal; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource { position: absolute; left: 88px; width: 52px !important; height: 27px !important; min-height: 27px !important; margin: 0; border: 1px solid #4d535c; border-radius: 1px; background: #080a0d; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource.pv { top: 32px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource.pm { top: 63px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource > span { inset: auto 0 0; height: 5px; border-radius: 0; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource strong { display: grid; place-items: center; font-size: 8px; line-height: 1; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource.is-editing input { width: 46px; height: 22px; margin: 0 3px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource.is-editing em { display: none; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-defenses { position: absolute; inset: auto 4px 1px 88px; justify-content: flex-start; margin: 0; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-defenses > * { height: 21px; padding: 0 4px !important; border-color: #4e555e !important; border-radius: 1px !important; background: #101319 !important; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-main { position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr); grid-template-rows: auto auto auto; gap: 2px 4px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-filters { grid-column: 1 / -1; grid-row: 1; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 1px; padding: 0; border-bottom: 1px solid #4b5159; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-filters button { height: 21px; padding: 0 2px !important; border-radius: 0 !important; color: #aeb2b7; background: #15191f !important; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-filters button span { display: none; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-filters button.is-active { color: #ffd2ae; background: linear-gradient(#3a241b, #15191f) !important; box-shadow: inset 0 -2px 0 #df8548; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-grid { --bg3t20-slot-size: clamp(41px, 3.1vw, 47px); grid-column: 2; grid-row: 2; grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 2px; padding: 4px; border-color: #474d56; border-radius: 1px; background: #07090c; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-slot { border-color: #3f4650 !important; border-radius: 1px !important; background: #11151b !important; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-slot::after { border-width: 1px; border-left-color: var(--action-color, transparent); border-bottom-color: transparent; border-radius: 0; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-item-name { font-size: 6px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-weapons { position: static; grid-column: 1; grid-row: 2 / span 2; align-self: start; flex-direction: column; gap: 2px; padding: 2px; border: 1px solid #4e555d; border-radius: 1px; background: #090c10; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-mini-slot { width: 31px !important; height: 31px; border-radius: 1px !important; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-effects { grid-column: 2; grid-row: 3; min-height: 18px; padding: 1px 3px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-effects button { width: 17px !important; height: 17px; border-radius: 1px !important; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-side-actions { --bg3t20-side-gap: 4px; --bg3t20-utility-height: 29px; display: grid; grid-template-columns: 1fr; padding: 2px 1px 4px 0; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-side-actions button { border-color: #4d535c !important; border-radius: 1px !important; background: linear-gradient(#22272e, #090b0f) !important; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 50px !important; flex-direction: column; padding: 6px !important; border: 1px solid #dd7c43 !important; clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px); color: #ffd1b1; background: linear-gradient(145deg, #3a2019, #0b0d11 68%) !important; box-shadow: inset 0 0 15px #000; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-side-actions .bg3t20-guide-button { color: #ffd1b1; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 17px; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 0 !important; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
 
 /* Grimório Vivo ----------------------------------------------------------- */
-#bg3t20-hud[data-theme="grimoire"] { bottom: 2px; font-family: "Palatino Linotype", "Book Antiqua", serif; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-shell { display: grid; grid-template-columns: 206px minmax(0, 1fr) 100px; gap: 7px; align-items: end; padding: 15px 12px 11px; color: #3e2919; filter: drop-shadow(0 16px 24px rgba(0,0,0,.72)); }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-shell::before { inset: 5px 0 0; border: 4px ridge #80562a; border-radius: 4px 13px 13px 4px; clip-path: none; background: linear-gradient(90deg, transparent 23.2%, rgba(79,43,21,.2) 23.5%, rgba(255,255,255,.22) 24%, transparent 24.5% 76%, rgba(79,43,21,.2) 76.4%, rgba(255,255,255,.2) 77%, transparent 77.4%), repeating-linear-gradient(0deg, rgba(89,54,27,.026) 0 1px, transparent 1px 6px), linear-gradient(100deg, #b98e54, #f0dfb8 5%, #e9d1a0 48%, #b4864e 50%, #efd9ac 52%, #efdcb4 95%, #b1844d); box-shadow: inset 0 0 20px rgba(62,32,13,.38), 0 0 0 2px #2c180d; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-shell::after { content: "❦"; inset: 12px auto 9px 76%; width: 1px; height: auto; border: 0; color: rgba(93,52,26,.58); background: linear-gradient(transparent, rgba(87,47,23,.34), transparent); font-size: 14px; line-height: 18px; text-indent: -6px; opacity: var(--bg3t20-ornament-opacity); transform: none; mask-image: none; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait-wrap { position: relative; align-items: flex-start; min-height: 126px; padding: 3px 8px 4px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait { width: 88px !important; height: 104px; border: 4px double #8b602d !important; border-radius: 2px !important; background: #cfaa73 !important; box-shadow: 0 0 0 2px #4f2e17, inset 0 0 11px rgba(44,21,8,.55); }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-level { inset: auto 5px 5px; border-color: #8b5b28; border-radius: 1px; color: #f8e6bb; background: #5b331b; font-size: 7px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-actor-name { position: absolute; inset: 7px 5px auto 107px; width: 88px; margin: 0; color: #512c1a; font-size: 14px; line-height: 1.05; text-align: left; text-shadow: none; white-space: normal; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource { position: absolute; left: 107px; width: 82px !important; height: 28px !important; min-height: 28px !important; margin: 0; border: 2px double #71451f; border-radius: 2px; background: #5a2f1d; box-shadow: 0 3px 0 #743b23, 0 5px 8px rgba(65,31,13,.22); }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.pv { top: 39px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.pm { top: 73px; background: #263d72; box-shadow: 0 3px 0 #314d8b, 0 5px 8px rgba(25,31,65,.2); }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource > span { inset: auto 0 0; height: 5px; border-radius: 0; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource strong { display: grid; place-items: center; font-size: 8px; line-height: 1; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.is-editing input { width: 55px; height: 22px; margin-left: 3px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-resource.is-editing em { padding-right: 3px; font-size: 7px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-defenses { position: absolute; inset: auto 5px 0 106px; justify-content: flex-start; margin: 0; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-defenses > * { height: 21px; padding: 0 5px !important; border-color: #80572d !important; border-radius: 2px !important; color: #4e2c1b; background: rgba(255,246,215,.38) !important; text-shadow: none; font-size: 8px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-main { position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr) 80px; grid-template-rows: auto auto; gap: 4px 6px; padding: 0; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters { grid-column: 3; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 2px; justify-content: center; padding: 0; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button { justify-content: flex-start; height: 19px; padding: 0 5px !important; border: 1px solid #70451f !important; border-radius: 1px 6px 6px 1px !important; color: #f2deb0; background: linear-gradient(90deg, #6a3c22, #321b11) !important; box-shadow: 1px 1px 2px rgba(69,35,16,.22); font-size: 7px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button span { display: inline; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button:nth-child(3n + 2) { background: linear-gradient(90deg, #3e643a, #1e351d) !important; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button:nth-child(3n) { background: linear-gradient(90deg, #473975, #251d40) !important; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-filters button.is-active { border-color: #f0d28f !important; color: #fff5d2; filter: brightness(1.18); box-shadow: inset 3px 0 0 #e9c56f, 1px 1px 3px rgba(55,26,10,.3); }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-grid { --bg3t20-slot-size: clamp(38px, 2.95vw, 44px); grid-column: 2; grid-row: 1; grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 3px; padding: 3px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-slot { border: 2px double #87602f !important; border-radius: 1px !important; background: rgba(91,57,26,.1) !important; box-shadow: inset 0 0 6px rgba(48,25,10,.42), 1px 1px 2px rgba(79,43,19,.22); }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-slot.is-empty > span { color: rgba(65,39,20,.38); }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-slot::after { border-width: 1px; border-color: transparent; border-top-color: var(--action-color, transparent); }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-item-name { font-size: 6px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-effects { grid-column: 2; grid-row: 2; min-height: 18px; padding: 0 3px; color: #62472c; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-effects button { width: 17px !important; height: 17px; border: 1px solid #76502a !important; border-radius: 2px !important; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-weapons { position: static; grid-column: 1; grid-row: 1 / span 2; align-self: start; flex-direction: column; gap: 3px; padding: 3px; border: 2px solid #80572d; border-radius: 2px; background: rgba(246,224,178,.5); }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-mini-slot { width: 29px !important; height: 29px; border: 1px solid #76502a !important; border-radius: 1px !important; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions { --bg3t20-side-gap: 4px; --bg3t20-utility-height: 24px; display: grid; grid-template-columns: 1fr; padding: 2px 1px 3px 0; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions button { border: 2px double #76502a !important; border-radius: 2px !important; color: #f6e4b9; background: linear-gradient(#53331e, #20130c) !important; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 44px !important; flex-direction: column; padding: 6px !important; border-radius: 50% !important; background: radial-gradient(circle, #5b4c3b, #18130f 72%) !important; box-shadow: 0 0 0 3px #9a733b, 0 0 0 5px #402613, inset 0 0 14px #000; font-size: 8px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-guide-button { color: #f6e4b9; font-size: 8px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 16px; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 0 !important; }
-#bg3t20-hud[data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] { bottom: 2px; font-family: "Palatino Linotype", "Book Antiqua", serif; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-shell { display: grid; grid-template-columns: 206px minmax(0, 1fr) 100px; gap: 7px; align-items: end; padding: 15px 12px 11px; color: #3e2919; filter: drop-shadow(0 16px 24px rgba(0,0,0,.72)); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-shell::before { inset: 5px 0 0; border: 4px ridge #80562a; border-radius: 4px 13px 13px 4px; clip-path: none; background: linear-gradient(90deg, transparent 23.2%, rgba(79,43,21,.2) 23.5%, rgba(255,255,255,.22) 24%, transparent 24.5% 76%, rgba(79,43,21,.2) 76.4%, rgba(255,255,255,.2) 77%, transparent 77.4%), repeating-linear-gradient(0deg, rgba(89,54,27,.026) 0 1px, transparent 1px 6px), linear-gradient(100deg, #b98e54, #f0dfb8 5%, #e9d1a0 48%, #b4864e 50%, #efd9ac 52%, #efdcb4 95%, #b1844d); box-shadow: inset 0 0 20px rgba(62,32,13,.38), 0 0 0 2px #2c180d; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-shell::after { content: "❦"; inset: 12px auto 9px 76%; width: 1px; height: auto; border: 0; color: rgba(93,52,26,.58); background: linear-gradient(transparent, rgba(87,47,23,.34), transparent); font-size: 14px; line-height: 18px; text-indent: -6px; opacity: var(--bg3t20-ornament-opacity); transform: none; mask-image: none; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-portrait-wrap { position: relative; align-items: flex-start; min-height: 126px; padding: 3px 8px 4px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-portrait { width: 88px !important; height: 104px; border: 4px double #8b602d !important; border-radius: 2px !important; background: #cfaa73 !important; box-shadow: 0 0 0 2px #4f2e17, inset 0 0 11px rgba(44,21,8,.55); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-level { inset: auto 5px 5px; border-color: #8b5b28; border-radius: 1px; color: #f8e6bb; background: #5b331b; font-size: 7px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-actor-name { position: absolute; inset: 7px 5px auto 107px; width: 88px; margin: 0; color: #512c1a; font-size: 14px; line-height: 1.05; text-align: left; text-shadow: none; white-space: normal; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-resource { position: absolute; left: 107px; width: 82px !important; height: 28px !important; min-height: 28px !important; margin: 0; border: 2px double #71451f; border-radius: 2px; background: #5a2f1d; box-shadow: 0 3px 0 #743b23, 0 5px 8px rgba(65,31,13,.22); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-resource.pv { top: 39px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-resource.pm { top: 73px; background: #263d72; box-shadow: 0 3px 0 #314d8b, 0 5px 8px rgba(25,31,65,.2); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-resource > span { inset: auto 0 0; height: 5px; border-radius: 0; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-resource strong { display: grid; place-items: center; font-size: 8px; line-height: 1; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-resource.is-editing input { width: 55px; height: 22px; margin-left: 3px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-resource.is-editing em { padding-right: 3px; font-size: 7px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-defenses { position: absolute; inset: auto 5px 0 106px; justify-content: flex-start; margin: 0; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-defenses > * { height: 21px; padding: 0 5px !important; border-color: #80572d !important; border-radius: 2px !important; color: #4e2c1b; background: rgba(255,246,215,.38) !important; text-shadow: none; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-main { position: relative; display: grid; grid-template-columns: 36px minmax(0, 1fr) 80px; grid-template-rows: auto auto; gap: 4px 6px; padding: 0; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-filters { grid-column: 3; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 2px; justify-content: center; padding: 0; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-filters button { justify-content: flex-start; height: 19px; padding: 0 5px !important; border: 1px solid #70451f !important; border-radius: 1px 6px 6px 1px !important; color: #f2deb0; background: linear-gradient(90deg, #6a3c22, #321b11) !important; box-shadow: 1px 1px 2px rgba(69,35,16,.22); font-size: 7px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-filters button span { display: inline; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-filters button:nth-child(3n + 2) { background: linear-gradient(90deg, #3e643a, #1e351d) !important; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-filters button:nth-child(3n) { background: linear-gradient(90deg, #473975, #251d40) !important; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-filters button.is-active { border-color: #f0d28f !important; color: #fff5d2; filter: brightness(1.18); box-shadow: inset 3px 0 0 #e9c56f, 1px 1px 3px rgba(55,26,10,.3); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-grid { --bg3t20-slot-size: clamp(38px, 2.95vw, 44px); grid-column: 2; grid-row: 1; grid-template-columns: repeat(9, var(--bg3t20-slot-size)); gap: 3px; padding: 3px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-slot { border: 2px double #87602f !important; border-radius: 1px !important; background: rgba(91,57,26,.1) !important; box-shadow: inset 0 0 6px rgba(48,25,10,.42), 1px 1px 2px rgba(79,43,19,.22); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-slot.is-empty > span { color: rgba(65,39,20,.38); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-slot::after { border-width: 1px; border-color: transparent; border-top-color: var(--action-color, transparent); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-item-name { font-size: 6px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-effects { grid-column: 2; grid-row: 2; min-height: 18px; padding: 0 3px; color: #62472c; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-effects button { width: 17px !important; height: 17px; border: 1px solid #76502a !important; border-radius: 2px !important; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-weapons { position: static; grid-column: 1; grid-row: 1 / span 2; align-self: start; flex-direction: column; gap: 3px; padding: 3px; border: 2px solid #80572d; border-radius: 2px; background: rgba(246,224,178,.5); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-mini-slot { width: 29px !important; height: 29px; border: 1px solid #76502a !important; border-radius: 1px !important; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-side-actions { --bg3t20-side-gap: 4px; --bg3t20-utility-height: 24px; display: grid; grid-template-columns: 1fr; padding: 2px 1px 3px 0; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-side-actions button { border: 2px double #76502a !important; border-radius: 2px !important; color: #f6e4b9; background: linear-gradient(#53331e, #20130c) !important; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn { grid-area: 1 / 1 / 2 / -1; min-height: 44px !important; flex-direction: column; padding: 6px !important; border-radius: 50% !important; background: radial-gradient(circle, #5b4c3b, #18130f 72%) !important; box-shadow: 0 0 0 3px #9a733b, 0 0 0 5px #402613, inset 0 0 14px #000; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-side-actions .bg3t20-guide-button { color: #f6e4b9; font-size: 8px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn i { font-size: 16px; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) { padding: 0 !important; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) i { font-size: 12px; }
 
 /* Auxiliary panels inherit the visual language without changing layout. */
-#bg3t20-hud[data-theme="reliquary"] :is(.bg3t20-roll-panel, .bg3t20-tooltip),
-#bg3t20-hud[data-theme="steel"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) { border-radius: 2px; }
-#bg3t20-hud[data-theme="constellation"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) { border-color: rgba(114,216,255,.7); border-radius: 16px; background: linear-gradient(145deg, rgba(14,21,46,.98), rgba(2,5,15,.98)); box-shadow: 0 0 20px rgba(114,216,255,.22), inset 0 0 23px rgba(83,65,180,.16); }
-#bg3t20-hud[data-theme="grimoire"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) { border: 4px double #80572d; border-radius: 3px; color: #3b2718; background: linear-gradient(100deg, #d4b47c, #f0deb7 8%, #ead2a5 92%, #b78d54); box-shadow: inset 0 0 18px rgba(73,39,17,.32), 0 14px 28px rgba(0,0,0,.58); }
-#bg3t20-hud[data-theme="grimoire"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) :is(h3, h4, strong, p, span, footer) { color: #3e2818; text-shadow: none; }
+#bg3t20-hud[data-style="original"][data-theme="reliquary"] :is(.bg3t20-roll-panel, .bg3t20-tooltip),
+#bg3t20-hud[data-style="original"][data-theme="steel"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) { border-radius: 2px; }
+#bg3t20-hud[data-style="original"][data-theme="constellation"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) { border-color: rgba(114,216,255,.7); border-radius: 16px; background: linear-gradient(145deg, rgba(14,21,46,.98), rgba(2,5,15,.98)); box-shadow: 0 0 20px rgba(114,216,255,.22), inset 0 0 23px rgba(83,65,180,.16); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) { border: 4px double #80572d; border-radius: 3px; color: #3b2718; background: linear-gradient(100deg, #d4b47c, #f0deb7 8%, #ead2a5 92%, #b78d54); box-shadow: inset 0 0 18px rgba(73,39,17,.32), 0 14px 28px rgba(0,0,0,.58); }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] :is(.bg3t20-roll-panel, .bg3t20-tooltip) :is(h3, h4, strong, p, span, footer) { color: #3e2818; text-shadow: none; }
 
 @media (max-width: 1050px) {
-  #bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell { width: calc(100vw - 34px); min-width: 700px; transform: scale(var(--bg3t20-scale)); }
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-shell { grid-template-columns: 128px minmax(0, 1fr) 92px; padding-inline: 10px; }
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-portrait { width: 88px !important; height: 88px; }
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-resource { width: 116px !important; }
-  #bg3t20-hud[data-theme="reliquary"] .bg3t20-grid { --bg3t20-slot-size: clamp(36px, 5vw, 44px); }
-  #bg3t20-hud[data-theme="constellation"] .bg3t20-shell { grid-template-columns: 70px minmax(0, 1fr) 70px; padding-inline: 12px; }
-  #bg3t20-hud[data-theme="constellation"] .bg3t20-grid { --bg3t20-slot-size: clamp(35px, 4.8vw, 43px); gap: 3px; }
-  #bg3t20-hud[data-theme="constellation"] .bg3t20-weapons { left: -62px; }
-  #bg3t20-hud[data-theme="steel"] .bg3t20-shell { grid-template-columns: 130px minmax(0, 1fr) 86px; padding-inline: 8px; }
-  #bg3t20-hud[data-theme="steel"] :is(.bg3t20-actor-name, .bg3t20-resource, .bg3t20-defenses) { left: 80px; }
-  #bg3t20-hud[data-theme="steel"] .bg3t20-grid { --bg3t20-slot-size: clamp(35px, 4.8vw, 42px); }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-shell { grid-template-columns: 184px minmax(0, 1fr) 88px; padding-inline: 8px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-portrait { width: 78px !important; height: 96px; }
-  #bg3t20-hud[data-theme="grimoire"] :is(.bg3t20-actor-name, .bg3t20-resource, .bg3t20-defenses) { left: 94px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-main { grid-template-columns: 34px minmax(0, 1fr) 72px; }
-  #bg3t20-hud[data-theme="grimoire"] .bg3t20-grid { --bg3t20-slot-size: clamp(33px, 4.5vw, 39px); }
+  #bg3t20-hud[data-style="original"]:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell { width: calc(100vw - 34px); min-width: 700px; transform: scale(var(--bg3t20-scale)); }
+  #bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-shell { grid-template-columns: 128px minmax(0, 1fr) 92px; padding-inline: 10px; }
+  #bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-portrait { width: 88px !important; height: 88px; }
+  #bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-resource { width: 116px !important; }
+  #bg3t20-hud[data-style="original"][data-theme="reliquary"] .bg3t20-grid { --bg3t20-slot-size: clamp(36px, 5vw, 44px); }
+  #bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-shell { grid-template-columns: 70px minmax(0, 1fr) 70px; padding-inline: 12px; }
+  #bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-grid { --bg3t20-slot-size: clamp(35px, 4.8vw, 43px); gap: 3px; }
+  #bg3t20-hud[data-style="original"][data-theme="constellation"] .bg3t20-weapons { left: -62px; }
+  #bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-shell { grid-template-columns: 130px minmax(0, 1fr) 86px; padding-inline: 8px; }
+  #bg3t20-hud[data-style="original"][data-theme="steel"] :is(.bg3t20-actor-name, .bg3t20-resource, .bg3t20-defenses) { left: 80px; }
+  #bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-grid { --bg3t20-slot-size: clamp(35px, 4.8vw, 42px); }
+  #bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-shell { grid-template-columns: 184px minmax(0, 1fr) 88px; padding-inline: 8px; }
+  #bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-portrait { width: 78px !important; height: 96px; }
+  #bg3t20-hud[data-style="original"][data-theme="grimoire"] :is(.bg3t20-actor-name, .bg3t20-resource, .bg3t20-defenses) { left: 94px; }
+  #bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-main { grid-template-columns: 34px minmax(0, 1fr) 72px; }
+  #bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-grid { --bg3t20-slot-size: clamp(33px, 4.5vw, 39px); }
 }
 
 @media (max-width: 760px) {
-  #bg3t20-hud:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell { min-width: 620px; transform: scale(var(--bg3t20-scale)) scale(.86); }
+  #bg3t20-hud[data-style="original"]:is([data-theme="reliquary"], [data-theme="constellation"], [data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell { min-width: 620px; transform: scale(var(--bg3t20-scale)) scale(.86); }
 }
