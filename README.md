@@ -1,5 +1,7 @@
 # BG3 Inspired Hotbar — Tormenta20
 
+<img src="assets/LOGO.png" alt="Calistenia Studios" width="200">
+
 Uma adaptação independente do **BG3 Inspired HUD** para o sistema **Tormenta20 1.5.015 e 1.6.1** no Foundry VTT 13 e 14.
 
 O módulo mantém a proposta visual cinematográfica da obra original, mas substitui o núcleo de regras do D&D 5e por uma integração nativa com Tormenta20.
