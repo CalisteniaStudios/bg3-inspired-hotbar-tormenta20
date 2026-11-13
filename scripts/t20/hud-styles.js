@@ -1,9 +1,9 @@
 // Layout choice is independent of the existing color/structural themes.
 export const HUD_STYLES = Object.freeze({
-  original: { label: "Atual", icon: "fa-solid fa-dragon", description: "Preserva a organização do tema atual." },
-  legend: { label: "Lenda", icon: "fa-solid fa-crown", description: "Medalhão, esferas de vida e mana e uma barra de fantasia dourada." },
-  saga: { label: "Saga", icon: "fa-solid fa-bolt", description: "Arte integrada, papel claro, tinta escura e recortes de quadrinhos em vermelho e azul-petróleo." },
-  sheet: { label: "Acompanhar Ficha Heroica", icon: "fa-solid fa-link", description: "Segue o estilo pessoal da ficha do personagem selecionado. Sem a Ficha Heroica, usa o estilo atual." }
+  original: { label: "Atual", description: "Preserva a organização do tema atual." },
+  legend: { label: "Lenda", description: "Medalhão, esferas de vida e mana e uma barra de fantasia dourada." },
+  saga: { label: "Saga", description: "Arte integrada, papel claro, tinta escura e recortes de quadrinhos em vermelho e azul-petróleo." },
+  sheet: { label: "Acompanhar Ficha Heroica", description: "Segue o estilo pessoal da ficha do personagem selecionado. Sem a Ficha Heroica, usa o estilo atual." }
 });
 
 export function resolveHudStyle(choice = "original", { active = false, preferences, actor } = {}) {

@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.6.2] - 2026-11-13
+
+- Substitui os ícones que escapavam das prévias de organização por miniaturas de HUD feitas em CSS, com molduras e proporções próprias para cada estilo.
+- Mantém as miniaturas e os textos inteiramente dentro dos cartões de seleção.
+
 ## [0.6.1] - 2026-11-13
 
 - Corrige a sobreposição das prévias, nomes e descrições na escolha de organização da Forja da HUD, inclusive com estilos globais de botões que impõem altura fixa.

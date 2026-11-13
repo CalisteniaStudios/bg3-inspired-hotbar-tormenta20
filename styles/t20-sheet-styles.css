@@ -209,7 +209,7 @@
 #bg3t20-hud[data-style="saga"][data-theme] .bg3t20-favorite-mark { color: #fff9e9; }
 #bg3t20-hud[data-style="saga"][data-theme] button:focus-visible { outline-color: var(--saga-teal); }
 
-/* The chooser previews layout geometry without generating bitmap artwork. */
+/* Small CSS-only silhouettes of the HUD layouts, kept inside their cards. */
 #bg3t20-hud[data-style]:not([data-style="original"])[data-labels="hide"] .bg3t20-item-name { display:none; }
 #bg3t20-hud .bg3t20-style-list { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; align-items: stretch; }
 #bg3t20-hud .bg3t20-style-card {
@@ -221,7 +221,7 @@
   width: 100% !important;
   height: auto !important;
   min-width: 0;
-  min-height: 126px !important;
+  min-height: 150px !important;
   max-height: none !important;
   gap: 8px;
   padding: 12px !important;
@@ -237,12 +237,50 @@
 #bg3t20-hud .bg3t20-style-card.is-active { border-color: #e0bc74; background: #293342; box-shadow: inset 0 0 0 1px #e0bc7455; }
 .bg3t20-style-card strong, .bg3t20-style-card small { display: block; min-width: 0; white-space: normal; }
 .bg3t20-style-card small { color: #b9c3d1; font-size: 10px; line-height: 1.35; }
-.bg3t20-style-sketch { display: flex; flex: 0 0 42px; align-items: center; box-sizing: border-box; gap: 7px; width: 100%; min-width: 0; height: 42px; padding: 7px; overflow: hidden; border: 1px solid #978057; background: #0b1915; }
-.bg3t20-style-sketch i { flex: 0 0 auto; color: #d6b873; padding: 6px; border: 1px solid #aa8a4e; border-radius: 50%; }
-.bg3t20-style-sketch b { flex: 0 0 22px; width: 22px; height: 22px; border: 1px solid #a48b56; background: #47625555; }
-.bg3t20-style-sketch[data-sketch="saga"] { background: linear-gradient(110deg,#182d32 30%,#c33339 30% 33%,#efede1 33%); border: 2px solid #182d32; border-radius: 0; }
-.bg3t20-style-sketch[data-sketch="saga"] i { border-radius: 0; color: #fff9e9; background: #c33339; border: 0; }
-.bg3t20-style-sketch[data-sketch="saga"] b { background: #182d32; border: 0; border-bottom: 3px solid #247582; }
+#bg3t20-hud .bg3t20-style-sketch {
+  --sketch-edge: #a7854a;
+  --sketch-fill: #18251f;
+  --sketch-accent: #d7ad60;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 18px;
+  align-items: center;
+  box-sizing: border-box;
+  flex: 0 0 60px;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  height: 60px;
+  padding: 8px;
+  overflow: hidden;
+  border: 1px solid var(--sketch-edge);
+  border-radius: 5px;
+  background: linear-gradient(150deg, var(--sketch-fill), #080d13);
+}
+#bg3t20-hud .bg3t20-style-sketch span { box-sizing: border-box; }
+#bg3t20-hud .bg3t20-sketch-portrait {
+  display: block;
+  width: 38px;
+  height: 38px;
+  border: 2px solid var(--sketch-edge);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #bfa46d 0 18%, transparent 20%), linear-gradient(145deg, #3e503f, #101416);
+  box-shadow: inset 0 0 0 3px #07100f;
+}
+#bg3t20-hud .bg3t20-sketch-center { display: flex; flex-direction: column; justify-content: center; gap: 7px; min-width: 0; }
+#bg3t20-hud .bg3t20-sketch-meters { display: flex; gap: 5px; width: 78%; }
+#bg3t20-hud .bg3t20-sketch-meters span { display: block; width: 50%; height: 5px; border-radius: 3px; background: #9b3544; box-shadow: inset 0 0 0 1px #ffffff33; }
+#bg3t20-hud .bg3t20-sketch-meters span + span { background: #397c91; }
+#bg3t20-hud .bg3t20-sketch-slots { display: flex; gap: 4px; width: 100%; min-width: 0; }
+#bg3t20-hud .bg3t20-sketch-slots span { display: block; flex: 1 1 0; min-width: 0; max-width: 26px; height: 18px; border: 1px solid var(--sketch-edge); border-radius: 2px; background: #775b3244; }
+#bg3t20-hud .bg3t20-sketch-action { display: block; width: 17px; height: 34px; border: 1px solid var(--sketch-edge); border-radius: 3px; background: linear-gradient(135deg, var(--sketch-accent), #362a20 55%); }
+#bg3t20-hud .bg3t20-style-sketch[data-sketch="legend"] { --sketch-edge: #caa45b; --sketch-fill: #14281f; --sketch-accent: #e3c879; }
+#bg3t20-hud .bg3t20-style-sketch[data-sketch="legend"] .bg3t20-sketch-portrait { border: 3px double var(--sketch-edge); box-shadow: 0 0 0 2px #284536, inset 0 0 0 2px #07100f; }
+#bg3t20-hud .bg3t20-style-sketch[data-sketch="legend"] .bg3t20-sketch-meters span { height: 9px; border: 1px solid #d2b366; border-radius: 9px; }
+#bg3t20-hud .bg3t20-style-sketch[data-sketch="saga"] { --sketch-edge: #50a1a9; --sketch-fill: #162e34; --sketch-accent: #d74d4d; border-radius: 0; background: linear-gradient(118deg, #17323a 0 37%, #be3e49 37% 40%, #eee8d9 40%); }
+#bg3t20-hud .bg3t20-style-sketch[data-sketch="saga"] .bg3t20-sketch-portrait { border-radius: 2px; background: linear-gradient(145deg, #9e3a4d, #182f39); }
+#bg3t20-hud .bg3t20-style-sketch[data-sketch="saga"] .bg3t20-sketch-slots span { border-color: #3c6a73; background: #15313d; }
+#bg3t20-hud .bg3t20-style-sketch[data-sketch="sheet"] { --sketch-edge: #81b9b2; --sketch-fill: #16352e; --sketch-accent: #b69759; background: linear-gradient(110deg, #193c32 0 50%, #142d34 50%); }
+#bg3t20-hud .bg3t20-style-sketch[data-sketch="sheet"] .bg3t20-sketch-portrait { border-left-color: #d2ad69; border-right-color: #59b4c2; background: linear-gradient(110deg, #455f45 0 50%, #284d5b 50%); }
 @media (max-width:640px) { #bg3t20-hud .bg3t20-style-list { grid-template-columns: minmax(0,1fr); } }
 @media (prefers-reduced-motion:reduce) { #bg3t20-hud *, #bg3t20-hud *::before, #bg3t20-hud *::after { transition: none !important; } }
 
