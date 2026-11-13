@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.1] - 2026-11-13
+
+- Corrige a sobreposição das prévias, nomes e descrições na escolha de organização da Forja da HUD, inclusive com estilos globais de botões que impõem altura fixa.
+- Organiza as quatro opções em duas colunas e usa uma coluna em telas estreitas.
+- Inclui a logo original da Calistenia Studios no cabeçalho das configurações.
+
 ## [0.6.0] - 2026-10-11
 
 - Adiciona as organizações Lenda e Saga, com medalhões e esferas de fantasia e painéis de quadrinhos, respectivamente.
