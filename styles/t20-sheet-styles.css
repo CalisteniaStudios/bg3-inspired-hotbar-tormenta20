@@ -298,3 +298,409 @@
   #bg3t20-hud[data-style="saga"][data-theme] .bg3t20-filters button { height:32px; }
 
 }
+/* The four display layouts use the same actions and actor data as the base HUD. */
+
+/* Lenda: a large character cameo anchors the bar; the orbs form a readable pair. */
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-shell {
+  width: 1220px;
+  min-width: 1220px;
+  grid-template-columns: 282px minmax(0, 1fr) 116px;
+  gap: 18px;
+  padding: 22px 22px 19px;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-portrait-wrap {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: center;
+  align-items: center;
+  column-gap: 19px;
+  row-gap: 9px;
+  padding: 8px 14px;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-portrait {
+  width: 154px !important;
+  height: 154px;
+  justify-self: center;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-actor-name {
+  margin: 2px 0 4px;
+  font-size: 25px;
+  line-height: 1;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-resource {
+  width: 101px !important;
+  height: 101px !important;
+  margin: 0;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-resource strong { font-size: 17px; }
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-defenses {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-main {
+  position: relative;
+  gap: 9px;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-weapons {
+  position: absolute;
+  inset: -46px auto auto 4px;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-mini-slot {
+  width: 38px !important;
+  height: 38px;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-grid {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-auto-rows: 69px;
+  gap: 5px;
+  padding: 8px;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-slot {
+  width: 100% !important;
+  height: 69px !important;
+}
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-filters button { height: 37px; }
+#bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-side-actions {
+  grid-template-rows: 72px repeat(3, 38px);
+}
+
+/* Saga: quick weapons sit beyond the paper panel, while navigation reads as a
+   short icon rail. Every filter stays available through its title and tooltip. */
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-shell {
+  width: 1220px;
+  min-width: 1220px;
+  grid-template-columns: 258px minmax(0, 1fr) 111px;
+  gap: 18px;
+  padding: 14px 17px 15px 0;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-shell::after { left: 242px; }
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-portrait-wrap {
+  padding-right: 25px;
+  grid-template-rows: minmax(164px, 1fr) auto auto auto;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-main {
+  position: relative;
+  gap: 9px;
+  padding-top: 5px;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-weapons {
+  position: absolute;
+  inset: -54px auto auto 2px;
+  z-index: 5;
+  padding: 5px 7px 5px 5px;
+  border: 2px solid var(--saga-ink);
+  border-bottom: 0;
+  background: var(--saga-paper);
+  box-shadow: 3px 0 0 #08151b66;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-weapons::before {
+  height: 34px;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-mini-slot {
+  width: 38px !important;
+  height: 38px;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-filters {
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 5px;
+  max-width: 590px;
+  margin: 0 auto;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-filters button {
+  height: 34px;
+  font-size: 14px;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-filters button span { display: none; }
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-filters button i { font-size: 15px; }
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-grid {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-auto-rows: 68px;
+  gap: 6px;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-slot {
+  width: 100% !important;
+  height: 68px !important;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-slot.is-empty {
+  opacity: .45;
+}
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-slot.is-empty:hover { opacity: 1; }
+
+/* Aço e Brasa / Grimório: layout at its real size, with portrait and resources
+   occupying a deliberate character panel instead of a compressed thumbnail. */
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell {
+  width: 1380px;
+  min-width: 1380px;
+  grid-template-columns: 232px minmax(0, 1fr) 118px;
+  gap: 18px;
+  align-items: center;
+  padding: 23px 21px 15px;
+  transform: scale(var(--bg3t20-scale));
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-portrait-wrap {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-items: stretch;
+  align-items: center;
+  align-self: center;
+  column-gap: 8px;
+  row-gap: 7px;
+  min-height: 0;
+  padding: 5px 7px 7px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-portrait {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 178px !important;
+  height: 164px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-actor-name {
+  position: relative;
+  inset: auto;
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 4px 0 2px;
+  overflow: hidden;
+  font-size: 20px;
+  line-height: 1.06;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-resource,
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-resource.pv,
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-resource.pm {
+  position: relative;
+  inset: auto;
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  margin: 0;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-resource::before {
+  content: "PV";
+  position: absolute;
+  inset: 3px auto auto 5px;
+  z-index: 2;
+  color: #fff5df;
+  font: 700 8px "Signika", sans-serif;
+  letter-spacing: .12em;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-resource.pm::before { content: "PM"; }
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-resource strong {
+  font-size: 13px;
+  line-height: 43px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-resource.is-editing input {
+  width: 70px;
+  height: 27px;
+  margin: 7px 3px 0;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-defenses {
+  position: relative;
+  inset: auto;
+  grid-column: 1 / -1;
+  justify-content: center;
+  gap: 8px;
+  margin: 3px 0 0;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-defenses > * {
+  height: 27px;
+  min-width: 42px;
+  padding: 0 8px !important;
+  font-size: 12px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  min-width: 0;
+  gap: 9px;
+  padding: 0;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-weapons {
+  position: absolute;
+  inset: -49px auto auto 4px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  padding: 4px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-mini-slot {
+  width: 37px !important;
+  height: 37px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-filters {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 4px;
+  padding: 0;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-filters button {
+  height: 31px;
+  font-size: 10px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-filters button span { display: inline; }
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-grid {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-auto-rows: 76px;
+  gap: 6px;
+  padding: 6px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-slot {
+  width: 100% !important;
+  height: 76px !important;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-item-name { font-size: 10px; }
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-effects {
+  min-height: 25px;
+  padding: 2px 4px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-effects button {
+  width: 22px !important;
+  height: 22px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-side-actions {
+  grid-template-rows: 68px repeat(3, 38px);
+  gap: 7px;
+  padding: 0;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-side-actions .bg3t20-end-turn {
+  height: 68px;
+  min-height: 68px !important;
+  font-size: 10px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) {
+  height: 38px;
+  min-height: 38px !important;
+}
+
+/* Forged steel uses the spare width for a clean command rail and hot metal. */
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-shell::before {
+  inset: 9px 0 0;
+  border: 2px solid #656c73;
+  background:
+    linear-gradient(90deg, #e38a4930 0 2px, transparent 2px 18%, #e38a4930 18% 18.2%, transparent 18.2%),
+    repeating-linear-gradient(110deg, #ffffff05 0 1px, transparent 1px 9px),
+    linear-gradient(180deg, #272b30, #101217 54%, #090b0f);
+}
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-portrait-wrap {
+  border-right: 2px solid #e38a4966;
+}
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-portrait {
+  border: 2px solid #d4905d !important;
+  border-radius: 2px 21px 2px 2px !important;
+  box-shadow: 0 0 0 4px #090b0f, 0 0 0 5px #4b555f, 0 10px 20px #000;
+}
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-actor-name {
+  color: #f8e7d8;
+  font: 800 18px "Signika", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource {
+  border: 1px solid #606772;
+  background: #0b0d11;
+  box-shadow: inset 0 0 8px #000;
+}
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource.pv { border-bottom: 3px solid #c55540; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-resource.pm { border-bottom: 3px solid #448aa3; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-filters { border-bottom: 1px solid #d38b5688; }
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-filters button {
+  border: 1px solid #424850 !important;
+  background: #1a1e24 !important;
+}
+#bg3t20-hud[data-style="original"][data-theme="steel"] .bg3t20-grid {
+  border: 1px solid #525a62;
+  background: #06080bbd;
+}
+
+/* The grimoire becomes a two page spread: portrait on one page, spells on the
+   other, with filters as chapter tabs instead of a cramped vertical list. */
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-shell::before {
+  inset: 5px 0 0;
+  background:
+    linear-gradient(90deg, transparent 17.4%, #623a2055 17.5%, #fff5d877 17.8%, transparent 18.2%),
+    repeating-linear-gradient(0deg, #5a351a07 0 1px, transparent 1px 7px),
+    linear-gradient(100deg, #b68951, #f2dfb6 4%, #e8cea0 52%, #f1dcb4 96%, #ae7d45);
+}
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-shell::after {
+  inset: 20px auto 20px 17.8%;
+}
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-portrait {
+  border: 4px double #76502a !important;
+  box-shadow: 0 0 0 2px #49301b, 0 0 0 6px #d4b27b, 0 8px 15px #6d492a77;
+}
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-actor-name {
+  color: #4b2916;
+  font: 700 21px "Palatino Linotype", "Book Antiqua", serif;
+  text-shadow: none;
+}
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-resource {
+  border: 2px double #744b27;
+  box-shadow: 0 3px 0 #8c5d31, 0 5px 8px #4927103d;
+}
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-filters button {
+  justify-content: center;
+  height: 32px;
+  padding: 0 3px !important;
+  border: 1px solid #6e4725 !important;
+  border-radius: 7px 7px 0 0 !important;
+  font: 700 9px "Palatino Linotype", serif;
+}
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-grid {
+  border: 3px double #926a38;
+  border-radius: 2px;
+  background: #f4e7cb99;
+  box-shadow: inset 0 0 15px #86603644;
+}
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-slot {
+  border: 2px double #8c6536 !important;
+}
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-slot.is-empty { opacity: .56; }
+#bg3t20-hud[data-style="original"][data-theme="grimoire"] .bg3t20-side-actions .bg3t20-end-turn {
+  border-radius: 11px 11px 3px 3px !important;
+  box-shadow: inset 0 0 14px #000, 0 0 0 2px #9a733b;
+}
+
+@media (max-width: 1000px) {
+  #bg3t20-hud[data-style="legend"]:not([data-style="original"]) .bg3t20-shell,
+  #bg3t20-hud[data-style="saga"][data-theme] .bg3t20-shell {
+    width: 1000px;
+    min-width: 1000px;
+  }
+  #bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-shell {
+    width: 1080px;
+    min-width: 1080px;
+  }
+}
+
+/* Final proportions checked at the Foundry viewport. */
+#bg3t20-hud[data-style="saga"][data-theme] .bg3t20-filters {
+  width: 100%;
+  max-width: none;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-grid {
+  grid-auto-rows: 88px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-slot {
+  height: 88px !important;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-filters button {
+  height: 36px;
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-side-actions {
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+}
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-side-actions .bg3t20-end-turn,
+#bg3t20-hud[data-style="original"]:is([data-theme="steel"], [data-theme="grimoire"]) .bg3t20-side-actions :is(.bg3t20-guide-button, .bg3t20-rest, .bg3t20-settings-button) {
+  height: 100%;
+}

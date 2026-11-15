@@ -172,7 +172,7 @@ export class T20Hotbar {
     const requested = Number.isFinite(this.requestedScale) ? this.requestedScale : 1;
     const shell = this.root.querySelector(".bg3t20-shell");
     if (!shell) return;
-    if (this.root.dataset.style !== "original") {
+    if (this.root.dataset.style !== "original" || ["steel", "grimoire"].includes(this.root.dataset.theme)) {
       const fitted = fitStyledHudScale(this.requestedScale, window.innerWidth, window.innerHeight, shell.offsetWidth, shell.offsetHeight, this.root.dataset.position === "raised");
       this.root.style.setProperty("--bg3t20-scale", String(fitted));
       this.root.dataset.viewportFit = fitted < this.requestedScale ? "true" : "false";

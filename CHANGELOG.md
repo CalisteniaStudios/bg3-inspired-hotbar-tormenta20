@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3] - 2026-11-15
+
+- Amplia o retrato e reorganiza PV, PM, Defesa e atalhos nas HUDs Aço & Brasa e Grimório Vivo, aproveitando a largura real do painel.
+- Aumenta o retrato e as esferas de recursos da organização Lenda.
+- Simplifica a organização Saga, com filtros compactos e armas rápidas fora do painel principal.
+- Ajusta automaticamente Aço & Brasa e Grimório Vivo à largura e à altura disponíveis, preservando os controles em telas menores.
+
 ## [0.6.2] - 2026-11-13
 
 - Substitui os ícones que escapavam das prévias de organização por miniaturas de HUD feitas em CSS, com molduras e proporções próprias para cada estilo.
